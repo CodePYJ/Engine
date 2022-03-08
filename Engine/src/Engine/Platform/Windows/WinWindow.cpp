@@ -35,6 +35,8 @@ namespace EE {
 
 		m_Window = glfwCreateWindow(m_winData.width, m_winData.height, m_winData.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		EE_ASSERT(status,"Failed to initialize GLAD");
 		glfwSetWindowUserPointer(m_Window, &m_winData);
 
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
@@ -45,7 +47,6 @@ namespace EE {
 
 				WindowResizeEvent event(width, height);
 				data.callbackfun(event);
-				//EE_TRACE(event.ToString());
 			});
 
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
