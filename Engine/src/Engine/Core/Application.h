@@ -14,9 +14,12 @@ namespace EE {
 		virtual ~Application();
 
 		void Run();
-
+		void OnEvent(Event& event);
+		void OnUpdate();
+		void OnWindowClose(Event& e);
 	private:
 		std::unique_ptr<Window> m_Window;
+		EventDispatcher dispatcher;
 		bool m_Running = true;
 	};
 

@@ -14,21 +14,33 @@ namespace EE {
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
+	enum class EventCategory
+	{
+		None = 0,
+		Window, Keyboard, MouseButton
+	};
+
 	class EE_API Event {
 	public:
 		virtual ~Event() = default;
 		virtual EventType GetEventType() = 0;
-
+		virtual EventCategory GetEventCategory() = 0;
+		virtual std::string ToString() { std::string s; return s; };
 	};
 
 	class EventDispatcher
 	{
 	public:
 		using EventCallbackFun = std::function<void(Event&)>;
-		void subscribe(EventType eventType, EventCallbackFun callbackFun);
+		void subscribe(EventCategory eventCategory, EventCallbackFun callbackFun);
 		void post(Event& event);
 
 	private:
-		std::map<EventType, std::vector<EventCallbackFun>> observers;
+		std::map<EventCategory, std::vector<EventCallbackFun>> observers;
 	};
+
+	inline std::ostream& operator<<(std::ostream& os, Event& e)
+	{
+		return os << e.ToString();
+	}
 }

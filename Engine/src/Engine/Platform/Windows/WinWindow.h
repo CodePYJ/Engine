@@ -15,6 +15,7 @@ namespace EE {
 		virtual inline unsigned int GetHeight() override { return m_winData.height; }
 
 		virtual void OnUpdate() override;
+		inline void SetEventCallbackFun(const EventCallbackFn& callback) override { m_winData.callbackfun = callback; }
 
 	private:
 		void Init();
@@ -25,6 +26,8 @@ namespace EE {
 		{
 			std::string title;
 			int width, height;
+
+			EventCallbackFn callbackfun;
 		};
 		WindowData m_winData;
 

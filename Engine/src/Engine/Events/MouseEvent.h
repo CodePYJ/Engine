@@ -14,7 +14,14 @@ namespace EE {
 		inline int GetY() { return m_y; }
 
 		virtual EventType GetEventType() { return EventType::MouseMoved; }
+		virtual EventCategory GetEventCategory() { return EventCategory::MouseButton; }
 
+		std::string ToString() override
+		{
+			std::stringstream ss;
+			ss << "MouseMovedEvent: " << m_x << ", " << m_y;
+			return ss.str();
+		}
 	private:
 		int m_x, m_y;
 	};
@@ -24,6 +31,7 @@ namespace EE {
 	public:
 		MouseScrollEvent() = default;
 
+		virtual EventCategory GetEventCategory() { return EventCategory::MouseButton; }
 		virtual EventType GetEventType() { return EventType::MouseScrolled; }
 	};
 
@@ -33,25 +41,41 @@ namespace EE {
 		MouseButtonEvent(int button)
 			:m_button(button) { }
 
-	private:
+		virtual EventCategory GetEventCategory() { return EventCategory::MouseButton; }
+
+	protected:
 		int m_button;
 	};
 
-	class EE_API MouseBuuttonPressedEvent :public MouseButtonEvent
+	class EE_API MouseButtonPressedEvent :public MouseButtonEvent
 	{
 	public:
-		MouseBuuttonPressedEvent(int button)
+		MouseButtonPressedEvent(int button)
 			:MouseButtonEvent(button) { }
 
 		virtual EventType GetEventType() { return EventType::MouseButtonPressed; }
+
+		std::string ToString() override
+		{
+			std::stringstream ss;
+			ss << "MouseButtonPressedEvent: " << m_button;
+			return ss.str();
+		}
 	};
 
-	class EE_API MouseBuuttonReleasedEvent :public MouseButtonEvent
+	class EE_API MouseButtonReleasedEvent :public MouseButtonEvent
 	{
 	public:
-		MouseBuuttonReleasedEvent(int button)
+		MouseButtonReleasedEvent(int button)
 			:MouseButtonEvent(button) { }
 
-		virtual EventType GetEventType() { return EventType::MouseButtonReleased }
+		virtual EventType GetEventType() { return EventType::MouseButtonReleased; }
+
+		std::string ToString() override
+		{
+			std::stringstream ss;
+			ss << "MouseButtonReleasedEvent: " << m_button;
+			return ss.str();
+		}
 	};
 }
