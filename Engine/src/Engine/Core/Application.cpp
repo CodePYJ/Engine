@@ -2,16 +2,20 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-//#define IMGUI_IMPL_OPENGL_LOADER_GLAD
-//#include <imgui.h>
-//#include <backends/imgui_impl_glfw.h>
-//#include <backends/imgui_impl_opengl3.h>
+#include "Engine/ImGui/ImGuiLayer.h"
 
 namespace EE {
+
+	Application* Application::s_app = nullptr;
+
 	Application::Application()
 	{
 		m_Window = std::unique_ptr<Window>(Window::Create(1280, 720));
 		m_Window->SetEventCallbackFun(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+		s_app = this;
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushLayer(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -24,6 +28,14 @@ namespace EE {
 		while (m_Running) {
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			for (Layer* layer : m_layerstack)
+				layer->OnUpdate();
+
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_layerstack)
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
 			OnUpdate();
 		}
 	}

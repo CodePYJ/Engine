@@ -18,7 +18,7 @@ namespace EE {
 
 		virtual void OnUpdate() override;
 		inline void SetEventCallbackFun(const EventCallbackFn& callback) override { m_winData.callbackfun = callback; }
-
+		inline virtual void* GetNativeWindow() { return m_Window; }
 	private:
 		void Init();
 		void Shutdown();

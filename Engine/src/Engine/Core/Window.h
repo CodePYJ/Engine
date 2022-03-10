@@ -16,6 +16,8 @@ namespace EE {
 		virtual void OnUpdate() = 0;
 		virtual unsigned int GetWidth() = 0;
 		virtual unsigned int GetHeight() = 0;
+		virtual void* GetNativeWindow() = 0;
+
 		virtual void SetEventCallbackFun(const EventCallbackFn& callback) = 0;
 		static Window* Create(unsigned int width, unsigned int height, std::string title = "Engine");
 	};
