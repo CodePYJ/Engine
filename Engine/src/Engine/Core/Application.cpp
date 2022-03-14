@@ -1,8 +1,6 @@
 #include "Application.h"
-
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Engine/ImGui/ImGuiLayer.h"
+#include <glad/glad.h>
 
 namespace EE {
 
@@ -16,6 +14,19 @@ namespace EE {
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushLayer(m_ImGuiLayer);
+
+		float vertices[] = {
+			-0.5f, -0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			0.0f,  0.5f, 0.0f
+		};
+
+		vao = std::make_unique<VertexArray>();
+		vbo = std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
+		shader = std::make_unique<Shader>("D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/test.shader");//D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/test.shader
+		layout.PushFloat(3);
+		vao->AddBuffer(*vbo, layout);
+		shader->Bind();
 	}
 
 	Application::~Application()
@@ -26,8 +37,10 @@ namespace EE {
 	void Application::Run()
 	{
 		while (m_Running) {
-			glClearColor(1, 0, 1, 1);
+			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			glDrawArrays(GL_TRIANGLES, 0, 3);
 
 			for (Layer* layer : m_layerstack)
 				layer->OnUpdate();

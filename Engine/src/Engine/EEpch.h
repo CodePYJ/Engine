@@ -3,9 +3,11 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <functional>
 #include <vector>
 #include <map>
+#include <memory>
 
 
 #include "Engine/Core/Log.h"
