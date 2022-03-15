@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Engine/EEpch.h"
+#include "Engine/Core/Core.h"
 
 
 namespace EE {
 
-	struct VertexBufferElement
+	struct EE_API VertexBufferElement
 	{
 		unsigned int type;
 		unsigned int	count;
@@ -13,7 +14,7 @@ namespace EE {
 		static unsigned int GetSizeOfType(unsigned int type);
 	};
 
-	class VertexBufferLayout
+	class EE_API VertexBufferLayout
 	{
 	public:
 		VertexBufferLayout()

@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Engine/Core/Core.h"
+
 namespace EE {
 
-	class IndexBuffer
+	class EE_API IndexBuffer
 	{
 	public:
 		IndexBuffer(const void* data, unsigned int count);

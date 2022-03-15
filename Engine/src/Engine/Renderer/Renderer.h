@@ -3,10 +3,12 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
+#include "Engine/Core/Core.h"
+
 
 namespace EE {
 
-	class Renderer
+	class EE_API Renderer
 	{
 	public:
 		void Clear();

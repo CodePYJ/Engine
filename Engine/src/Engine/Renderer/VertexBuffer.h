@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Engine/Core/Core.h"
+
 namespace EE {
 	
-	class VertexBuffer
+	class EE_API VertexBuffer
 	{
 	public:
 		VertexBuffer(const void* data, unsigned int size);

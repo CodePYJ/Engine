@@ -8,10 +8,7 @@
 #include "Layer.h"
 #include "LayerStack.h"
 #include "Engine/ImGui/ImGuiLayer.h"
-
-#include "Engine/Renderer/VertexBuffer.h"
-#include "Engine/Renderer/Shader.h"
-#include "Engine/Renderer/VertexArray.h"
+#include "Timestep.h"
 
 namespace EE {
 
@@ -36,14 +33,10 @@ namespace EE {
 		EventDispatcher dispatcher;
 		LayerStack m_layerstack;
 		bool m_Running = true;
+		float m_LastFrameTime;
 
 		static Application* s_app;
 		ImGuiLayer* m_ImGuiLayer;
-
-		std::unique_ptr<VertexBuffer> vbo;
-		std::unique_ptr<Shader> shader;
-		std::unique_ptr<VertexArray> vao;
-		VertexBufferLayout layout;
 	};
 
 	Application* CreateApplication();

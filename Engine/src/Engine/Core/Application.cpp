@@ -8,25 +8,12 @@ namespace EE {
 
 	Application::Application()
 	{
-		m_Window = std::unique_ptr<Window>(Window::Create(1280, 720));
+		m_Window = std::unique_ptr<Window>(Window::Create(1600, 900));
 		m_Window->SetEventCallbackFun(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 		s_app = this;
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushLayer(m_ImGuiLayer);
-
-		float vertices[] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f,  0.5f, 0.0f
-		};
-
-		vao = std::make_unique<VertexArray>();
-		vbo = std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
-		shader = std::make_unique<Shader>("D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/test.shader");//D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/test.shader
-		layout.PushFloat(3);
-		vao->AddBuffer(*vbo, layout);
-		shader->Bind();
 	}
 
 	Application::~Application()
@@ -37,13 +24,14 @@ namespace EE {
 	void Application::Run()
 	{
 		while (m_Running) {
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			float time = (float)glfwGetTime();
+			Timestep timestep = time - m_LastFrameTime;
+			m_LastFrameTime = time;
 
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+			//glDrawArrays(GL_TRIANGLES, 0, 3);
 
 			for (Layer* layer : m_layerstack)
-				layer->OnUpdate();
+				layer->OnUpdate(timestep);
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_layerstack)
@@ -57,7 +45,7 @@ namespace EE {
 	{
 		if (EventType::WindowClose == event.GetEventType())
 			OnWindowClose(event);
-		EE_TRACE(event.ToString());
+		//EE_TRACE(event.ToString());
 
 		for (auto it = m_layerstack.end(); it != m_layerstack.begin(); ) {
 			(*--it)->OnEvent(event);

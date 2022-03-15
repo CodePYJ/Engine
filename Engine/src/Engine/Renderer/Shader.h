@@ -2,9 +2,10 @@
 
 #include "Engine/EEpch.h"
 #include <glm/glm.hpp>
+#include "Engine/Core/Core.h"
 
 
-struct ShaderSource
+struct  EE_API ShaderSource
 {
 	std::string VertexShaderSource;
 	std::string FragmentShaderSource;
@@ -12,7 +13,7 @@ struct ShaderSource
 
 namespace EE {
 
-	class Shader
+	class EE_API Shader
 	{
 	public:
 		Shader(const std::string& filepath);
@@ -21,7 +22,9 @@ namespace EE {
 		void Bind();
 		void Unbind();
 
+		void SetUniform1i(const std::string& name, int value);
 		void SetUniform4f(const std::string& name, glm::vec4& value);
+		void SetUniformMat4(const std::string& name, glm::mat4& mat4);
 
 	private:
 		unsigned int GetUniformLocation(const std::string& name);

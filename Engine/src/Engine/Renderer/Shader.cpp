@@ -1,6 +1,6 @@
 #include "Shader.h"
 #include <glad/glad.h>
-
+#include <glm/gtc/type_ptr.hpp>
 
 namespace EE {
 
@@ -26,9 +26,19 @@ namespace EE {
 		glUseProgram(0);
 	}
 
+	void Shader::SetUniform1i(const std::string& name, int value)
+	{
+		glUniform1i(GetUniformLocation(name), value);
+	}
+
 	void Shader::SetUniform4f(const std::string& name, glm::vec4& value)
 	{
 		glUniform4f(GetUniformLocation(name), value.x, value.y, value.z, value.w);
+	}
+
+	void Shader::SetUniformMat4(const std::string& name, glm::mat4& mat4)
+	{
+		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat4));
 	}
 
 	unsigned int Shader::GetUniformLocation(const std::string& name)

@@ -2,10 +2,12 @@
 
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
+#include "Engine/Core/Core.h"
+
 
 namespace EE {
 
-	class VertexArray 
+	class EE_API VertexArray
 	{
 	public:
 		VertexArray();
