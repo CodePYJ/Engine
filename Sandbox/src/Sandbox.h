@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Engine.h"
-
-#include "ExampleLayer.h"
+#include "Engine/Core/Application.h"
 
 class Sandbox : public EE::Application
 {

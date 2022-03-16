@@ -27,6 +27,7 @@ namespace EE {
 
 		inline Window& GetWindow() { return *m_Window; }
 		inline static Application& Get() { return *s_app; }
+		inline void Close() { m_Running = false; }
 
 	private:
 		std::unique_ptr<Window> m_Window;

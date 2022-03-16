@@ -17,6 +17,7 @@ namespace EE {
 
 		inline int GetWidth() { return m_Width; }
 		inline int GetHeight() { return m_Height; }
+		inline unsigned int GetRendererID() { return m_RendererID; }
 
 	private:
 		unsigned int m_RendererID;

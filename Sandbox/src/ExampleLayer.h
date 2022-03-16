@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Engine.h"
-
 #include "Engine/Renderer/VertexBuffer.h"
 #include "Engine/Renderer/Shader.h"
 #include "Engine/Renderer/VertexArray.h"
@@ -13,6 +11,13 @@
 
 class ExampleLayer : public EE::Layer
 {
+public:
+	ExampleLayer();
+
+	void OnUpdate(EE::Timestep timestep) override;
+	void OnEvent(EE::Event& event) override;
+	void OnImGuiRender() override;
+
 private:
 	std::unique_ptr<EE::VertexBuffer> vbo;
 	std::unique_ptr<EE::Shader> shader;
@@ -23,46 +28,8 @@ private:
 	EE::VertexBufferLayout layout;
 	EE::OrthographicCamera m_Camera;
 
-public:
-	ExampleLayer()
-		:Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
-	{
-		float vertices[] = {
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-			0.5f, 0.5f, 0.0f, 1.0f, 1.0f
-		};
-
-		unsigned int indices[] = {
-			0, 1, 2,
-			2, 3, 1
-		};
-
-		vao = std::make_unique<EE::VertexArray>();
-		vbo = std::make_unique<EE::VertexBuffer>(vertices, sizeof(vertices));
-		ebo = std::make_unique<EE::IndexBuffer>(indices, 6);
-		shader = std::make_unique<EE::Shader>("D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/test.shader");
-		texture = std::make_unique<EE::Texture>("D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/textures/ChernoLogo.png");
-
-		layout.PushFloat(3);
-		layout.PushFloat(2);
-		vao->AddBuffer(*vbo, layout);
-		shader->Bind();
-		texture->Bind();
-		shader->SetUniform1i("u_Texture", 0);
-		shader->SetUniformMat4("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
-	}
-
-	void OnUpdate(EE::Timestep timestep) override
-	{
-		EE_TRACE(timestep.GetSecond());
-		renderer.Clear();
-		renderer.Draw(*vao, *ebo, *shader);
-	}
-
-	void OnEvent(EE::Event& event) override
-	{
-		EE_INFO("Example Event");
-	}
+	glm::mat4 transform;
+	float tran[2] = {0.0f, 0.0f};
+	float tranX = 0.0f, tranY = 0.0f, rotation = 0.0f;
+	float color[4] = {0.2f, 0.5f, 0.8f, 1.0f} ;
 };

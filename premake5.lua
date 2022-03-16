@@ -22,8 +22,10 @@ include "Engine/vendor/imgui"
 
 project "Engine"
 	location "Engine"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "On"
 
 	targetdir("bin/"..outputdir.."/%{prj.name}")
 	objdir("bin-int/"..outputdir.."/%{prj.name}")
@@ -38,6 +40,11 @@ project "Engine"
 		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
+	}
 
 	includedirs
 	{
@@ -58,22 +65,18 @@ project "Engine"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS",
 		"ENGINE_PLATFORM_WINDOWS",
-		"ENGINE_BUILD_DLL",
-		"GLFW_INCLUDE_NONE"
+		"ENGINE_BUILD_DLL"
 	}
 
-	postbuildcommands
-	{
-		("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-	}
+	-- postbuildcommands
+	-- {
+	-- 	("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+	-- }
 
 
 	filter "configurations:Debug"
@@ -91,6 +94,8 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "On"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .."/%{prj.name}")
@@ -105,7 +110,9 @@ project "Sandbox"
 	includedirs
 	{
 		"Engine/src",
-		"%{IncludeDir.glm}"
+		"Engine/vendor",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.ImGui}"
 	}
 
 	links
@@ -114,8 +121,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 	defines

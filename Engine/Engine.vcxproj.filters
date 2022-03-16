@@ -72,6 +72,9 @@
     <ClInclude Include="src\Engine\Core\Log.h">
       <Filter>src\Engine\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Core\Timestep.h">
+      <Filter>src\Engine\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Core\Window.h">
       <Filter>src\Engine\Core</Filter>
     </ClInclude>
@@ -98,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="src\Engine\Platform\Windows\WinWindow.h">
       <Filter>src\Engine\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Camera.h">
+      <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Renderer\IndexBuffer.h">
       <Filter>src\Engine\Renderer</Filter>
@@ -1371,8 +1377,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Renderer\Camera.h" />
-    <ClInclude Include="src\Engine\Core\Timestep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Core\Application.cpp">
@@ -1399,6 +1403,9 @@
     <ClCompile Include="src\Engine\Platform\Windows\WinWindow.cpp">
       <Filter>src\Engine\Platform\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Camera.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Renderer\IndexBuffer.cpp">
       <Filter>src\Engine\Renderer</Filter>
     </ClCompile>
@@ -1423,9 +1430,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Camera.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\textures\ChernoLogo.png" />
   </ItemGroup>
 </Project>

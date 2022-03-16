@@ -1,11 +1,15 @@
 #pragma once
 
 #ifdef ENGINE_PLATFORM_WINDOWS
+#ifdef EE_DYNAMIC_LINK
 	#ifdef ENGINE_BUILD_DLL
-		#define EE_API __declspec(dllexport)
+	#define EE_API __declspec(dllexport)
 	#else
-		#define EE_API __declspec(dllimport)
+	#define EE_API __declspec(dllimport)
 	#endif // ENGINE_BUILD_DLL
+#else
+	#define EE_API
+#endif // EE_DYNAMIC_LINK
 
 #endif // !ENGINE_PLATFORM_WINDOWS
 
