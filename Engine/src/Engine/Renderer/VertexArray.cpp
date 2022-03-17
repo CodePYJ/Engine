@@ -27,6 +27,12 @@ namespace EE {
 		}
 	}
 
+	void VertexArray::AddEBO(IndexBuffer& ebo)
+	{
+		ebo.Bind();
+		m_EBO = ebo;
+	}
+
 	void VertexArray::Bind()
 	{
 		glBindVertexArray(m_RendererID);

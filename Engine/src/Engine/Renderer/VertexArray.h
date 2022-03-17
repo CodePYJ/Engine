@@ -3,7 +3,7 @@
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "Engine/Core/Core.h"
-
+#include "IndexBuffer.h"
 
 namespace EE {
 
@@ -14,10 +14,14 @@ namespace EE {
 		~VertexArray();
 
 		void AddBuffer(VertexBuffer& vb, VertexBufferLayout& layout);
+		void AddEBO(IndexBuffer& ebo);
 		void Bind();
 		void Unbind();
 
+		IndexBuffer GetEBO() { return m_EBO; }
+
 		private:
 			unsigned int m_RendererID;
+			IndexBuffer m_EBO;
 	};
 }

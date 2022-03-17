@@ -7,6 +7,7 @@ namespace EE {
 	class EE_API IndexBuffer
 	{
 	public:
+		IndexBuffer() {  }
 		IndexBuffer(const void* data, unsigned int count);
 		~IndexBuffer();
 

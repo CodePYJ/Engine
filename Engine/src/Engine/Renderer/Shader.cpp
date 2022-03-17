@@ -31,7 +31,7 @@ namespace EE {
 		glUniform1i(GetUniformLocation(name), value);
 	}
 
-	void Shader::SetUniform4f(const std::string& name, glm::vec4& value)
+	void Shader::SetUniform4f(const std::string& name, const glm::vec4& value)
 	{
 		glUniform4f(GetUniformLocation(name), value.x, value.y, value.z, value.w);
 	}
