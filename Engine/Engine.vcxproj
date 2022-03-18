@@ -114,6 +114,7 @@
     <ClInclude Include="src\Engine\Renderer\IndexBuffer.h" />
     <ClInclude Include="src\Engine\Renderer\Renderer.h" />
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
+    <ClInclude Include="src\Engine\Renderer\RenderObj.h" />
     <ClInclude Include="src\Engine\Renderer\Shader.h" />
     <ClInclude Include="src\Engine\Renderer\Texture.h" />
     <ClInclude Include="src\Engine\Renderer\VertexArray.h" />
@@ -552,6 +553,7 @@
     <ClCompile Include="src\Engine\Renderer\IndexBuffer.cpp" />
     <ClCompile Include="src\Engine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
+    <ClCompile Include="src\Engine\Renderer\RenderObj.cpp" />
     <ClCompile Include="src\Engine\Renderer\Shader.cpp" />
     <ClCompile Include="src\Engine\Renderer\Texture.cpp" />
     <ClCompile Include="src\Engine\Renderer\VertexArray.cpp" />

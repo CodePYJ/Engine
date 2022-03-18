@@ -11,6 +11,7 @@ namespace EE {
 	class EE_API Renderer
 	{
 	public:
+		Renderer();
 		void Clear();
 		void Draw(VertexArray& vao, IndexBuffer& ebo, Shader& shader);
 	};

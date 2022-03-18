@@ -10,7 +10,7 @@ class ExampleLayer : public EE::Layer
 {
 public:
 	ExampleLayer();
-
+	~ExampleLayer();
 	void OnUpdate(EE::Timestep timestep) override;
 	void OnEvent(EE::Event& event) override;
 	void OnImGuiRender() override;
