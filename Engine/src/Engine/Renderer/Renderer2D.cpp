@@ -28,6 +28,7 @@ namespace EE {
 
 	void Renderer2D::Init()
 	{
+		glEnable(GL_DEPTH_TEST);
 		s_Data = new Renderer2DStorage();
 		s_Data->VAO = std::make_unique<EE::VertexArray>();
 		s_Data->VAO->Bind();
@@ -64,8 +65,6 @@ namespace EE {
 	void Renderer2D::BeginScene(OrthographicCamera& camera)
 	{
 		s_Data->shader->Bind();
-		//s_Data->VBO->Bind();
-		//s_Data->EBO->Bind();
 		s_Data->VAO->Bind();
 		s_Data->shader->SetUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
