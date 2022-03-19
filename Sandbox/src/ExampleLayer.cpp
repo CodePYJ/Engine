@@ -7,11 +7,13 @@
 #include <glm/gtc/type_ptr.hpp>
 
 unsigned int obj1;
+unsigned int obj2;
 
 ExampleLayer::ExampleLayer()
 	:Layer("Example"),  CameraController(16.0f/ 9.0f)
 {
 	obj1 = EE::Renderer2D::CreatObj("D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/test.shader");
+	obj2 = EE::Renderer2D::CreatObj("D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/test2.shader");
 }
 
 ExampleLayer::~ExampleLayer()
@@ -27,12 +29,14 @@ void ExampleLayer::OnUpdate(EE::Timestep timestep)
 
 	renderer.Clear();
 
+	//object
 	EE::Renderer2D::BeginScene(obj1, CameraController.GetCamera());
-	EE::Renderer2D::DrawQuad(glm::vec2(-0.25,-0.25), rotation, glm::vec2(0.25f, 0.25f), glm::vec4(0.25, 0.6, 0.8, 1.0));
-	//EE::Renderer2D::DrawQuad(glm::vec2(0.25, 0.25), rotation, glm::vec2(1.0f, 1.0f), glm::vec4(color[0], color[1], color[2], color[3]));
+	EE::Renderer2D::DrawQuad2U(glm::vec2(-0.25,-0.25), rotation, glm::vec2(0.25f, 0.25f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0.8, 0.6, 0.8, 1.0));
 	EE::Renderer2D::EndScene();
-
-
+	//light
+	EE::Renderer2D::BeginScene(obj2, CameraController.GetCamera());
+	EE::Renderer2D::DrawQuad(glm::vec2(0.25, 0.25), rotation, glm::vec2(0.25f, 0.25f), glm::vec4(0.8, 0.6, 0.8, 1.0));
+	EE::Renderer2D::EndScene();
 }
 
 void ExampleLayer::OnEvent(EE::Event& event)

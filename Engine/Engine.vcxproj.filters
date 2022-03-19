@@ -1441,4 +1441,7 @@
     <ClCompile Include="src\Engine\Platform\Windows\WinInput.cpp" />
     <ClCompile Include="src\Engine\Renderer\RenderObj.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\test2.shader" />
+  </ItemGroup>
 </Project>

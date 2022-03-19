@@ -15,6 +15,7 @@ namespace EE {
 		static void EndScene();
 
 		// Primitives
+		static void DrawQuad2U(const glm::vec2& position, const float& rotation, const glm::vec2& size, const glm::vec4& lightColor , const glm::vec4& objectColor);
 		static void DrawQuad(const glm::vec2& position, const float& rotation, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const float& rotation, const glm::vec2& size, const glm::vec4& color);
 

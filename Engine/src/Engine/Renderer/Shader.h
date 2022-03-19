@@ -23,6 +23,7 @@ namespace EE {
 		void Unbind();
 
 		void SetUniform1i(const std::string& name, int value);
+		void SetUniform3f(const std::string& name, const glm::vec3& value);
 		void SetUniform4f(const std::string& name, const glm::vec4& value);
 		void SetUniformMat4(const std::string& name, glm::mat4& mat4);
 

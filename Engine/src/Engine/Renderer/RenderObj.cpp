@@ -10,10 +10,10 @@ namespace EE {
 		VAO->Bind();
 
 		float vertices[] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f,
-			0.5f, 0.5f, 0.0f
+			-0.5f, -0.5f, 0.0f, -1.0f, -1.0f, 0.0f,
+			0.5f, -0.5f, 0.0f, 1.0f, -1.0f, 0.0f,
+			-0.5f,  0.5f, 0.0f, -1.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f
 		};
 
 		unsigned int indices[] = {
@@ -22,6 +22,7 @@ namespace EE {
 		};
 
 		VBO = std::make_unique<EE::VertexBuffer>(vertices, sizeof(vertices));
+		layout.PushFloat(3);
 		layout.PushFloat(3);
 
 		EBO = std::make_unique<EE::IndexBuffer>(indices, 6);
