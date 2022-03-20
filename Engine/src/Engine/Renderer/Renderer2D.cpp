@@ -14,10 +14,11 @@ namespace EE {
 	std::vector<RenderObj*> Renderer2D::RenderObjs;
 	int Renderer2D::LatestObjID = -1;
 
-	unsigned int Renderer2D::CreatObj(std::string path)
+	unsigned int Renderer2D::CreatObj(float vers[36],std::string path)
 	{
-		RenderObjs.emplace_back(new RenderObj(path));
+		RenderObjs.emplace_back(new RenderObj(vers, path));
 		LatestObjID++;
+		EE_TRACE(LatestObjID);
 		return LatestObjID;
 	}
 
@@ -41,33 +42,26 @@ namespace EE {
 		currentObj->shader->Unbind();
 	}
 
+	RenderObj* Renderer2D::GetObj(unsigned int objID)
+	{
+		return RenderObjs[objID];
+	}
+
+
 	// Primitives
-	void Renderer2D::DrawQuad(const glm::vec2& position, const float& rotation, const glm::vec2& size, const glm::vec4& color)
-	{
-		DrawQuad(glm::vec3(position, 0.0f), rotation, size, color);
-	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const float& rotation, const glm::vec2& size, const glm::vec4& color)
+	void Renderer2D::DrawQuad(glm::vec3 lightPos)
 	{
-		//currentObj->shader->SetUniform4f("u_Color", color);
 		glm::mat4 transform;
-		transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, position.z));
-		transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0, 0.0, 1.0))
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		transform = glm::translate(glm::mat4(1.0f), currentObj->GetPosition());
+		transform = glm::rotate(transform, glm::radians(currentObj->GetRotation()), glm::vec3(0.0, 0.0, 1.0))
+			* glm::scale(glm::mat4(1.0f), currentObj->GetSize());
 		currentObj->shader->SetUniformMat4("transform", transform);
+		currentObj->shader->SetUniform4f("lightColor", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		if (!currentObj->isLight()) {
+			currentObj->shader->SetUniform4f("objectColor", currentObj->GetColor());
+			currentObj->shader->SetUniform3f("lightPos", lightPos);
+		}
 		glDrawElements(GL_TRIANGLES, currentObj->EBO->GetCount(), GL_UNSIGNED_INT, nullptr);//为什么通过VAO获取EBO画不出来
-	}
-
-	void Renderer2D::DrawQuad2U(const glm::vec2& position, const float& rotation, const glm::vec2& size, const glm::vec4& lightColor, const glm::vec4& objectColor)
-	{
-		currentObj->shader->SetUniform4f("lightColor", lightColor);
-		currentObj->shader->SetUniform4f("objectColor", objectColor);
-		currentObj->shader->SetUniform3f("lightPos", { 0.25, 0.25, 0.0 });
-		glm::mat4 transform;
-		transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f));
-		transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0, 0.0, 1.0))
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		currentObj->shader->SetUniformMat4("transform", transform);
-		glDrawElements(GL_TRIANGLES, currentObj->EBO->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }

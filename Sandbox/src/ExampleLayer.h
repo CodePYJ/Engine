@@ -4,7 +4,14 @@
 #include "Engine/Renderer/Camera.h"
 #include "Engine/Events/KeyEvent.h"
 #include "Engine/Renderer/CameraController.h"
+#include "Engine/Renderer/RenderObj.h"
 
+struct ObjVector
+{
+	std::string name;
+	bool is_selected = false;
+	int objID;
+};
 
 class ExampleLayer : public EE::Layer
 {
@@ -18,6 +25,7 @@ public:
 private:
 	void OnKeyPressedEvent(EE::KeyPressedEvent event);
 	void OnMouseMovedEvent(EE::Event& event);
+	void Reset();
 
 private:
 	EE::Renderer renderer;
@@ -25,7 +33,23 @@ private:
 	EE::OrthCameraController CameraController;
 
 	glm::mat4 transform;
-	float tran[2] = {0.0f, 0.0f};
+	float pos[3] = {0.0f, 0.0f, 0.0f};
 	float tranX = 0.0f, tranY = 0.0f, rotation = 0.0f;
 	float color[4] = {0.2f, 0.2f, 0.8f, 1.0f};
+	std::vector<std::string> objNames;
+	float size[2] = {1.0f, 1.0f};
+
+	std::string shaderPath[2] = { "D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/light.shader",
+													 "D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/obj.shader" };
+	int currentShader = 0;
+	float vertices2D[36] = {
+		-0.5f, -0.5f, 0.0f,  0.8f, 0.8f, 0.8f,  -1.0f, -1.0f, 0.0f,
+		0.5f, -0.5f, 0.0f,   0.8f, 0.8f, 0.8f,	1.0f, -1.0f, 0.0f,
+		-0.5f, 0.5f, 0.0f,   0.8f, 0.8f, 0.8f,	-1.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f,     0.8f, 0.8f, 0.8f,	1.0f, 1.0f, 0.0f
+	};
+	glm::vec3 lightPos;
+
+	EE::RenderObj* selectedObj = nullptr;
+	int lastID = -1;
 };

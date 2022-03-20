@@ -2,7 +2,8 @@
 #version 330 core
 
 layout(location = 0) in vec3 aPos;
-layout(location = 1) in vec3 aNormal;
+layout(location = 1) in vec3 aColor;
+layout(location = 2) in vec3 aNormal;
 
 uniform mat4 transform;
 uniform mat4 u_ViewProjection;
@@ -31,7 +32,7 @@ uniform vec3 lightPos;
 
 void main()
 {
-    float ambientStrength = 0.1;
+    float ambientStrength = 0.8;
     vec4 ambient = ambientStrength * lightColor;
     
     vec3 norm = normalize(Normal);
@@ -39,6 +40,7 @@ void main()
     float diff = max(dot(norm, lightDir), 0.0);
     vec4 diffuse = diff * lightColor;
 
-    vec4 result = (diffuse+ambient) * objectColor;
+    vec4 result = (diffuse + ambient) * objectColor;
+    //vec4 result = ambient;
     FragColor = result;
 }
