@@ -43,10 +43,10 @@ private:
 													 "D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/obj.shader" };
 	int currentShader = 0;
 	float vertices2D[36] = {
-		-0.5f, -0.5f, 0.0f,  0.8f, 0.8f, 0.8f,  -1.0f, -1.0f, 0.0f,
-		0.5f, -0.5f, 0.0f,   0.8f, 0.8f, 0.8f,	1.0f, -1.0f, 0.0f,
-		-0.5f, 0.5f, 0.0f,   0.8f, 0.8f, 0.8f,	-1.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f,     0.8f, 0.8f, 0.8f,	1.0f, 1.0f, 0.0f
+		-0.2f, -0.2f, 0.0f,  0.8f, 0.8f, 0.8f,  -1.0f, -1.0f, 1.0f,
+		0.2f, -0.2f, 0.0f,   0.8f, 0.8f, 0.8f,	1.0f, -1.0f, 1.0f,
+		-0.2f, 0.2f, 0.0f,   0.8f, 0.8f, 0.8f,	-1.0f, 1.0f, 1.0f,
+		0.2f, 0.2f, 0.0f,     0.8f, 0.8f, 0.8f,	1.0f, 1.0f, 1.0f
 	};
 	glm::vec3 lightPos;
 
