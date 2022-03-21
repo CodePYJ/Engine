@@ -30,10 +30,13 @@ namespace EE {
 
 	void Renderer2D::BeginScene(unsigned int objID, OrthographicCamera& camera)
 	{
+
 		currentObj = RenderObjs[objID];
 		currentObj->VAO->Bind();
 		currentObj->shader->Bind();
 		currentObj->shader->SetUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		if(!currentObj->isLight())
+			currentObj->shader->SetUniformMat4("viewMatrix", camera.GetViewMatrix());
 	}
 
 	void Renderer2D::EndScene()

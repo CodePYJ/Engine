@@ -5,6 +5,7 @@
 #include "Engine/Events/KeyEvent.h"
 #include "Engine/Renderer/CameraController.h"
 #include "Engine/Renderer/RenderObj.h"
+#include "Engine/Renderer/Framebuffer.h"
 
 struct ObjVector
 {
@@ -26,11 +27,14 @@ private:
 	void OnKeyPressedEvent(EE::KeyPressedEvent event);
 	void OnMouseMovedEvent(EE::Event& event);
 	void Reset();
+	void CreatQuadImGui();
 
 private:
 	EE::Renderer renderer;
-	
+	EE::Framebuffer m_Framebuffer;
 	EE::OrthCameraController CameraController;
+
+	glm::vec2 viewportSize = {0.0f, 0.0f};
 
 	glm::mat4 transform;
 	float pos[3] = {0.0f, 0.0f, 0.0f};

@@ -28,15 +28,35 @@ namespace EE {
 		virtual std::string ToString() { std::string s; return s; };
 	};
 
+	class EventDispatcher2
+	{
+	public:
+		using EventCallbackFun = std::function<void(Event&)>;
+		//void subscribe(EventCategory eventCategory, EventCallbackFun callbackFun);
+		void subscribe(EventType eventType, EventCallbackFun callbackFun);
+		void post(Event& event);
+
+	private:
+		std::map<EventType, std::vector<EventCallbackFun>> observers;
+	};
+
 	class EventDispatcher
 	{
 	public:
 		using EventCallbackFun = std::function<void(Event&)>;
-		void subscribe(EventCategory eventCategory, EventCallbackFun callbackFun);
-		void post(Event& event);
+
+		EventDispatcher(Event& event)
+			: m_event(event) { }
+
+		template<typename T, typename F>
+		void Dispatch(const F& fun)
+		{
+			if (m_event.GetEventType() == T::GetStaticType())
+				fun(static_cast<T&>(m_event));
+		}
 
 	private:
-		std::map<EventCategory, std::vector<EventCallbackFun>> observers;
+		Event& m_event;
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, Event& e)

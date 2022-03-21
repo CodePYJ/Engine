@@ -13,25 +13,51 @@ namespace EE {
 	void OrthCameraController::OnUpdate(Timestep ts)
 	{
 		if (Input::IsKeyPressed(GE_KEY_A))
-			position.x += translationSpeed * ts.GetSecond();
-		if (Input::IsKeyPressed(GE_KEY_D))
 			position.x -= translationSpeed * ts.GetSecond();
-		if (Input::IsKeyPressed(GE_KEY_W)) {
-			zoomLevel -= 0.01;
-			zoomLevel = std::max(zoomLevel, 0.09f);
-			orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel);
-		}
-		if (Input::IsKeyPressed(GE_KEY_S)) {
-			zoomLevel += 0.01;
-			zoomLevel = std::min(zoomLevel, 9.0f);
-			orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel);
-		}
+		if (Input::IsKeyPressed(GE_KEY_D))
+			position.x += translationSpeed * ts.GetSecond();
+		if (Input::IsKeyPressed(GE_KEY_W))
+			position.y += translationSpeed * ts.GetSecond();
+		if (Input::IsKeyPressed(GE_KEY_S))
+			position.y -= translationSpeed * ts.GetSecond();
+
+		if (Input::IsKeyPressed(GE_KEY_Q))
+			rotation += rotationSpeed * ts.GetSecond();
+		if (Input::IsKeyPressed(GE_KEY_E))
+			rotation -= rotationSpeed * ts.GetSecond();
+
+		if (rotation > 180.0f)
+			rotation -= 360.0f;
+		else if (rotation <= -180.0f)
+			rotation += 360.0f;
 
 		orthCamera.SetPosition(position);
+		orthCamera.SetRotation(rotation);
 	}
 
-	void OrthCameraController::OnEvent()
+	void OrthCameraController::OnEvent(Event& e)
 	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<MouseScrollEvent>(std::bind(&OrthCameraController::OnMouseScrolled, this, std::placeholders::_1));
+		dispatcher.Dispatch<WindowResizeEvent>(std::bind(&OrthCameraController::OnWindowResized, this, std::placeholders::_1));
+	}
 
+	void OrthCameraController::OnResize(float w, float h)
+	{
+		m_aspectRatio = w / h;
+		orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel);
+	}
+
+
+	void OrthCameraController::OnMouseScrolled(MouseScrollEvent& e)
+	{
+		zoomLevel -= e.GetYOffset() * 0.25f;
+		zoomLevel = std::max(zoomLevel, 0.25f);
+		orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel);
+	}
+
+	void OrthCameraController::OnWindowResized(WindowResizeEvent& e)
+	{
+		OnResize((float)e.GetWidth(), (float)e.GetHeight());
 	}
 }

@@ -7,12 +7,13 @@ namespace EE {
 	class EE_API MouseMovedEvent : public Event
 	{
 	public:
-		MouseMovedEvent(int x, int y)
+		MouseMovedEvent(float x, float y)
 			:m_x(x), m_y(y) { }
 
-		inline int GetX() { return m_x; }
-		inline int GetY() { return m_y; }
+		inline float GetX() { return m_x; }
+		inline float GetY() { return m_y; }
 
+		static EventType GetStaticType() { return EventType::MouseMoved; }
 		virtual EventType GetEventType() { return EventType::MouseMoved; }
 		virtual EventCategory GetEventCategory() { return EventCategory::MouseButton; }
 
@@ -23,16 +24,32 @@ namespace EE {
 			return ss.str();
 		}
 	private:
-		int m_x, m_y;
+		float m_x, m_y;
 	};
 
 	class EE_API MouseScrollEvent : public Event
 	{
 	public:
-		MouseScrollEvent() = default;
+		MouseScrollEvent(const float x, const float y)
+			:offectX(x), offectY(y) { }
+
+		float GetXOffset() const { return offectX; }
+		float GetYOffset() const { return offectY; }
+
+		std::string ToString() override
+		{
+			std::stringstream ss;
+			ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
+			return ss.str();
+		}
+
 
 		virtual EventCategory GetEventCategory() { return EventCategory::MouseButton; }
+		static EventType GetStaticType() { return EventType::MouseScrolled; }
 		virtual EventType GetEventType() { return EventType::MouseScrolled; }
+
+	private:
+		float offectX, offectY;
 	};
 
 	class EE_API MouseButtonEvent : public Event
@@ -53,6 +70,7 @@ namespace EE {
 		MouseButtonPressedEvent(int button)
 			:MouseButtonEvent(button) { }
 
+		static EventType GetStaticType() { return EventType::MouseButtonPressed; }
 		virtual EventType GetEventType() { return EventType::MouseButtonPressed; }
 
 		std::string ToString() override
@@ -69,6 +87,7 @@ namespace EE {
 		MouseButtonReleasedEvent(int button)
 			:MouseButtonEvent(button) { }
 
+		static EventType GetStaticType() { return EventType::MouseButtonReleased; }
 		virtual EventType GetEventType() { return EventType::MouseButtonReleased; }
 
 		std::string ToString() override

@@ -8,7 +8,6 @@ layout(location = 2) in vec3 aNormal;
 uniform mat4 transform;
 uniform mat4 u_ViewProjection;
 
-
 void main()
 {
     gl_Position = u_ViewProjection * transform * vec4(aPos, 1.0);

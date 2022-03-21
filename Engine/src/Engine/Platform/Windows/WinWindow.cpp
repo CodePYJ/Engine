@@ -108,15 +108,15 @@ namespace EE {
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				//MouseScrolledEvent event((float)xOffset, (float)yOffset);
-				//data.callbackfun(event);
+				MouseScrollEvent event((float)xOffset, (float)yOffset);
+				data.callbackfun(event);
 			});
 
 		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				MouseMovedEvent event((int)xPos, (int)yPos);
+				MouseMovedEvent event((float)xPos, (float)yPos);
 				data.callbackfun(event);
 			});
 	}

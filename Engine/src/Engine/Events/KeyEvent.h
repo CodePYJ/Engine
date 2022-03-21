@@ -11,7 +11,7 @@ namespace EE {
 			:m_keyCode(keyCode) { }
 		
 		int GetKeyCode() { return m_keyCode; }
-
+		
 	private:
 		int m_keyCode;
 	};
@@ -23,6 +23,7 @@ namespace EE {
 			:KeyEvent(keyCode), m_repeatCount(repeatCount) { }
 
 		virtual EventType GetEventType() { return EventType::KeyPressed; }
+		static EventType GetStaticType() { return EventType::KeyPressed; }
 		virtual EventCategory GetEventCategory() { return EventCategory::Keyboard; }
 
 		std::string ToString() override
@@ -42,6 +43,7 @@ namespace EE {
 			:KeyEvent(keyCode) { }
 
 		virtual EventType GetEventType() { return EventType::KeyReleased; }
+		static EventType GetStaticType() { return EventType::KeyReleased; }
 		virtual EventCategory GetEventCategory() { return EventCategory::Keyboard; }
 
 		std::string ToString() override

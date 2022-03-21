@@ -31,7 +31,6 @@ namespace EE {
 
 	private:
 		std::unique_ptr<Window> m_Window;
-		EventDispatcher dispatcher;
 		LayerStack m_layerstack;
 		bool m_Running = true;
 		float m_LastFrameTime;

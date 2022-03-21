@@ -3,21 +3,27 @@
 
 namespace EE {
 
-	void EventDispatcher::subscribe(EventCategory eventCategory, EventCallbackFun callbackFun)
+	//void EventDispatcher::subscribe(EventCategory eventCategory, EventCallbackFun callbackFun)
+	//{
+	//	observers[eventCategory].push_back(callbackFun);
+	//}
+
+	void EventDispatcher2::subscribe(EventType eventType, EventCallbackFun callbackFun)
 	{
-		observers[eventCategory].push_back(callbackFun);
+		observers[eventType].push_back(callbackFun);
 	}
 
-	void EventDispatcher::post(Event& event)
+	void EventDispatcher2::post(Event& event)
 	{
-		EventCategory cat = event.GetEventCategory();
+		EventType type = event.GetEventType();
 
-		if (observers.find(cat) == observers.end())
+		if (observers.find(type) == observers.end())
 			return;
 
-		std::vector<EventCallbackFun> callbackFuns = observers.at(cat);
-		for (EventCallbackFun fun : callbackFuns)
+		std::vector<EventCallbackFun> funs = observers.at(type);
+		for (EventCallbackFun fun : funs) {
 			fun(event);
+		}
 	}
 
 }

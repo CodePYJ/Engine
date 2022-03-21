@@ -1383,6 +1383,7 @@
     <ClInclude Include="src\Engine\Platform\Windows\WinInput.h" />
     <ClInclude Include="src\Engine\Core\KeyCode.h" />
     <ClInclude Include="src\Engine\Renderer\RenderObj.h" />
+    <ClInclude Include="src\Engine\Renderer\Framebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Core\Application.cpp">
@@ -1440,6 +1441,7 @@
     <ClCompile Include="src\Engine\Renderer\CameraController.cpp" />
     <ClCompile Include="src\Engine\Platform\Windows\WinInput.cpp" />
     <ClCompile Include="src\Engine\Renderer\RenderObj.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Framebuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\light.shader" />

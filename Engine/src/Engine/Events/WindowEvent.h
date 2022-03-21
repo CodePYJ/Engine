@@ -11,8 +11,12 @@ namespace EE {
 		WindowResizeEvent(unsigned int width, unsigned int height)
 			: m_width(width), m_height(height) { }
 
+		static EventType GetStaticType() { return EventType::WindowResize; }
 		virtual EventType GetEventType() { return EventType::WindowResize; }
 		virtual EventCategory GetEventCategory() { return EventCategory::Window; }
+
+		unsigned int GetWidth() { return m_width; }
+		unsigned int GetHeight() { return m_height; }
 
 		std::string ToString() override
 		{
@@ -30,6 +34,7 @@ namespace EE {
 	public:
 		WindowCloseEvent() = default;
 
+		static EventType GetStaticType() { return EventType::WindowClose; }
 		virtual EventType GetEventType() { return EventType::WindowClose; }
 		virtual EventCategory GetEventCategory() { return EventCategory::Window; }
 
