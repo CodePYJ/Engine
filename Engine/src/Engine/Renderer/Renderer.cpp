@@ -21,4 +21,9 @@ namespace EE {
 		ebo.Bind();
 		glDrawElements(GL_TRIANGLES, ebo.GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
+
+	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
+	{
+		glViewport(0, 0, width, height);
+	}
 }

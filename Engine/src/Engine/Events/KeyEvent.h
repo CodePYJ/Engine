@@ -24,7 +24,7 @@ namespace EE {
 
 		virtual EventType GetEventType() { return EventType::KeyPressed; }
 		static EventType GetStaticType() { return EventType::KeyPressed; }
-		virtual EventCategory GetEventCategory() { return EventCategory::Keyboard; }
+		virtual int GetEventCategory() { return EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput; }
 
 		std::string ToString() override
 		{
@@ -44,7 +44,7 @@ namespace EE {
 
 		virtual EventType GetEventType() { return EventType::KeyReleased; }
 		static EventType GetStaticType() { return EventType::KeyReleased; }
-		virtual EventCategory GetEventCategory() { return EventCategory::Keyboard; }
+		virtual int GetEventCategory() { return EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput; }
 
 		std::string ToString() override
 		{

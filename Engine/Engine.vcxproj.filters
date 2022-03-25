@@ -1384,6 +1384,12 @@
     <ClInclude Include="src\Engine\Core\KeyCode.h" />
     <ClInclude Include="src\Engine\Renderer\RenderObj.h" />
     <ClInclude Include="src\Engine\Renderer\Framebuffer.h" />
+    <ClInclude Include="src\Engine\ECS\Entity.h" />
+    <ClInclude Include="src\Engine\ECS\ComponentArray.h" />
+    <ClInclude Include="src\Engine\ECS\ComponentManager.h" />
+    <ClInclude Include="src\Engine\ECS\System.h" />
+    <ClInclude Include="src\Engine\ECS\SystemManager.h" />
+    <ClInclude Include="src\Engine\ECS\Coordinator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Core\Application.cpp">
@@ -1442,6 +1448,11 @@
     <ClCompile Include="src\Engine\Platform\Windows\WinInput.cpp" />
     <ClCompile Include="src\Engine\Renderer\RenderObj.cpp" />
     <ClCompile Include="src\Engine\Renderer\Framebuffer.cpp" />
+    <ClCompile Include="src\Engine\ECS\Entity.cpp" />
+    <ClCompile Include="src\Engine\ECS\ComponentArray.cpp" />
+    <ClCompile Include="src\Engine\ECS\ComponentManager.cpp" />
+    <ClCompile Include="src\Engine\ECS\SystemManager.cpp" />
+    <ClCompile Include="src\Engine\ECS\Coordinator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\light.shader" />

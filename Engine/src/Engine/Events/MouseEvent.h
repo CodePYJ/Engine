@@ -15,7 +15,7 @@ namespace EE {
 
 		static EventType GetStaticType() { return EventType::MouseMoved; }
 		virtual EventType GetEventType() { return EventType::MouseMoved; }
-		virtual EventCategory GetEventCategory() { return EventCategory::MouseButton; }
+		virtual int GetEventCategory() { return EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput; }
 
 		std::string ToString() override
 		{
@@ -44,7 +44,7 @@ namespace EE {
 		}
 
 
-		virtual EventCategory GetEventCategory() { return EventCategory::MouseButton; }
+		virtual int GetEventCategory() { return EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput; }
 		static EventType GetStaticType() { return EventType::MouseScrolled; }
 		virtual EventType GetEventType() { return EventType::MouseScrolled; }
 
@@ -58,7 +58,7 @@ namespace EE {
 		MouseButtonEvent(int button)
 			:m_button(button) { }
 
-		virtual EventCategory GetEventCategory() { return EventCategory::MouseButton; }
+		virtual int GetEventCategory() { return EventCategory::EventCategoryMouseButton | EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput; }
 
 	protected:
 		int m_button;

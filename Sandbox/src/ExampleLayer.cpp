@@ -23,8 +23,8 @@ ExampleLayer::~ExampleLayer()
 void ExampleLayer::OnUpdate(EE::Timestep timestep)
 	{
 	//EE_TRACE(timestep.GetSecond());
-
-	CameraController.OnUpdate(timestep);
+	if (m_ViewportFocused)
+		CameraController.OnUpdate(timestep);
 	m_Framebuffer.Bind();
 	renderer.Clear();
 	for (int objID = 0; objID <= EE::Renderer2D::LatestObjID; objID++)
@@ -118,6 +118,11 @@ void ExampleLayer::OnImGuiRender()
 		CreatQuadImGui();
 
 		ImGui::Begin("viewport");
+
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		EE::Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+
 		ImVec2 temViewportSzie = ImGui::GetContentRegionAvail();
 		if (viewportSize != *((glm::vec2*)&temViewportSzie)) {
 			viewportSize = { temViewportSzie.x, temViewportSzie.y };

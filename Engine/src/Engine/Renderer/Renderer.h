@@ -14,6 +14,7 @@ namespace EE {
 		Renderer();
 		void Clear();
 		void Draw(VertexArray& vao, IndexBuffer& ebo, Shader& shader);
+		static void OnWindowResize(uint32_t width, uint32_t height);
 	};
 }
 

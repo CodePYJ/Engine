@@ -56,4 +56,6 @@ private:
 
 	EE::RenderObj* selectedObj = nullptr;
 	int lastID = -1;
+
+	bool m_ViewportFocused = false, m_ViewportHovered = false;
 };

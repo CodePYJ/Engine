@@ -18,7 +18,7 @@ namespace EE {
 		virtual void OnUpdate(Timestep timestep) {  }
 		virtual void OnImGuiRender() {  }
 		virtual void OnEvent(Event& event) {  }
-
+		virtual std::string GetName() { return layerName; }
 	protected:
 		std::string layerName;
 	};

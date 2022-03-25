@@ -16,16 +16,36 @@ namespace EE {
 
 	void LayerStack::PushLayer(Layer* layer)
 	{
-		m_layers.emplace_back(layer);
+		m_layers.emplace(m_layers.begin() + m_LayerInsertIndex, layer);
+		m_LayerInsertIndex++;
 		layer->OnAttach();
 	}
 
 	void LayerStack::PopLayer(Layer* layer)
 	{
-		auto it = std::find(m_layers.begin(), m_layers.end(), layer);
-		if (it != m_layers.end())
+		auto it = std::find(m_layers.begin(), m_layers.begin() + m_LayerInsertIndex, layer);
+		if (it != m_layers.begin() + m_LayerInsertIndex) {
 			m_layers.erase(it);
-		layer->OnDetach();
+			layer->OnDetach();
+			m_LayerInsertIndex--;
+		}
 	}
+
+	void LayerStack::PushOverlay(Layer* layer)
+	{
+		m_layers.emplace_back(layer);
+		layer->OnAttach();
+	}
+
+	void LayerStack::PopOverlay(Layer* overlay)
+	{
+		auto it = std::find(m_layers.begin() + m_LayerInsertIndex, m_layers.end(), overlay);
+		if (it != m_layers.end())
+		{
+			overlay->OnDetach();
+			m_layers.erase(it);
+		}
+	}
+
 }
 

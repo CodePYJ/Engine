@@ -100,6 +100,12 @@
     <ClInclude Include="src\Engine\Core\Log.h" />
     <ClInclude Include="src\Engine\Core\Timestep.h" />
     <ClInclude Include="src\Engine\Core\Window.h" />
+    <ClInclude Include="src\Engine\ECS\ComponentArray.h" />
+    <ClInclude Include="src\Engine\ECS\ComponentManager.h" />
+    <ClInclude Include="src\Engine\ECS\Coordinator.h" />
+    <ClInclude Include="src\Engine\ECS\Entity.h" />
+    <ClInclude Include="src\Engine\ECS\System.h" />
+    <ClInclude Include="src\Engine\ECS\SystemManager.h" />
     <ClInclude Include="src\Engine\EEpch.h" />
     <ClInclude Include="src\Engine\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Engine\Events\Event.h" />
@@ -544,6 +550,11 @@
     <ClCompile Include="src\Engine\Core\Layer.cpp" />
     <ClCompile Include="src\Engine\Core\LayerStack.cpp" />
     <ClCompile Include="src\Engine\Core\Log.cpp" />
+    <ClCompile Include="src\Engine\ECS\ComponentArray.cpp" />
+    <ClCompile Include="src\Engine\ECS\ComponentManager.cpp" />
+    <ClCompile Include="src\Engine\ECS\Coordinator.cpp" />
+    <ClCompile Include="src\Engine\ECS\Entity.cpp" />
+    <ClCompile Include="src\Engine\ECS\SystemManager.cpp" />
     <ClCompile Include="src\Engine\Events\Event.cpp" />
     <ClCompile Include="src\Engine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Engine\ImGui\ImGuiLayer.cpp" />

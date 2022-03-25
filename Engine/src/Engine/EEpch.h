@@ -9,6 +9,11 @@
 #include <map>
 #include <memory>
 #include <utility>
+#include <unordered_map>
+#include <cstdint>
+#include <bitset>
+#include <queue>
+#include <array>
 
 #include "Engine/Core/Log.h"
 

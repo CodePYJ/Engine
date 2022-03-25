@@ -14,18 +14,28 @@ namespace EE {
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
-	enum class EventCategory
+	enum EventCategory
 	{
 		None = 0,
-		Window, Keyboard, MouseButton
+		EventCategoryApplication = 0,
+		EventCategoryInput = 1<<1,
+		EventCategoryKeyboard = 1 << 2,
+		EventCategoryMouse = 1 << 3,
+		EventCategoryMouseButton = 1 << 4
 	};
 
 	class EE_API Event {
 	public:
 		virtual ~Event() = default;
 		virtual EventType GetEventType() = 0;
-		virtual EventCategory GetEventCategory() = 0;
+		virtual int GetEventCategory() = 0;
 		virtual std::string ToString() { std::string s; return s; };
+
+		bool IsInCategory(EventCategory category)
+		{
+			return GetEventCategory() & category;
+		}
+		bool Handled = false;
 	};
 
 	class EventDispatcher2

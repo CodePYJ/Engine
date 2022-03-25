@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Engine/Renderer/Renderer.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
@@ -13,7 +14,7 @@ namespace EE {
 		s_app = this;
 
 		m_ImGuiLayer = new ImGuiLayer();
-		PushLayer(m_ImGuiLayer);
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -43,11 +44,19 @@ namespace EE {
 
 	void Application::OnEvent(Event& event)
 	{
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
+		dispatcher.Dispatch<WindowResizeEvent>(std::bind(&Application::OnWindowResize, this, std::placeholders::_1));
 		if (EventType::WindowClose == event.GetEventType())
 			OnWindowClose(event);
 		//EE_TRACE(event.ToString());
 
-		for (auto it = m_layerstack.end(); it != m_layerstack.begin(); ) {
+		for (auto it = m_layerstack.end(); it != m_layerstack.begin();) {
+			//EE_TRACE((*(it-1))->GetName());
+			if (event.Handled) {
+				//EE_TRACE(event.Handled);
+				break;
+			}
 			(*--it)->OnEvent(event);
 		}
 	}
@@ -63,6 +72,16 @@ namespace EE {
 			m_Running = false;
 	}
 
+	void Application::OnWindowResize(WindowResizeEvent& e)
+	{
+
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+			m_Minimized = true;
+
+		m_Minimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+	}
+
 	void Application::PushLayer(Layer* layer)
 	{
 		m_layerstack.PushLayer(layer);
@@ -71,5 +90,15 @@ namespace EE {
 	void Application::PopLayer(Layer* layer)
 	{
 		m_layerstack.PopLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* layer)
+	{
+		m_layerstack.PushOverlay(layer);
+	}
+
+	void Application::PopOverlay(Layer* layer)
+	{
+		m_layerstack.PopOverlay(layer);
 	}
 }

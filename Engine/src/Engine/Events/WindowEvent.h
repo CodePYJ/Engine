@@ -13,7 +13,7 @@ namespace EE {
 
 		static EventType GetStaticType() { return EventType::WindowResize; }
 		virtual EventType GetEventType() { return EventType::WindowResize; }
-		virtual EventCategory GetEventCategory() { return EventCategory::Window; }
+		virtual int GetEventCategory() { return EventCategory::EventCategoryApplication; }
 
 		unsigned int GetWidth() { return m_width; }
 		unsigned int GetHeight() { return m_height; }
@@ -36,7 +36,7 @@ namespace EE {
 
 		static EventType GetStaticType() { return EventType::WindowClose; }
 		virtual EventType GetEventType() { return EventType::WindowClose; }
-		virtual EventCategory GetEventCategory() { return EventCategory::Window; }
+		virtual int GetEventCategory() { return EventCategory::EventCategoryApplication; }
 
 	};
 }

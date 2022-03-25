@@ -61,6 +61,16 @@ namespace EE {
 		ImGui::DestroyContext();
 	}
 
+	void ImGuiLayer::OnEvent(Event& event)
+	{
+		if (m_BlockEvents)
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			event.Handled |= event.IsInCategory(EventCategory::EventCategoryMouse) & io.WantCaptureMouse;
+			event.Handled |= event.IsInCategory(EventCategory::EventCategoryKeyboard) & io.WantCaptureKeyboard;
+		}
+	}
+
 	void ImGuiLayer::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
@@ -87,9 +97,9 @@ namespace EE {
 		}
 	}
 
-	//void ImGuiLayer::OnImGuiRender()
-	//{
-	//	static bool show = true;
-	//	ImGui::ShowDemoWindow(&show);
-	//}
+	void ImGuiLayer::OnImGuiRender()
+	{
+		//static bool show = true;
+		//ImGui::ShowDemoWindow(&show);
+	}
 }
