@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/EEpch.h";
+#include "Engine/EEpch.h"
 #include "Engine/Core/Core.h"
 #include <glm/glm.hpp>
 

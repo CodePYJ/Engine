@@ -1,53 +1,45 @@
-#include  <glad/glad.h>
-#include "Camera.h"
 #include "Renderer2D.h"
-#include "VertexArray.h"
-#include "Shader.h"
-#include "VertexBufferLayout.h"
-#include "IndexBuffer.h"
+#include  <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
 
 namespace EE {
 
-	RenderObj* Renderer2D::currentObj;
-	std::vector<RenderObj*> Renderer2D::RenderObjs;
-	int Renderer2D::LatestObjID = -1;
-
-	unsigned int Renderer2D::CreatObj(float vers[36],std::string path)
+	void Renderer2D::RendererInit(Renderer2DData* renderdata)
 	{
-		RenderObjs.emplace_back(new RenderObj(vers, path));
-		LatestObjID++;
-		EE_TRACE(LatestObjID);
-		return LatestObjID;
+		renderdata->VAO = std::make_unique<EE::VertexArray>();
+		renderdata->VAO->Bind();
+
+		renderdata->VBO = std::make_unique<EE::VertexBuffer>(renderdata->vertices, renderdata->verSize);
+		renderdata->layout.PushFloat(3);		//position
+		renderdata->layout.PushFloat(3);		//color
+		renderdata->layout.PushFloat(3);		//normal
+
+		renderdata->EBO = std::make_unique<EE::IndexBuffer>(renderdata->indices, renderdata->indCount);
+		renderdata->VAO->AddBuffer(*(renderdata->VBO), renderdata->layout);
+		renderdata->VAO->AddEBO(*(renderdata->EBO));
+
+		renderdata->shader = std::make_unique<EE::Shader>(renderdata->shaderPath);
+		renderdata->shader->Bind();
+		renderdata->shader->SetUniformMat4("transform", glm::mat4(1.0f));
 	}
 
 	void Renderer2D::Shutdown()
 	{
-		for (RenderObj* obj : RenderObjs)
-			delete obj;
+
 	}
 
-	void Renderer2D::BeginScene(unsigned int objID, OrthographicCamera& camera)
+	void Renderer2D::BeginScene(OrthographicCamera& camera)
 	{
 
-		currentObj = RenderObjs[objID];
-		currentObj->VAO->Bind();
-		currentObj->shader->Bind();
-		currentObj->shader->SetUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+	/*	currentObj->shader->SetUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 		if(!currentObj->isLight())
-			currentObj->shader->SetUniformMat4("viewMatrix", camera.GetViewMatrix());
+			currentObj->shader->SetUniformMat4("viewMatrix", camera.GetViewMatrix());*/
 	}
 
 	void Renderer2D::EndScene()
 	{
-		currentObj->VAO->Unbind();
-		currentObj->shader->Unbind();
-	}
 
-	RenderObj* Renderer2D::GetObj(unsigned int objID)
-	{
-		return RenderObjs[objID];
 	}
 
 
@@ -55,8 +47,8 @@ namespace EE {
 
 	void Renderer2D::DrawQuad(glm::vec3 lightPos)
 	{
-		glm::mat4 transform;
-		transform = glm::translate(glm::mat4(1.0f), currentObj->GetPosition());
+		//glm::mat4 transform;
+		/*transform = glm::translate(glm::mat4(1.0f), currentObj->GetPosition());
 		transform = glm::rotate(transform, glm::radians(currentObj->GetRotation()), glm::vec3(0.0, 0.0, 1.0))
 			* glm::scale(glm::mat4(1.0f), currentObj->GetSize());
 		currentObj->shader->SetUniformMat4("transform", transform);
@@ -64,7 +56,7 @@ namespace EE {
 		if (!currentObj->isLight()) {
 			currentObj->shader->SetUniform4f("objectColor", currentObj->GetColor());
 			currentObj->shader->SetUniform3f("lightPos", lightPos);
-		}
-		glDrawElements(GL_TRIANGLES, currentObj->EBO->GetCount(), GL_UNSIGNED_INT, nullptr);//为什么通过VAO获取EBO画不出来
+		}*/
+		//glDrawElements(GL_TRIANGLES, currentObj->EBO->GetCount(), GL_UNSIGNED_INT, nullptr);//为什么通过VAO获取EBO画不出来
 	}
 }

@@ -18,7 +18,7 @@ namespace EE {
 		Entity id = mAvailableEntities.front();
 		mAvailableEntities.pop();
 		++mLivingEntityCount;
-
+		mLivingEntities.push_back(id);
 		return id;
 	}
 
@@ -31,6 +31,12 @@ namespace EE {
 
 		// Put the destroyed ID at the back of the queue
 		mAvailableEntities.push(entity);
+
+		auto it = std::find(mLivingEntities.begin(), mLivingEntities.end(), entity);
+		if (it != mLivingEntities.end())
+		{
+			mLivingEntities.erase(it);
+		}
 		--mLivingEntityCount;
 	}
 

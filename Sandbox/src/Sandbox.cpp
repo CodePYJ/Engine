@@ -1,10 +1,11 @@
 #include "Sandbox.h"
 #include "ExampleLayer.h"
-
+#include "EditorLayer.h"
 
 Sandbox::Sandbox()
 {
-	PushLayer(new ExampleLayer());
+	//PushLayer(new ExampleLayer());
+	PushLayer(new EE::EditorLayer());
 }
 
 Sandbox::~Sandbox()

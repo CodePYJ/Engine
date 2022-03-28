@@ -22,6 +22,7 @@ ExampleLayer::~ExampleLayer()
 
 void ExampleLayer::OnUpdate(EE::Timestep timestep)
 	{
+	/*
 	//EE_TRACE(timestep.GetSecond());
 	if (m_ViewportFocused)
 		CameraController.OnUpdate(timestep);
@@ -36,6 +37,7 @@ void ExampleLayer::OnUpdate(EE::Timestep timestep)
 		EE::Renderer2D::EndScene();
 	}
 	m_Framebuffer.Unbind();
+	*/
 }
 
 void ExampleLayer::OnEvent(EE::Event& event)
@@ -45,6 +47,7 @@ void ExampleLayer::OnEvent(EE::Event& event)
 
 void ExampleLayer::OnImGuiRender()
 {
+	/*
 	if (selectedObj && lastID != item_current_objIndex) {
 		Reset();
 		lastID = item_current_objIndex;
@@ -149,14 +152,12 @@ void ExampleLayer::OnImGuiRender()
 		selectedObj->SetSize({ size[0], size[1], 1.0f });
 		selectedObj->SetRotation(rotation);
 	}
+	*/
 }
 
 void ExampleLayer::OnKeyPressedEvent(EE::KeyPressedEvent event)
 {
-	//switch (event.GetKeyCode())
-	//{
-	//	case:
-	//}
+
 }
 
 void ExampleLayer::OnMouseMovedEvent(EE::Event& event)
@@ -166,17 +167,18 @@ void ExampleLayer::OnMouseMovedEvent(EE::Event& event)
 
 void ExampleLayer::Reset()
 {
-	glm::vec3 temPos = selectedObj->GetPosition();
+	/*glm::vec3 temPos = selectedObj->GetPosition();
 	glm::vec4 temColor = selectedObj->GetColor();
 	glm::vec3 temSize = selectedObj->GetSize();
 	rotation = selectedObj->GetRotation();
 	pos[0] = temPos.x; pos[1] = temPos.y; pos[2] = temPos.z;
 	color[0] = temColor.x; color[1] = temColor.y; color[2] = temColor.z; color[3] = temColor.w;
-	size[0] = temSize.x; size[1] = temSize.y;
+	size[0] = temSize.x; size[1] = temSize.y;*/
 }
 
 void ExampleLayer::CreatQuadImGui()
 {
+	/*
 	ImGui::Begin("creatQuad");
 	ImGui::SliderFloat3("position", pos, -3.0f, 3.0f);
 	ImGui::SliderFloat("rotation", &rotation, 0.0f, 360.0f);
@@ -214,4 +216,5 @@ void ExampleLayer::CreatQuadImGui()
 			objNames.push_back("object");
 	}
 	ImGui::End();//creatQuad
+	*/
 }

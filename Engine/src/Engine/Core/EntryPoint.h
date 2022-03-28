@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Core.h"
+
 #ifdef ENGINE_PLATFORM_WINDOWS
 
 extern EE::Application* EE::CreateApplication();
