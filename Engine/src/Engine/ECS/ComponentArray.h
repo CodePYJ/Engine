@@ -56,6 +56,11 @@ namespace EE {
 			return mComponentArray[mEntityToIndexMap[entity]];
 		}
 
+		bool HasData(Entity entity)
+		{
+			return mEntityToIndexMap.find(entity) != mEntityToIndexMap.end();
+		}
+
 		void EntityDestroyed(Entity entity) override
 		{
 			if (mEntityToIndexMap.find(entity) != mEntityToIndexMap.end())

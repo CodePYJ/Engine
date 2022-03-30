@@ -105,6 +105,7 @@
     <ClInclude Include="src\Engine\ECS\Component\Components.h" />
     <ClInclude Include="src\Engine\ECS\Coordinator.h" />
     <ClInclude Include="src\Engine\ECS\Entity.h" />
+    <ClInclude Include="src\Engine\ECS\MsgEvent.h" />
     <ClInclude Include="src\Engine\ECS\System.h" />
     <ClInclude Include="src\Engine\ECS\SystemManager.h" />
     <ClInclude Include="src\Engine\ECS\System\CameraControlSystem.h" />
@@ -591,6 +592,7 @@
   <ItemGroup>
     <None Include="res\shaders\light.shader" />
     <None Include="res\shaders\obj.shader" />
+    <None Include="res\shaders\test.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

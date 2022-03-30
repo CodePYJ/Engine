@@ -11,10 +11,11 @@ namespace EE{
 	public:
 		void OnImGuiRender();
 		void DrawEntityNode();
+		void DrawComponents(Entity entity);
 		void SetActiveScene(std::shared_ptr<Scene> scene_ptr);
 
 	private:
-		Entity selectedEntity;
+		int selectedEntity = -1;		//Entity
 		std::shared_ptr<Scene> activeScene_ptr;
 	};
 }

@@ -4,7 +4,7 @@
 #include "Engine/Renderer/Framebuffer.h"
 #include <glm/glm.hpp>
 #include "Panels/SceneHierarchyPanel.h"
-
+#include "Engine/Renderer/Renderer.h"
 
 namespace EE {
 
@@ -21,6 +21,7 @@ namespace EE {
 		virtual void OnEvent(Event& event) override;
 
 	private:
+		EE::Renderer renderer;
 		EE::Framebuffer m_Framebuffer;
 		SceneHierarchyPanel sceneHierarchyPanel;
 		std::shared_ptr<Scene> mScene_ptr;

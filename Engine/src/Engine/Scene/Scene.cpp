@@ -1,4 +1,5 @@
 #include "Scene.h"
+//#include "Engine/Renderer/Renderer2D.h"
 #include "Engine/ECS/Component/Components.h"
 
 
@@ -19,6 +20,25 @@ namespace EE {
 		cameraControlSys_ptr = mCoo_ptr->RegisterSystem<CameraControlSystem>();
 		cameraControlSys_ptr->Init(mCoo_ptr.get());
 
+		Entity camera = CreateEntity();
+		AddComponent<CameraComponent>(camera,
+			{
+				std::make_shared<OrthCameraController>(16.0f / 9.0f),
+				glm::mat4(1.0f),
+				glm::mat4(1.0f)
+			});
+		AddComponent<TransformComponent>(camera,
+			{
+				glm::vec3(0.0f, 0.0f, 0.0f),
+				glm::vec3(0.0f, 0.0f, 0.0f),
+				glm::vec3(1.0f, 1.0f, 1.0f)
+			});
+		AddComponent<TagComponent>(camera,
+			{
+				"camera"
+			});
+		activeCamera = camera;
+		cameraControlSys_ptr->SetActiveCamera(camera);
 	}
 
 	Scene::~Scene()
@@ -38,28 +58,15 @@ namespace EE {
 		cameraControlSys_ptr->OnEvent(event);
 	}
 
-	void Scene::CreateEntity()
+	Entity Scene::CreateEntity()
 	{
 		Entity entity = mCoo_ptr->CreateEntity();
-		mCoo_ptr->AddComponent<TagComponent>(entity, {"entity"});
+		return entity;
 	}
 
 	void Scene::DestroyEntity(Entity entity)
 	{
 		mCoo_ptr->DestroyEntity(entity);
-	}
-
-	template<typename T>
-	void Scene::AddComponent(Entity entity, T component)
-	{
-		std::string typeName = typeid(T).name();
-		mCoo_ptr->AddComponent<T>(entity, component);
-		if (typename == "Renderable2D") {
-			Renderer2D::RendererInit(&(mCoo_ptr->GetComponent<T>(entity).data));
-		}
-		if (typename == "Camera") {
-			mCoo_ptr->GetComponent<T>(entity).cameraController = std::make_shared<OrthCameraController>(16.0f / 9.0f);
-		}
 	}
 
 }

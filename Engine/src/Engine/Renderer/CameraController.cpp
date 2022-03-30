@@ -5,7 +5,7 @@
 namespace EE {
 
 	OrthCameraController::OrthCameraController(float aspectRatio)
-		:m_aspectRatio(aspectRatio), orthCamera(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel)
+		:m_aspectRatio(aspectRatio), orthCamera(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel, m_near, m_far)
 	{
 
 	}
@@ -31,8 +31,8 @@ namespace EE {
 		else if (rotation <= -180.0f)
 			rotation += 360.0f;
 
-		orthCamera.SetPosition(position);
-		orthCamera.SetRotation(rotation);
+		//orthCamera.SetPosition(position);
+		//orthCamera.SetRotation(rotation);
 	}
 
 	void OrthCameraController::OnEvent(Event& e)
@@ -45,7 +45,7 @@ namespace EE {
 	void OrthCameraController::OnResize(float w, float h)
 	{
 		m_aspectRatio = w / h;
-		orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel);
+		orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel, m_near, m_far);
 	}
 
 
@@ -53,7 +53,7 @@ namespace EE {
 	{
 		zoomLevel -= e.GetYOffset() * 0.25f;
 		zoomLevel = std::max(zoomLevel, 0.25f);
-		orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel);
+		orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel, m_near, m_far);
 	}
 
 	void OrthCameraController::OnWindowResized(WindowResizeEvent& e)

@@ -9,7 +9,7 @@ namespace EE {
 	class EE_API OrthographicCamera
 	{
 	public:
-		OrthographicCamera(float left, float right, float bottom, float top);
+		OrthographicCamera(float left, float right, float bottom, float top, float m_near, float m_far);
 
 		glm::vec3 GetPosition() { return m_Position; }
 		void SetPosition(glm::vec3& position) { m_Position = position; CalculateViewMatrix(); }
@@ -17,7 +17,7 @@ namespace EE {
 		float GetRotation() { return m_Rotation; }
 		void SetRotation(float rotation) { m_Rotation = rotation; CalculateViewMatrix(); }
 
-		void SetProjectionMatrix(float left, float right, float bottom, float top);
+		void SetProjectionMatrix(float left, float right, float bottom, float top, float m_near, float m_far);
 		glm::mat4 GetProjectionMatrix() { return m_ProjectionMatrix; }
 		glm::mat4 GetViewMatrix() { return m_ViewMatrix; }
 		glm::mat4 GetViewProjectionMatrix() { return m_ViewProjectionMatrix; }

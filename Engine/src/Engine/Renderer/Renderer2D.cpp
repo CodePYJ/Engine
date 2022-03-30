@@ -5,7 +5,26 @@
 
 namespace EE {
 
-	void Renderer2D::RendererInit(Renderer2DData* renderdata)
+	Renderer2DData::Renderer2DData()
+	{
+		VAO = std::make_unique<EE::VertexArray>();
+		VAO->Bind();
+
+		VBO = std::make_unique<EE::VertexBuffer>(vertices, verSize);
+		layout.PushFloat(3);		//position
+		layout.PushFloat(3);		//color
+		layout.PushFloat(3);		//normal
+
+		EBO = std::make_unique<EE::IndexBuffer>(indices, indCount);
+		VAO->AddBuffer(*VBO, layout);
+		VAO->AddEBO(*EBO);
+
+		shader = std::make_unique<EE::Shader>(shaderPath);
+		shader->Bind();
+		shader->SetUniformMat4("transform", glm::mat4(1.0f));
+	}
+
+	void Renderer2D::RendererInit(std::shared_ptr<Renderer2DData> renderdata)
 	{
 		renderdata->VAO = std::make_unique<EE::VertexArray>();
 		renderdata->VAO->Bind();

@@ -22,16 +22,18 @@ namespace EE {
 	{
 		mScene_ptr = std::make_shared<Scene>();
 		sceneHierarchyPanel.SetActiveScene(mScene_ptr);
-
 	}
 
 	void EditorLayer::OnDetach()
 	{
 
 	}
+
 	void EditorLayer::OnUpdate(Timestep timestep)
 	{
-
+		m_Framebuffer.Bind();
+		mScene_ptr->OnUpdate(timestep);
+		m_Framebuffer.Unbind();
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -112,7 +114,8 @@ namespace EE {
 			if (viewportSize != *((glm::vec2*)&temViewportSzie)) {
 				viewportSize = { temViewportSzie.x, temViewportSzie.y };
 				m_Framebuffer.Resize(viewportSize.x, viewportSize.y);
-				//CameraController.OnResize(viewportSize.x, viewportSize.y);
+				if(mScene_ptr->GetCooptr()->HasComponent<CameraComponent>(mScene_ptr->GetActiveCamera()))
+					mScene_ptr->GetComponent<CameraComponent>(mScene_ptr->GetActiveCamera()).cameraController->OnResize(viewportSize.x, viewportSize.y);
 			}
 			unsigned int tex = m_Framebuffer.GetColorAttachmentID();
 			ImGui::Image((void*)tex, ImVec2{ viewportSize.x, viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
@@ -131,7 +134,7 @@ namespace EE {
 
 	void EditorLayer::OnEvent(Event& event)
 	{
-
+		mScene_ptr->OnEvent(event);
 	}
 
 }

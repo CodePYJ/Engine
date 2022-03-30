@@ -3,6 +3,7 @@
 #include "ComponentManager.h"
 #include "SystemManager.h"
 #include "Component/Components.h"
+#include "Engine/ECS/MsgEvent.h"
 
 
 namespace EE {
@@ -82,11 +83,16 @@ namespace EE {
 		}
 
 		template<typename T>
+		bool HasComponent(Entity entity)
+		{
+			return mComponentManager->HasComponent<T>(entity);
+		}
+
+		template<typename T>
 		std::shared_ptr<T> RegisterSystem()
 		{
 			return mSystemManager->RegisterSystem<T>();
 		}
-
 
 		template<typename T>
 		void SetSystemSignature(Signature signature)
@@ -94,6 +100,9 @@ namespace EE {
 			mSystemManager->SetSignature<T>(signature);
 		}
 
+
+
+		MsgEvent msgEvent;
 
 	private:
 		std::unique_ptr<ComponentManager> mComponentManager;

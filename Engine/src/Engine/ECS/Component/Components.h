@@ -18,9 +18,9 @@ namespace EE {
 
 	struct Renderable2DComponent
 	{
-		glm::vec3 color;
-
 		std::shared_ptr<Renderer2DData> data_ptr;
+		glm::vec3 color;
+		glm::mat4 ViewProjection;
 	};
 
 	struct ShaderComponent
@@ -30,11 +30,13 @@ namespace EE {
 
 	struct CameraComponent
 	{
+		std::shared_ptr<OrthCameraController> cameraController;
 		glm::mat4 view;
 		glm::mat4 projection;
-		std::shared_ptr<OrthCameraController> cameraController;
 	};
  
+
+
 	struct TagComponent
 	{
 		std::string tag;

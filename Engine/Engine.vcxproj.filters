@@ -1394,6 +1394,7 @@
     <ClInclude Include="src\Engine\ECS\Component\Components.h" />
     <ClInclude Include="src\Engine\Scene\Scene.h" />
     <ClInclude Include="src\Engine\ECS\System\CameraControlSystem.h" />
+    <ClInclude Include="src\Engine\ECS\MsgEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Core\Application.cpp">
@@ -1460,5 +1461,6 @@
   <ItemGroup>
     <None Include="res\shaders\light.shader" />
     <None Include="res\shaders\obj.shader" />
+    <None Include="res\shaders\test.shader" />
   </ItemGroup>
 </Project>

@@ -3,8 +3,8 @@
 
 namespace EE {
 
-	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
-		:m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -10.0f, 10.0f)), m_ViewMatrix(1.0f)
+	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float m_near, float m_far)
+		:m_ProjectionMatrix(glm::ortho(left, right, bottom, top, m_near, m_far)), m_ViewMatrix(1.0f)
 	{
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
@@ -17,9 +17,9 @@ namespace EE {
 		m_ViewProjectionMatrix = m_ProjectionMatrix  * m_ViewMatrix;
 	}
 
-	void OrthographicCamera::SetProjectionMatrix(float left, float right, float bottom, float top)
+	void OrthographicCamera::SetProjectionMatrix(float left, float right, float bottom, float top, float m_near, float m_far)
 	{
-		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -10.0f, 10.0f);
+		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, m_near, m_far);
 		CalculateViewMatrix();
 	}
 

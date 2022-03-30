@@ -31,13 +31,14 @@ namespace EE {
 
 			//glDrawArrays(GL_TRIANGLES, 0, 3);
 
-			for (Layer* layer : m_layerstack)
-				layer->OnUpdate(timestep);
-
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_layerstack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
+
+			for (Layer* layer : m_layerstack)
+				layer->OnUpdate(timestep);
+
 			OnUpdate();
 		}
 	}
