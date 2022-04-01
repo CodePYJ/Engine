@@ -1,3 +1,4 @@
+#include "Engine/EEpch.h"
 #include "RenderSystem.h"
 #include "../Component/Components.h"
 #include "../MsgEvent.h"
@@ -5,6 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 
 namespace EE {
 
@@ -32,13 +35,7 @@ namespace EE {
 			renderable.ViewProjection = SceneCoo_ptr->msgEvent.getMat4Msg(MsgType::CAMERA_MSG);
 
 			if (!playing) {
-				glm::mat4 transform;
-				transform = glm::translate(glm::mat4(1.0f), transData.position);
-				transform = glm::rotate(transform, glm::radians(transData.rotation.x), glm::vec3(1.0, 0.0, 0.0));
-				transform = glm::rotate(transform, glm::radians(transData.rotation.y), glm::vec3(0.0, 1.0, 0.0));
-				transform = glm::rotate(transform, glm::radians(transData.rotation.z), glm::vec3(0.0, 0.0, 1.0))
-					* glm::scale(glm::mat4(1.0f), transData.scale);
-				renderable.data_ptr->shader->SetUniformMat4("transform", transform);
+				renderable.data_ptr->shader->SetUniformMat4("transform", transData.GetTransform());
 				renderable.data_ptr->shader->SetUniform3f("u_color", renderable.color);
 				renderable.data_ptr->shader->SetUniformMat4("u_ViewProjection", renderable.ViewProjection);
 			}

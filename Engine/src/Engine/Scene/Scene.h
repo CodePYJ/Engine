@@ -51,12 +51,16 @@ namespace EE {
 		void SetAspectRatio(float w, float h) { viewPortAspectRatio = w / h; }
 		float GetAspectRatio() { return viewPortAspectRatio; }
 
+		Entity GetSelectedEntity() { return selectedEntity; }
+		void SetSelectedEntity(Entity entity) { selectedEntity = entity; }
+
 		Coordinator* GetCooptr() { return mCoo_ptr.get(); }
 
 	private:
 		std::unique_ptr<Coordinator> mCoo_ptr;		//一个Scene只有一个Coo
 		std::vector<Entity> entities;
 		Entity activeCamera = -1;
+		Entity selectedEntity = -1;
 		std::shared_ptr<RenderSystem> renderSys_ptr;
 		std::shared_ptr<CameraControlSystem> cameraControlSys_ptr;
 

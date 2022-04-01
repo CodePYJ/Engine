@@ -29,15 +29,13 @@ namespace EE {
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			//glDrawArrays(GL_TRIANGLES, 0, 3);
+			for (Layer* layer : m_layerstack)
+				layer->OnUpdate(timestep);
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_layerstack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
-
-			for (Layer* layer : m_layerstack)
-				layer->OnUpdate(timestep);
 
 			OnUpdate();
 		}

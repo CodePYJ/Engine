@@ -26,7 +26,7 @@ namespace EE {
 						glm::vec3(0.0f, 0.0f, 0.0f),
 						glm::vec3(1.0f, 1.0f, 1.0f)
 					});
-				selectedEntity = entity;
+				SetSelectedEntity(entity);
 			}
 			ImGui::EndPopup();
 		}
@@ -63,7 +63,7 @@ namespace EE {
 			bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tagComponent.tag.c_str());
 			if (ImGui::IsItemClicked())
 			{
-				selectedEntity = entity;
+				SetSelectedEntity(entity);
 			}
 
 			bool entityDeleted = false;
@@ -85,14 +85,12 @@ namespace EE {
 
 			if (entityDeleted)
 			{
-				if (activeScene_ptr->GetCooptr()->HasComponent<CameraComponent>(entity))
-					activeScene_ptr->SetActiveCamera(-1);
 				activeScene_ptr->DestroyEntity(entity);
 				if (selectedEntity == activeScene_ptr->GetActiveCamera())
-					activeScene_ptr->SetActiveCamera(513);
+					activeScene_ptr->SetActiveCamera(-1);
 
 				if (selectedEntity == entity)
-					selectedEntity = -1;
+					SetSelectedEntity(-1);
 			}
 		}//for
 	}

@@ -20,10 +20,10 @@ namespace EE {
 		if (Input::IsKeyPressed(GE_KEY_S))
 			m_position.y -= translationSpeed * ts.GetSecond();
 
-		if (Input::IsKeyPressed(GE_KEY_Q))
-			m_rotation += rotationSpeed * ts.GetSecond();
-		if (Input::IsKeyPressed(GE_KEY_E))
-			m_rotation -= rotationSpeed * ts.GetSecond();
+		//if (Input::IsKeyPressed(GE_KEY_Q))
+		//	m_rotation += rotationSpeed * ts.GetSecond();
+		//if (Input::IsKeyPressed(GE_KEY_E))
+		//	m_rotation -= rotationSpeed * ts.GetSecond();
 
 		if (m_rotation > 180.0f)
 			m_rotation -= 360.0f;

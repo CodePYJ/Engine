@@ -56,8 +56,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ENGINE_PLATFORM_WINDOWS;ENGINE_BUILD_DLL;GLFW_INCLUDE_NONE;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;ENGINE_PLATFORM_WINDOWS;ENGINE_BUILD_DLL;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -75,8 +75,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ENGINE_PLATFORM_WINDOWS;ENGINE_BUILD_DLL;GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;ENGINE_PLATFORM_WINDOWS;ENGINE_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -93,23 +93,23 @@
     <ClInclude Include="src\Engine\Core\Application.h" />
     <ClInclude Include="src\Engine\Core\Core.h" />
     <ClInclude Include="src\Engine\Core\EntryPoint.h" />
-    <ClInclude Include="src\Engine\Core\input.h" />
     <ClInclude Include="src\Engine\Core\KeyCode.h" />
     <ClInclude Include="src\Engine\Core\Layer.h" />
     <ClInclude Include="src\Engine\Core\LayerStack.h" />
     <ClInclude Include="src\Engine\Core\Log.h" />
     <ClInclude Include="src\Engine\Core\Timestep.h" />
     <ClInclude Include="src\Engine\Core\Window.h" />
+    <ClInclude Include="src\Engine\Core\input.h" />
+    <ClInclude Include="src\Engine\ECS\Component\Components.h" />
     <ClInclude Include="src\Engine\ECS\ComponentArray.h" />
     <ClInclude Include="src\Engine\ECS\ComponentManager.h" />
-    <ClInclude Include="src\Engine\ECS\Component\Components.h" />
     <ClInclude Include="src\Engine\ECS\Coordinator.h" />
     <ClInclude Include="src\Engine\ECS\Entity.h" />
     <ClInclude Include="src\Engine\ECS\MsgEvent.h" />
     <ClInclude Include="src\Engine\ECS\System.h" />
-    <ClInclude Include="src\Engine\ECS\SystemManager.h" />
     <ClInclude Include="src\Engine\ECS\System\CameraControlSystem.h" />
     <ClInclude Include="src\Engine\ECS\System\RenderSystem.h" />
+    <ClInclude Include="src\Engine\ECS\SystemManager.h" />
     <ClInclude Include="src\Engine\EEpch.h" />
     <ClInclude Include="src\Engine\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Engine\Events\Event.h" />
@@ -117,15 +117,16 @@
     <ClInclude Include="src\Engine\Events\MouseEvent.h" />
     <ClInclude Include="src\Engine\Events\WindowEvent.h" />
     <ClInclude Include="src\Engine\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Engine\Math\Math.h" />
     <ClInclude Include="src\Engine\Platform\Windows\WinInput.h" />
     <ClInclude Include="src\Engine\Platform\Windows\WinWindow.h" />
     <ClInclude Include="src\Engine\Renderer\Camera.h" />
     <ClInclude Include="src\Engine\Renderer\CameraController.h" />
     <ClInclude Include="src\Engine\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Engine\Renderer\IndexBuffer.h" />
+    <ClInclude Include="src\Engine\Renderer\RenderObj.h" />
     <ClInclude Include="src\Engine\Renderer\Renderer.h" />
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\Engine\Renderer\RenderObj.h" />
     <ClInclude Include="src\Engine\Renderer\Shader.h" />
     <ClInclude Include="src\Engine\Renderer\Texture.h" />
     <ClInclude Include="src\Engine\Renderer\VertexArray.h" />
@@ -133,6 +134,7 @@
     <ClInclude Include="src\Engine\Renderer\VertexBufferLayout.h" />
     <ClInclude Include="src\Engine\Renderer\mglad.h" />
     <ClInclude Include="src\Engine\Scene\Scene.h" />
+    <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_fixes.hpp" />
@@ -558,24 +560,27 @@
     <ClCompile Include="src\Engine\ECS\Entity.cpp" />
     <ClCompile Include="src\Engine\ECS\System\CameraControlSystem.cpp" />
     <ClCompile Include="src\Engine\ECS\System\RenderSystem.cpp" />
+    <ClCompile Include="src\Engine\EEpch.cpp" />
     <ClCompile Include="src\Engine\Events\Event.cpp" />
     <ClCompile Include="src\Engine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Engine\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Engine\Math\Math.cpp" />
     <ClCompile Include="src\Engine\Platform\Windows\WinInput.cpp" />
     <ClCompile Include="src\Engine\Platform\Windows\WinWindow.cpp" />
     <ClCompile Include="src\Engine\Renderer\Camera.cpp" />
     <ClCompile Include="src\Engine\Renderer\CameraController.cpp" />
     <ClCompile Include="src\Engine\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Engine\Renderer\IndexBuffer.cpp" />
+    <ClCompile Include="src\Engine\Renderer\RenderObj.cpp" />
     <ClCompile Include="src\Engine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
-    <ClCompile Include="src\Engine\Renderer\RenderObj.cpp" />
     <ClCompile Include="src\Engine\Renderer\Shader.cpp" />
     <ClCompile Include="src\Engine\Renderer\Texture.cpp" />
     <ClCompile Include="src\Engine\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Engine\Renderer\VertexBuffer.cpp" />
     <ClCompile Include="src\Engine\Renderer\VertexBufferLayout.cpp" />
     <ClCompile Include="src\Engine\Scene\Scene.cpp" />
+    <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -588,11 +593,6 @@
     <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\light.shader" />
-    <None Include="res\shaders\obj.shader" />
-    <None Include="res\shaders\test.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

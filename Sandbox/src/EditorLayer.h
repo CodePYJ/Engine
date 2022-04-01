@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include "Panels/SceneHierarchyPanel.h"
 #include "Engine/Renderer/Renderer.h"
+#include "Engine/Events/KeyEvent.h"
+
 
 namespace EE {
 
@@ -20,6 +22,7 @@ namespace EE {
 		virtual void OnImGuiRender() override;
 		virtual void OnEvent(Event& event) override;
 
+		void OnKeyPressed(KeyPressedEvent& e);
 	private:
 		EE::Renderer renderer;
 		EE::Framebuffer m_Framebuffer;
@@ -27,6 +30,8 @@ namespace EE {
 		std::shared_ptr<Scene> mScene_ptr;
 		glm::vec2 viewportSize = { 0.0f, 0.0f };
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
+
+		int m_GizmoType = -1;
 
 	};
 }

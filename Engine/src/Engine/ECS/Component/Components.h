@@ -2,6 +2,10 @@
 
 #include "Engine/EEpch.h"
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 
 #include "Engine/Renderer/Renderer2D.h"
 #include "Engine/Renderer/CameraController.h"
@@ -14,6 +18,18 @@ namespace EE {
 		glm::vec3 position;
 		glm::vec3 rotation;
 		glm::vec3 scale;
+
+		glm::mat4 GetTransform() {
+			glm::mat4 transform;
+			glm::vec3 rot;
+			rot.x = glm::radians(rotation.x);
+			rot.y = glm::radians(rotation.y);
+			rot.z = glm::radians(rotation.z);
+			transform = glm::translate(glm::mat4(1.0f), position);
+			transform *= glm::toMat4(glm::quat(rot));
+			transform *= glm::scale(glm::mat4(1.0f), scale);
+			return transform;
+		}
 	};
 
 	struct Renderable2DComponent

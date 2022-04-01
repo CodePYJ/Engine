@@ -23,10 +23,10 @@ namespace EE {
 		VertexBufferLayout layout;
 
 		float vertices[36] = {
-			-0.2f, -0.2f, 0.0f,  0.8f, 0.8f, 0.0f,  -1.0f, -1.0f, 1.0f,
-			0.2f, -0.2f, 0.0f,   0.8f, 0.8f, 0.0f,	1.0f, -1.0f, 1.0f,
-			-0.2f, 0.2f, 0.0f,   0.8f, 0.8f, 0.0f,	-1.0f, 1.0f, 1.0f,
-			0.2f, 0.2f, 0.0f,     0.8f, 0.8f, 0.0f,	1.0f, 1.0f, 1.0f
+			-0.2f, -0.2f, -0.1f,  0.8f, 0.2f, 0.0f,  -1.0f, -1.0f, 1.0f,
+			0.2f, -0.2f, -0.1f,   0.8f, 0.8f, 0.0f,	1.0f, -1.0f, 1.0f,
+			-0.2f, 0.2f, -0.1f,   0.2f, 0.8f, 0.0f,	-1.0f, 1.0f, 1.0f,
+			0.2f, 0.2f, -0.1f,     0.8f, 0.2f, 0.0f,	1.0f, 1.0f, 1.0f
 		};
 		unsigned int verSize = 36 * sizeof(float);
 		unsigned int indices[6] = {

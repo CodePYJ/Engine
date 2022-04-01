@@ -24,8 +24,6 @@ namespace EE {
 			camera.cameraController->OnUpdate(ts);
 			trans.position = camera.cameraController->GetPosition();
 			trans.rotation.z = camera.cameraController->GetRotation();
-			//camera.cameraController->GetCamera().SetPosition(trans.position);
-			//camera.cameraController->GetCamera().SetRotation(trans.rotation.z);
 
 			SceneCoo_ptr->msgEvent.SetMat4Msg(MsgType::CAMERA_MSG, camera.cameraController->GetCamera().GetViewProjectionMatrix());
 		}

@@ -15,6 +15,7 @@ IncludeDir["Glad"] = "Engine/vendor/Glad/include"
 IncludeDir["ImGui"] = "Engine/vendor/imgui"
 IncludeDir["glm"] = "Engine/vendor/glm"
 IncludeDir["stb_image"] = "Engine/vendor/stb_image"
+IncludeDir["ImGuizmo"] = "Engine/vendor/ImGuizmo"
 
 include "Engine/vendor/GLFW"
 include "Engine/vendor/Glad"
@@ -30,6 +31,9 @@ project "Engine"
 	targetdir("bin/"..outputdir.."/%{prj.name}")
 	objdir("bin-int/"..outputdir.."/%{prj.name}")
 
+	-- pchheader "Engine/EEpch.h"
+	-- pchsource "src/Engine/EEpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -37,7 +41,9 @@ project "Engine"
 		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
-		"%{prj.name}/vendor/glm/glm/**.inl"
+		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp"
 	}
 
 	defines
@@ -53,7 +59,8 @@ project "Engine"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links
@@ -64,6 +71,9 @@ project "Engine"
 		"opengl32.lib"
 	}
 
+	filter "files:vendor/ImGuizmo/**.cpp"
+	flags { "NoPCH" }
+
 	filter "system:windows"
 		systemversion "latest"
 
@@ -72,11 +82,6 @@ project "Engine"
 		"ENGINE_PLATFORM_WINDOWS",
 		"ENGINE_BUILD_DLL"
 	}
-
-	-- postbuildcommands
-	-- {
-	-- 	("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-	-- }
 
 
 	filter "configurations:Debug"
@@ -112,7 +117,8 @@ project "Sandbox"
 		"Engine/src",
 		"Engine/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links

@@ -15,6 +15,7 @@ namespace EE{
 		//void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValues = 0.0f, float columnWidth = 100.0f);
 		void DrawAddComponent();
 		void SetActiveScene(std::shared_ptr<Scene> scene_ptr);
+		void SetSelectedEntity(Entity entity) { selectedEntity = entity; activeScene_ptr->SetSelectedEntity(entity); }
 
 		template<typename T, typename UIFunction>
 		void DrawComponent(const std::string& name, Entity entity, UIFunction uiFunction)

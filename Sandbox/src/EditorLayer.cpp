@@ -3,7 +3,10 @@
 #include "Engine/ECS/Coordinator.h"
 #include <imgui/imgui.h>
 #include "Engine/Core/Application.h"
+#include "ImGuizmo.h"
 
+#include "Engine/Math/Math.h"
+#include "Engine/Core/KeyCode.h"
 
 namespace EE {
 
@@ -125,6 +128,41 @@ namespace EE {
 			}
 			unsigned int tex = m_Framebuffer.GetColorAttachmentID();
 			ImGui::Image((void*)tex, ImVec2{ viewportSize.x, viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+			//Gizmos
+			Entity selectedEntity = mScene_ptr->GetSelectedEntity();
+			Entity activeCamera  = mScene_ptr->GetActiveCamera();
+			if (selectedEntity != -1  && activeCamera != -1) {
+				ImGuizmo::SetOrthographic(false);
+				ImGuizmo::SetDrawlist();
+
+				float windowWidth = (float)ImGui::GetWindowWidth();
+				float windowHeight = (float)ImGui::GetWindowHeight();
+				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+				//Camera
+				Entity cam = mScene_ptr->GetActiveCamera();
+				auto cameraController = mScene_ptr->GetComponent<CameraComponent>(cam).cameraController;
+				//auto& cameraTrans = mScene_ptr->GetComponent<TransformComponent>(cam);
+				glm::mat4 camProjection = cameraController->GetCamera().GetProjectionMatrix();
+				//glm::mat4 camView = glm::inverse(cameraTrans.GetTransform());
+				glm::mat4 camView = cameraController->GetCamera().GetViewMatrix();
+				//Transform
+				auto& transData = mScene_ptr->GetComponent<TransformComponent>(selectedEntity);
+				glm::mat4 transform = transData.GetTransform();
+
+				ImGuizmo::Manipulate(glm::value_ptr(camView), glm::value_ptr(camProjection),
+					(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+
+				if (ImGuizmo::IsUsing()) {
+					glm::vec3 translation, rotation, scale;
+					Math::DecomposeTransform(transform, translation, rotation, scale);
+					transData.position = glm::vec3(transform[3]);
+					glm::vec3 deltaRotation = rotation - transData.rotation;
+					transData.rotation += deltaRotation;
+					transData.scale = scale;
+				}
+			}
+
 			ImGui::End();
 
 			ImGui::End();
@@ -133,7 +171,7 @@ namespace EE {
 			//CreatQuadImGui();
 			ImGui::Begin("viewPort");
 			unsigned int tex = m_Framebuffer.GetColorAttachmentID();
-			ImGui::Image((void*)tex, ImVec2{ 800, 450 });
+			ImGui::Image((void*)tex, ImVec2{ viewportSize.x, viewportSize.y });
 			ImGui::End();
 		}
 	}
@@ -141,6 +179,35 @@ namespace EE {
 	void EditorLayer::OnEvent(Event& event)
 	{
 		mScene_ptr->OnEvent(event);
+
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<KeyPressedEvent>(std::bind(&EditorLayer::OnKeyPressed, this, std::placeholders::_1));
+	}
+
+	void EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		bool control = Input::IsKeyPressed(GE_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GE_KEY_RIGHT_CONTROL);
+		bool shift = Input::IsKeyPressed(GE_KEY_LEFT_SHIFT) || Input::IsKeyPressed(GE_KEY_RIGHT_SHIFT);
+		switch (e.GetKeyCode())
+		{
+		// Gizmos
+		case GE_KEY_Q:
+			if(control)
+				m_GizmoType = -1;
+			break;
+		case GE_KEY_W:
+			if (control)
+				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		case GE_KEY_E:
+			if (control)
+				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		case GE_KEY_R:
+			if (control)
+				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			break;
+		}
 	}
 
 }

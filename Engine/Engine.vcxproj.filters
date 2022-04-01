@@ -10,6 +10,15 @@
     <Filter Include="src\Engine\Core">
       <UniqueIdentifier>{AA407579-16CC-E23D-1FDD-65328BE73E3E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Engine\ECS">
+      <UniqueIdentifier>{5CCEFB39-489C-EF3F-3130-60661D9DCBA4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\ECS\Component">
+      <UniqueIdentifier>{BE49D835-AA6E-27B6-D3B9-0C46BF3D26D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\ECS\System">
+      <UniqueIdentifier>{F081EC9E-5CEE-A799-25E2-3FF7910DCA01}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Engine\Events">
       <UniqueIdentifier>{B624EAB0-223B-E846-6BB2-7368D707B9CE}</UniqueIdentifier>
     </Filter>
@@ -25,8 +34,14 @@
     <Filter Include="src\Engine\Renderer">
       <UniqueIdentifier>{F838018B-649A-DE98-ED07-254B59681558}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Engine\Scene">
+      <UniqueIdentifier>{AF1338A9-9B0C-57FB-C43E-3C80B0963607}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\ImGuizmo">
+      <UniqueIdentifier>{73BF7F4C-DF4A-ED10-E85B-700554664911}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor\glm">
       <UniqueIdentifier>{829FC5A8-6E57-07F6-D75E-E051C335A2E6}</UniqueIdentifier>
@@ -63,6 +78,9 @@
     <ClInclude Include="src\Engine\Core\EntryPoint.h">
       <Filter>src\Engine\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Core\KeyCode.h">
+      <Filter>src\Engine\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Core\Layer.h">
       <Filter>src\Engine\Core</Filter>
     </ClInclude>
@@ -77,6 +95,39 @@
     </ClInclude>
     <ClInclude Include="src\Engine\Core\Window.h">
       <Filter>src\Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\input.h">
+      <Filter>src\Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\Component\Components.h">
+      <Filter>src\Engine\ECS\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\ComponentArray.h">
+      <Filter>src\Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\ComponentManager.h">
+      <Filter>src\Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\Coordinator.h">
+      <Filter>src\Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\Entity.h">
+      <Filter>src\Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\MsgEvent.h">
+      <Filter>src\Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\System.h">
+      <Filter>src\Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\System\CameraControlSystem.h">
+      <Filter>src\Engine\ECS\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\System\RenderSystem.h">
+      <Filter>src\Engine\ECS\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\SystemManager.h">
+      <Filter>src\Engine\ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\EEpch.h">
       <Filter>src\Engine</Filter>
@@ -99,16 +150,31 @@
     <ClInclude Include="src\Engine\ImGui\ImGuiLayer.h">
       <Filter>src\Engine\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Platform\Windows\WinInput.h">
+      <Filter>src\Engine\Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Platform\Windows\WinWindow.h">
       <Filter>src\Engine\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Renderer\Camera.h">
       <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\CameraController.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Framebuffer.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Renderer\IndexBuffer.h">
       <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\RenderObj.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Renderer\Renderer.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Renderer2D.h">
       <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Renderer\Shader.h">
@@ -128,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="src\Engine\Renderer\mglad.h">
       <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Scene\Scene.h">
+      <Filter>src\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>vendor\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
       <Filter>vendor\glm\glm</Filter>
@@ -1377,24 +1449,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\Engine\Renderer\CameraController.h" />
-    <ClInclude Include="src\Engine\Core\input.h" />
-    <ClInclude Include="src\Engine\Platform\Windows\WinInput.h" />
-    <ClInclude Include="src\Engine\Core\KeyCode.h" />
-    <ClInclude Include="src\Engine\Renderer\RenderObj.h" />
-    <ClInclude Include="src\Engine\Renderer\Framebuffer.h" />
-    <ClInclude Include="src\Engine\ECS\Entity.h" />
-    <ClInclude Include="src\Engine\ECS\ComponentArray.h" />
-    <ClInclude Include="src\Engine\ECS\ComponentManager.h" />
-    <ClInclude Include="src\Engine\ECS\System.h" />
-    <ClInclude Include="src\Engine\ECS\SystemManager.h" />
-    <ClInclude Include="src\Engine\ECS\Coordinator.h" />
-    <ClInclude Include="src\Engine\ECS\System\RenderSystem.h" />
-    <ClInclude Include="src\Engine\ECS\Component\Components.h" />
-    <ClInclude Include="src\Engine\Scene\Scene.h" />
-    <ClInclude Include="src\Engine\ECS\System\CameraControlSystem.h" />
-    <ClInclude Include="src\Engine\ECS\MsgEvent.h" />
+    <ClInclude Include="src\Engine\Math\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Core\Application.cpp">
@@ -1409,6 +1464,18 @@
     <ClCompile Include="src\Engine\Core\Log.cpp">
       <Filter>src\Engine\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\ECS\Entity.cpp">
+      <Filter>src\Engine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ECS\System\CameraControlSystem.cpp">
+      <Filter>src\Engine\ECS\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ECS\System\RenderSystem.cpp">
+      <Filter>src\Engine\ECS\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\EEpch.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Events\Event.cpp">
       <Filter>src\Engine\Events</Filter>
     </ClCompile>
@@ -1418,16 +1485,31 @@
     <ClCompile Include="src\Engine\ImGui\ImGuiLayer.cpp">
       <Filter>src\Engine\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Platform\Windows\WinInput.cpp">
+      <Filter>src\Engine\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Platform\Windows\WinWindow.cpp">
       <Filter>src\Engine\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Renderer\Camera.cpp">
       <Filter>src\Engine\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\CameraController.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Framebuffer.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Renderer\IndexBuffer.cpp">
       <Filter>src\Engine\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\RenderObj.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Renderer\Renderer.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp">
       <Filter>src\Engine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Renderer\Shader.cpp">
@@ -1445,22 +1527,15 @@
     <ClCompile Include="src\Engine\Renderer\VertexBufferLayout.cpp">
       <Filter>src\Engine\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Scene\Scene.cpp">
+      <Filter>src\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>vendor\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
-    <ClCompile Include="src\Engine\Renderer\CameraController.cpp" />
-    <ClCompile Include="src\Engine\Platform\Windows\WinInput.cpp" />
-    <ClCompile Include="src\Engine\Renderer\RenderObj.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Framebuffer.cpp" />
-    <ClCompile Include="src\Engine\ECS\Entity.cpp" />
-    <ClCompile Include="src\Engine\ECS\System\RenderSystem.cpp" />
-    <ClCompile Include="src\Engine\Scene\Scene.cpp" />
-    <ClCompile Include="src\Engine\ECS\System\CameraControlSystem.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\light.shader" />
-    <None Include="res\shaders\obj.shader" />
-    <None Include="res\shaders\test.shader" />
+    <ClCompile Include="src\Engine\Math\Math.cpp" />
   </ItemGroup>
 </Project>
