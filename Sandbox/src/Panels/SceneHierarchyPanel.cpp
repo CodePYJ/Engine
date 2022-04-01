@@ -174,7 +174,9 @@ namespace EE {
 		DrawComponent<TransformComponent>("Transform", entity, [](auto& component)
 			{
 				DrawVec3Control("Translation", component.position);
-				DrawVec3Control("Rotation", component.rotation);
+				glm::vec3 rotation = glm::degrees(component.rotation);
+				DrawVec3Control("Rotation", rotation);
+				component.rotation = glm::radians(rotation);
 				DrawVec3Control("Scale", component.scale, 1.0f);
 			});
 

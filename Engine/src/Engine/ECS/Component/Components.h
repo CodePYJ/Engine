@@ -21,12 +21,8 @@ namespace EE {
 
 		glm::mat4 GetTransform() {
 			glm::mat4 transform;
-			glm::vec3 rot;
-			rot.x = glm::radians(rotation.x);
-			rot.y = glm::radians(rotation.y);
-			rot.z = glm::radians(rotation.z);
 			transform = glm::translate(glm::mat4(1.0f), position);
-			transform *= glm::toMat4(glm::quat(rot));
+			transform *= glm::toMat4(glm::quat(rotation));
 			transform *= glm::scale(glm::mat4(1.0f), scale);
 			return transform;
 		}

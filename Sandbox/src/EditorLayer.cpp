@@ -142,10 +142,10 @@ namespace EE {
 				//Camera
 				Entity cam = mScene_ptr->GetActiveCamera();
 				auto cameraController = mScene_ptr->GetComponent<CameraComponent>(cam).cameraController;
-				//auto& cameraTrans = mScene_ptr->GetComponent<TransformComponent>(cam);
+				auto& cameraTrans = mScene_ptr->GetComponent<TransformComponent>(cam);
 				glm::mat4 camProjection = cameraController->GetCamera().GetProjectionMatrix();
-				//glm::mat4 camView = glm::inverse(cameraTrans.GetTransform());
-				glm::mat4 camView = cameraController->GetCamera().GetViewMatrix();
+				glm::mat4 camView = glm::inverse(cameraTrans.GetTransform());
+				//glm::mat4 camView = cameraController->GetCamera().GetViewMatrix();
 				//Transform
 				auto& transData = mScene_ptr->GetComponent<TransformComponent>(selectedEntity);
 				glm::mat4 transform = transData.GetTransform();
@@ -156,7 +156,7 @@ namespace EE {
 				if (ImGuizmo::IsUsing()) {
 					glm::vec3 translation, rotation, scale;
 					Math::DecomposeTransform(transform, translation, rotation, scale);
-					transData.position = glm::vec3(transform[3]);
+					transData.position = translation;
 					glm::vec3 deltaRotation = rotation - transData.rotation;
 					transData.rotation += deltaRotation;
 					transData.scale = scale;
