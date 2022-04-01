@@ -9,48 +9,45 @@
 
 namespace EE {
 
-	class OrthCameraController
+	class CameraController
 	{
 	public:
-		OrthCameraController(float aspectRatio);
+		CameraController(float aspectRatio);
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
 		void OnResize(float w, float h);
-		OrthographicCamera& GetCamera() { return orthCamera; }
+		Camera& GetCamera() { return m_camera; }
 
-		float GetSize() { return zoomLevel; }
-		void SetSize(float size) 
-		{ 
-			zoomLevel = size; 
-			orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel, m_near, m_far);
-		}
+		float GetOrthoSize() { return zoomLevel; }
+		void SetOrthoSize(float size) { zoomLevel = size; m_camera.SetOrthographicSize(zoomLevel); }
+		float GetOrthoNear() { return m_camera.GetOrthographicNearClip(); }
+		void SetOrthoNear(float n) { m_camera.SetOrthographicNearClip(n); }
+		float GetOrthoFar() { return m_camera.GetOrthographicFarClip(); }
+		void SetOrthoFar(float f) { m_camera.SetOrthographicNearClip(f); }
 
-		float GetNear() { return m_near; }
-		float GetFar() { return m_far; }
-		void SetNear(float n)
-		{
-			m_near = n;
-			orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel, m_near, m_far);
-		}
-		void SetFar(float f)
-		{
-			m_far = f;
-			orthCamera.SetProjectionMatrix(-m_aspectRatio * zoomLevel, m_aspectRatio * zoomLevel, -zoomLevel, zoomLevel, m_near, m_far);
-		}
+		float GetPerspFov() { return m_camera.GetPerspectiveVerticalFOV(); }
+		void SetPerspFov(float fov) { m_camera.SetPerspectiveVerticalFOV(fov); }
+		float GetPerspNear() { return m_camera.GetPerspectiveNearClip(); }
+		void SetPerspNear(float n) { m_camera.SetPerspectiveNearClip(n); }
+		float GetPerspFar() { return m_camera.GetPerspectiveFarClip(); }
+		void SetPerspFar(float f) { m_camera.SetPerspectiveNearClip(f); }
 
-		glm::vec3 GetPosition() { return position; }
-		float GetRotation() { return rotation; }
+		glm::vec3 GetPosition() { return m_position; }
+		void SetPosition(glm::vec3 position) { m_position = position; }
+		float GetRotation() { return m_rotation; }
+		void SetRotation(float rotation) { m_rotation = rotation; }
+		Camera::ProjectionType GetCameraType() { return m_camera.GetProjectionType(); }
+		void SetCameraType(Camera::ProjectionType type) { m_camera.SetProjectionType(type); }
 
 	private:
 		void OnMouseScrolled(MouseScrollEvent& e);
 		void OnWindowResized(WindowResizeEvent& e);
 		
 	private:
-		glm::vec3 position = {0.0f, 0.0f, 0.0f};
-		float rotation = 0.0f;
+		glm::vec3 m_position = {0.0f, 0.0f, 0.0f};
+		float m_rotation = 0.0f;
 		float translationSpeed = 2.0f, rotationSpeed = 2.0f, zoomLevel = 1.0f;
-		float m_aspectRatio;
-		float m_near = -1.0f, m_far = 1.0f;
-		OrthographicCamera orthCamera;
+		float m_aspectRatio = 0.0f;
+		Camera m_camera;
 	};
 }

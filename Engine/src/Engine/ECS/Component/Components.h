@@ -30,12 +30,11 @@ namespace EE {
 
 	struct CameraComponent
 	{
-		std::shared_ptr<OrthCameraController> cameraController;
+		std::shared_ptr<CameraController> cameraController;
 		glm::mat4 view;
 		glm::mat4 projection;
+		bool primary;
 	};
- 
-
 
 	struct TagComponent
 	{

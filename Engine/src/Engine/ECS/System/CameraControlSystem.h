@@ -18,7 +18,7 @@ namespace EE {
 		void SetActiveCamera(Entity camera);
 	private:
 		Coordinator* SceneCoo_ptr;
-		Entity activeCamera;
+		Entity activeCamera = -1;
 	};
 
 	class CameraMsgEvent : public MsgEvent

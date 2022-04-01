@@ -6,7 +6,7 @@
 
 namespace EE {
 
-	using Entity = std::uint32_t;
+	using Entity = int;
 	const Entity MAX_ENTITIES = 500;
 	using ComponentType = std::uint8_t;
 	const ComponentType MAX_COMPONENT = 32;

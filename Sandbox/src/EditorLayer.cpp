@@ -81,11 +81,16 @@ namespace EE {
 
 			// Submit the DockSpace
 			ImGuiIO& io = ImGui::GetIO();
+			ImGuiStyle& style = ImGui::GetStyle();
+			float minWinSizeX = style.WindowMinSize.x;
+			style.WindowMinSize.x = 370;
 			if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 			{
 				ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 				ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 			}
+
+			style.WindowMinSize.x = minWinSizeX;
 
 			if (ImGui::BeginMenuBar())
 			{
@@ -111,10 +116,11 @@ namespace EE {
 			EE::Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 			ImVec2 temViewportSzie = ImGui::GetContentRegionAvail();
+			mScene_ptr->SetAspectRatio(temViewportSzie.x, temViewportSzie.y);
 			if (viewportSize != *((glm::vec2*)&temViewportSzie)) {
 				viewportSize = { temViewportSzie.x, temViewportSzie.y };
 				m_Framebuffer.Resize(viewportSize.x, viewportSize.y);
-				if(mScene_ptr->GetCooptr()->HasComponent<CameraComponent>(mScene_ptr->GetActiveCamera()))
+				if(mScene_ptr->GetActiveCamera()!=-1 && mScene_ptr->GetCooptr()->HasComponent<CameraComponent>(mScene_ptr->GetActiveCamera()))
 					mScene_ptr->GetComponent<CameraComponent>(mScene_ptr->GetActiveCamera()).cameraController->OnResize(viewportSize.x, viewportSize.y);
 			}
 			unsigned int tex = m_Framebuffer.GetColorAttachmentID();

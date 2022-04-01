@@ -1,6 +1,7 @@
 #include "SceneHierarchyPanel.h"
 #include "Engine/ECS/Component/Components.h"
 #include <imgui/imgui.h>
+#include <imgui/imgui_internal.h>
 #include "Engine/ECS/Entity.h"
 #include "Engine.h"
 #include <glm/gtc/type_ptr.hpp>
@@ -12,33 +13,42 @@ namespace EE {
 	{
 		ImGui::Begin("Scene Hierarchy");
 		DrawEntityNode();
-		if (ImGui::Button("Create")) {
-			Entity entity = activeScene_ptr->CreateEntity();
-			std::string name = "entity ";
-			activeScene_ptr->AddComponent<TagComponent>(entity, { name + std::to_string(entity)});
-			activeScene_ptr->AddComponent<TransformComponent>(entity,
-				{
-					glm::vec3(0.0f, 0.0f, 0.0f),
-					glm::vec3(0.0f, 0.0f, 0.0f),
-					glm::vec3(1.0f, 1.0f, 1.0f)
-				});
-			activeScene_ptr->AddComponent<Renderable2DComponent>(entity,
-				{
-					std::make_shared<Renderer2DData>(),
-					glm::vec3(0.5f, 0.5f, 0.0f),
-					glm::mat4(1.0f)
-				});
+
+		if (ImGui::BeginPopupContextWindow(0, 1, false))
+		{
+			if (ImGui::MenuItem("Create Empty Entity")) {
+				Entity entity = activeScene_ptr->CreateEntity();
+				std::string name = "entity ";
+				activeScene_ptr->AddComponent<TagComponent>(entity, { name + std::to_string(entity) });
+				activeScene_ptr->AddComponent<TransformComponent>(entity,
+					{
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(1.0f, 1.0f, 1.0f)
+					});
+				selectedEntity = entity;
+			}
+			ImGui::EndPopup();
 		}
-		ImGui::End();
 
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 			selectedEntity = -1;
 
+		ImGui::End();
+
 		ImGui::Begin("Properties");
 		if (selectedEntity != -1) {
 			DrawComponents(selectedEntity);
+
+			if (ImGui::Button("Add Component"))
+				ImGui::OpenPopup("AddComponent");
+			if (ImGui::BeginPopup("AddComponent"))
+			{
+				DrawAddComponent();
+				ImGui::EndPopup();
+			}
 		}
-		ImGui::End();
+		ImGui::End();	//Properties
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode()
@@ -48,6 +58,7 @@ namespace EE {
 
 		for(Entity entity : livingEntities) {
 			ImGuiTreeNodeFlags flags = ((selectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+			flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 			TagComponent& tagComponent = activeScene_ptr->GetCooptr()->GetComponent<TagComponent>(entity);
 			bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tagComponent.tag.c_str());
 			if (ImGui::IsItemClicked())
@@ -74,14 +85,80 @@ namespace EE {
 
 			if (entityDeleted)
 			{
+				if (activeScene_ptr->GetCooptr()->HasComponent<CameraComponent>(entity))
+					activeScene_ptr->SetActiveCamera(-1);
 				activeScene_ptr->DestroyEntity(entity);
 				if (selectedEntity == activeScene_ptr->GetActiveCamera())
 					activeScene_ptr->SetActiveCamera(513);
 
 				if (selectedEntity == entity)
-					selectedEntity = {};
+					selectedEntity = -1;
 			}
 		}//for
+	}
+
+	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		auto boldFont = io.Fonts->Fonts[0];
+		ImGui::PushID(label.c_str());
+
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, columnWidth);
+		ImGui::Text(label.c_str());
+		ImGui::NextColumn();
+
+		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("X", buttonSize))
+			values.x = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("Y", buttonSize))
+			values.y = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("Z", buttonSize))
+			values.z = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+		ImGui::SameLine();
+		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+
+		ImGui::PopStyleVar();
+
+		ImGui::Columns(1);
+
+		ImGui::PopID();
 	}
 
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
@@ -96,48 +173,95 @@ namespace EE {
 			}
 		}
 
-		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+		DrawComponent<TransformComponent>("Transform", entity, [](auto& component)
+			{
+				DrawVec3Control("Translation", component.position);
+				DrawVec3Control("Rotation", component.rotation);
+				DrawVec3Control("Scale", component.scale, 1.0f);
+			});
 
-		if (activeScene_ptr->GetCooptr()->HasComponent<TransformComponent>(entity)) {
-			bool open = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), treeNodeFlags, "Transform");
-			if (open) {
-				auto& transCom = activeScene_ptr->GetComponent<TransformComponent>(entity);
-				float pos[3] = { transCom.position.x, transCom.position.y , transCom.position.z };
-				ImGui::DragFloat3("Position", pos, 0.1f);
-				transCom.position.x = pos[0], transCom.position.y = pos[1], transCom.position.z = pos[2];
-				ImGui::TreePop();
-			}
-		}
+		DrawComponent<CameraComponent>("Camera", entity, [](auto& component)
+			{
+				std::shared_ptr<CameraController> cameraController = component.cameraController;
+				ImGui::Checkbox("Primary", &component.primary);
+				const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
+				const char* currentProjectionTypeString = projectionTypeStrings[(int)cameraController->GetCameraType()];
 
-		if (activeScene_ptr->GetCooptr()->HasComponent<CameraComponent>(entity)) {
-			bool open = ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), treeNodeFlags, "Camera");
-			if (open) {
-				auto& cameraCom = activeScene_ptr->GetComponent<CameraComponent>(entity);
-				std::shared_ptr<OrthCameraController> cameraController = cameraCom.cameraController;
-				float cameraSize = cameraController->GetSize();
-				if (ImGui::DragFloat("Size", &cameraSize))
-					cameraController->SetSize(cameraSize);
+				if (ImGui::BeginCombo("Projection", currentProjectionTypeString)) {
+					for (int i = 0; i < 2; i++) {
+						bool isSelected = currentProjectionTypeString == projectionTypeStrings[i];
+						if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
+							currentProjectionTypeString = projectionTypeStrings[i];
+							cameraController->SetCameraType((Camera::ProjectionType)i);
+						}
 
-				float m_near = cameraController->GetNear();
-				if (ImGui::DragFloat("Near", &m_near))
-					cameraController->SetNear(m_near);
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+					}
 
-				float m_far = cameraController->GetFar();
-				if (ImGui::DragFloat("Far", &m_far))
-					cameraController->SetFar(m_far);
-				ImGui::TreePop();
-			}
-		}
+					ImGui::EndCombo();
+				}
 
-		if (activeScene_ptr->GetCooptr()->HasComponent<Renderable2DComponent>(entity)) {
-			bool open = ImGui::TreeNodeEx((void*)typeid(Renderable2DComponent).hash_code(), treeNodeFlags, "2D Renderer");
-			if (open) {
-				auto& renderer = activeScene_ptr->GetComponent<Renderable2DComponent>(entity);
-				float color[3] = { renderer.color.x, renderer.color.y , renderer.color.z };
+				if (cameraController->GetCameraType() == Camera::ProjectionType::Orthographic) {
+					float cameraSize = cameraController->GetOrthoSize();
+					if (ImGui::DragFloat("Size", &cameraSize))
+						cameraController->SetOrthoSize(cameraSize);
+
+					float m_near = cameraController->GetOrthoNear();
+					if (ImGui::DragFloat("Near", &m_near))
+						cameraController->SetOrthoNear(m_near);
+
+					float m_far = cameraController->GetOrthoFar();
+					if (ImGui::DragFloat("Far", &m_far))
+						cameraController->SetOrthoFar(m_far);
+				}
+
+				if (cameraController->GetCameraType() == Camera::ProjectionType::Perspective) {
+					float fov = cameraController->GetPerspFov();
+					if (ImGui::DragFloat("Fov", &fov))
+						cameraController->SetPerspFov(fov);
+
+					float m_near = cameraController->GetPerspNear();
+					if (ImGui::DragFloat("Near", &m_near))
+						cameraController->SetPerspNear(m_near);
+
+					float m_far = cameraController->GetPerspFar();
+					if (ImGui::DragFloat("Far", &m_far))
+						cameraController->SetPerspFar(m_far);
+				}
+			});
+
+		DrawComponent<Renderable2DComponent>("Renderer", entity, [](auto& component)
+			{
+				float color[3] = { component.color.x, component.color.y , component.color.z };
 				ImGui::ColorEdit3("Color", color);
-				renderer.color.x = color[0], renderer.color.y = color[1], renderer.color.z = color[2];
-				ImGui::TreePop();
-			}
+				component.color.x = color[0], component.color.y = color[1], component.color.z = color[2];
+			});
+	}
+
+	void SceneHierarchyPanel::DrawAddComponent()
+	{
+		if (ImGui::MenuItem("Camera")) {
+			activeScene_ptr->AddComponent<CameraComponent>((Entity)selectedEntity,
+				{
+					std::make_shared<CameraController>(activeScene_ptr->GetAspectRatio()),
+					glm::mat4(1.0f),
+					glm::mat4(1.0f)
+				});
+
+			activeScene_ptr->SetActiveCamera(selectedEntity);
+			ImGui::CloseCurrentPopup();
+		}
+
+		if (ImGui::MenuItem("Renderable")) {
+			activeScene_ptr->AddComponent<Renderable2DComponent>((Entity)selectedEntity,
+				{
+					std::make_shared<Renderer2DData>(),
+					glm::vec3(0.5f, 0.5f, 0.0f),
+					glm::mat4(1.0f)
+				});
+
+			ImGui::CloseCurrentPopup();
 		}
 	}
 

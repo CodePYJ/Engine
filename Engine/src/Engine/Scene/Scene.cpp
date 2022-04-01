@@ -19,26 +19,6 @@ namespace EE {
 		renderSys_ptr->Init(mCoo_ptr.get());
 		cameraControlSys_ptr = mCoo_ptr->RegisterSystem<CameraControlSystem>();
 		cameraControlSys_ptr->Init(mCoo_ptr.get());
-
-		Entity camera = CreateEntity();
-		AddComponent<CameraComponent>(camera,
-			{
-				std::make_shared<OrthCameraController>(16.0f / 9.0f),
-				glm::mat4(1.0f),
-				glm::mat4(1.0f)
-			});
-		AddComponent<TransformComponent>(camera,
-			{
-				glm::vec3(0.0f, 0.0f, 0.0f),
-				glm::vec3(0.0f, 0.0f, 0.0f),
-				glm::vec3(1.0f, 1.0f, 1.0f)
-			});
-		AddComponent<TagComponent>(camera,
-			{
-				"camera"
-			});
-		activeCamera = camera;
-		cameraControlSys_ptr->SetActiveCamera(camera);
 	}
 
 	Scene::~Scene()

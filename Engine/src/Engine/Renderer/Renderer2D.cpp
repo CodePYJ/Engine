@@ -48,7 +48,7 @@ namespace EE {
 
 	}
 
-	void Renderer2D::BeginScene(OrthographicCamera& camera)
+	void Renderer2D::BeginScene(Camera& camera)
 	{
 
 	/*	currentObj->shader->SetUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());

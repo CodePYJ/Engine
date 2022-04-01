@@ -24,11 +24,13 @@ namespace EE {
 		template<typename T>
 		void AddComponent(Entity entity, T component)
 		{
-			//std::string typeName = typeid(T).name();
 			mCoo_ptr->AddComponent<T>(entity, component);
-			//if (typeName == "Renderable2DComponent") {
-			//	Renderer2D::RendererInit(mCoo_ptr->GetComponent<Renderable2DComponent>(entity).data_ptr);
-			//}
+		}
+
+		template<typename T>
+		void RemoveComponent(Entity entity)
+		{
+			mCoo_ptr->RemoveComponent<T>(entity);
 		}
 
 		template<typename T>
@@ -46,14 +48,19 @@ namespace EE {
 		}
 		Entity GetActiveCamera() { return activeCamera; }
 
+		void SetAspectRatio(float w, float h) { viewPortAspectRatio = w / h; }
+		float GetAspectRatio() { return viewPortAspectRatio; }
+
 		Coordinator* GetCooptr() { return mCoo_ptr.get(); }
 
 	private:
 		std::unique_ptr<Coordinator> mCoo_ptr;		//一个Scene只有一个Coo
 		std::vector<Entity> entities;
-		Entity activeCamera;
+		Entity activeCamera = -1;
 		std::shared_ptr<RenderSystem> renderSys_ptr;
 		std::shared_ptr<CameraControlSystem> cameraControlSys_ptr;
+
+		float viewPortAspectRatio;
 	};
 
 }

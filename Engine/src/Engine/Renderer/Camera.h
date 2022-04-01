@@ -6,59 +6,61 @@
 
 namespace EE {
 
-	class EE_API OrthographicCamera
+	class EE_API Camera
 	{
 	public:
-		OrthographicCamera(float left, float right, float bottom, float top, float m_near, float m_far);
+		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
 
-		glm::vec3 GetPosition() { return m_Position; }
-		void SetPosition(glm::vec3& position) { m_Position = position; CalculateViewMatrix(); }
+		Camera()  = default;
 
-		float GetRotation() { return m_Rotation; }
-		void SetRotation(float rotation) { m_Rotation = rotation; CalculateViewMatrix(); }
+		void SetOrthographic(float size, float nearClip, float farClip) { m_size = size; o_near = nearClip; o_far = farClip; }
+		void SetPerspective(float verticalFOV, float nearClip, float farClip) { m_fov = verticalFOV; p_near = nearClip; p_far = farClip; }
 
-		void SetProjectionMatrix(float left, float right, float bottom, float top, float m_near, float m_far);
-		glm::mat4 GetProjectionMatrix() { return m_ProjectionMatrix; }
-		glm::mat4 GetViewMatrix() { return m_ViewMatrix; }
-		glm::mat4 GetViewProjectionMatrix() { return m_ViewProjectionMatrix; }
+		float GetOrthographicSize() const { return m_size; }
+		void SetOrthographicSize(float size) { m_size = size; CalculateProjectionMatrix(); }
+		float GetOrthographicNearClip() const { return o_near; }
+		void SetOrthographicNearClip(float nearClip) { o_near = nearClip; CalculateProjectionMatrix(); }
+		float GetOrthographicFarClip() const { return o_far; }
+		void SetOrthographicFarClip(float farClip) { o_far = farClip; CalculateProjectionMatrix(); }
+
+		float GetPerspectiveVerticalFOV() const { return m_fov; }
+		void SetPerspectiveVerticalFOV(float verticalFov) { m_fov = verticalFov; CalculateProjectionMatrix(); }
+		float GetPerspectiveNearClip() const { return p_near; }
+		void SetPerspectiveNearClip(float nearClip) { p_near = nearClip; CalculateProjectionMatrix(); }
+		float GetPerspectiveFarClip() const { return p_far; }
+		void SetPerspectiveFarClip(float farClip) { p_far = farClip; CalculateProjectionMatrix(); }
+
+		glm::vec3 GetPosition() { return m_position; }
+		void SetPosition(glm::vec3& position) { m_position = position; CalculateViewProjectionMatrix(); }
+		float GetRotation() { return m_rotation; }
+		void SetRotation(float rotation) { m_rotation = rotation; CalculateViewProjectionMatrix(); }
+		float GetViewPort() { return m_aspectRatio; }
+		void SetViewPort(float aspectRatio) { m_aspectRatio = aspectRatio; CalculateProjectionMatrix(); }
+		ProjectionType GetProjectionType() { return cameraType; }
+		void SetProjectionType(ProjectionType type) { cameraType = type; CalculateProjectionMatrix(); }
+
+		void CalculateProjectionMatrix();
+		glm::mat4 GetProjectionMatrix() { return m_projection; }
+		glm::mat4 GetViewMatrix() { return m_view; }
+		glm::mat4 GetViewProjectionMatrix() { return m_view_projection; }
 
 	private:
-		void CalculateViewMatrix();
+		void CalculateViewProjectionMatrix();
 
 	private:
-		glm::mat4 m_ProjectionMatrix;
-		glm::mat4 m_ViewMatrix;
-		glm::mat4 m_ViewProjectionMatrix;
+		glm::mat4 m_projection = glm::mat4(1.0f);
+		glm::mat4 m_view = glm::mat4(1.0f);
+		glm::mat4 m_view_projection = glm::mat4(1.0f);
 
-		glm::vec3 m_Position = {0.0f, 0.0f, 0.0f};
-		float m_Rotation = 0.0f;
+		glm::vec3 m_position = {0.0f, 0.0f, 0.0f};
+		float m_rotation = 0.0f;
+		float m_aspectRatio = 0.0f;
+		float m_size = 1.0f;
+		float m_fov = 45.0f;
+		float p_near = 0.01f, p_far = 1000.0f;	//perspective
+		float o_near = -1.0f, o_far = 1.0f;	//orthographic
+
+		ProjectionType cameraType = ProjectionType::Orthographic;
 	};
 
-
-	class EE_API PerspectiveCamera
-	{
-	public:
-		PerspectiveCamera(float left, float right, float bottom, float top);
-
-		glm::vec3 GetPosition() { return m_Position; }
-		void SetPosition(glm::vec3& position) { m_Position = position; CalculateViewMatrix(); }
-
-		float GetRotation() { return m_Rotation; }
-		void SetRotation(float rotation) { m_Rotation = rotation; CalculateViewMatrix(); }
-
-		glm::mat4 GetProjectionMatrix() { return m_ProjectionMatrix; }
-		glm::mat4 GetViewMatrix() { return m_ViewMatrix; }
-		glm::mat4 GetViewProjectionMatrix() { return m_ViewProjectionMatrix; }
-
-	private:
-		void CalculateViewMatrix();
-
-	private:
-		glm::mat4 m_ProjectionMatrix;
-		glm::mat4 m_ViewMatrix;
-		glm::mat4 m_ViewProjectionMatrix;
-
-		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
-		float m_Rotation = 0.0f;
-	};
 }

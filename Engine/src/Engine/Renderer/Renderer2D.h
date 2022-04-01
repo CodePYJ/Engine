@@ -34,7 +34,7 @@ namespace EE {
 				2, 3, 1
 		};
 		unsigned int indCount = 6;
-		std::string shaderPath = "D:/WorkSpace/CppWorkSpace/Engine/Engine/Engine/res/shaders/test.shader";
+		std::string shaderPath = "assets/shaders/test.shader";
 	};
 
 	class Renderer2D
@@ -44,7 +44,7 @@ namespace EE {
 
 		static void Shutdown();
 
-		static void BeginScene(OrthographicCamera& camera);
+		static void BeginScene(Camera& camera);
 		static void EndScene();
 
 		// Primitives
