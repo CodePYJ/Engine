@@ -33,21 +33,22 @@ namespace EE {
 		void SetPerspFar(float f) { m_camera.SetPerspectiveNearClip(f); }
 
 		glm::vec3 GetPosition() { return m_position; }
-		void SetPosition(glm::vec3 position) { m_position = position; }
-		float GetRotation() { return m_rotation; }
-		void SetRotation(float rotation) { m_rotation = rotation; }
+		void SetPosition(glm::vec3 position) { m_position = position; m_camera.SetPosition(position); }
+		glm::vec3 GetRotation() { return m_rotation; }
+		void SetRotation(glm::vec3 rotation) { m_rotation = rotation; m_camera.SetRotation(rotation); }
 		Camera::ProjectionType GetCameraType() { return m_camera.GetProjectionType(); }
 		void SetCameraType(Camera::ProjectionType type) { m_camera.SetProjectionType(type); }
 
 	private:
 		void OnMouseScrolled(MouseScrollEvent& e);
 		void OnWindowResized(WindowResizeEvent& e);
-		
+		void MouseRotate(glm::vec2 delta);
 	private:
-		glm::vec3 m_position = {0.0f, 0.0f, 0.0f};
-		float m_rotation = 0.0f;
+		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 m_rotation = { 0.0f, 0.0f, 0.0f };
 		float translationSpeed = 2.0f, rotationSpeed = 2.0f, zoomLevel = 1.0f;
 		float m_aspectRatio = 0.0f;
+		glm::vec2 mouseInitialPos = { 0.0f, 0.0f };
 		Camera m_camera;
 	};
 }

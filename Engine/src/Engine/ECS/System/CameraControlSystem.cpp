@@ -20,10 +20,10 @@ namespace EE {
 			CameraComponent& camera = SceneCoo_ptr->GetComponent<CameraComponent>(activeCamera);
 			TransformComponent& trans = SceneCoo_ptr->GetComponent<TransformComponent>(activeCamera);
 			camera.cameraController->SetPosition(trans.position);
-			camera.cameraController->SetRotation(trans.rotation.z);
+			camera.cameraController->SetRotation(trans.rotation);
 			camera.cameraController->OnUpdate(ts);
 			trans.position = camera.cameraController->GetPosition();
-			trans.rotation.z = camera.cameraController->GetRotation();
+			trans.rotation = camera.cameraController->GetRotation();
 
 			SceneCoo_ptr->msgEvent.SetMat4Msg(MsgType::CAMERA_MSG, camera.cameraController->GetCamera().GetViewProjectionMatrix());
 		}

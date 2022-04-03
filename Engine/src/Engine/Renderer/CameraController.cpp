@@ -20,15 +20,20 @@ namespace EE {
 		if (Input::IsKeyPressed(GE_KEY_S))
 			m_position.y -= translationSpeed * ts.GetSecond();
 
-		//if (Input::IsKeyPressed(GE_KEY_Q))
-		//	m_rotation += rotationSpeed * ts.GetSecond();
-		//if (Input::IsKeyPressed(GE_KEY_E))
-		//	m_rotation -= rotationSpeed * ts.GetSecond();
+		if (Input::IsKeyPressed(GE_KEY_LEFT_ALT)) {
+			glm::vec2 mousePos = { Input::GetMouseX(), Input::GetMouseY() };
+			glm::vec2 delta = mousePos - mouseInitialPos;
+			mouseInitialPos = mousePos;
+			if (Input::IsMouseButtonPressed(1)) {	//right:1  left:0
+					MouseRotate(delta);
+			}
+		}
+		
 
-		if (m_rotation > 180.0f)
-			m_rotation -= 360.0f;
-		else if (m_rotation <= -180.0f)
-			m_rotation += 360.0f;
+		if (m_rotation.z > 180.0f)
+			m_rotation.z -= 360.0f;
+		else if (m_rotation.z <= -180.0f)
+			m_rotation.z += 360.0f;
 
 		m_camera.SetPosition(m_position);
 		m_camera.SetRotation(m_rotation);
@@ -57,5 +62,14 @@ namespace EE {
 	void CameraController::OnWindowResized(WindowResizeEvent& e)
 	{
 		OnResize((float)e.GetWidth(), (float)e.GetHeight());
+	}
+
+	void CameraController::MouseRotate(glm::vec2 delta)
+	{
+		glm::vec3 rotation = { glm::degrees(m_rotation.x), glm::degrees(m_rotation.y), glm::degrees(m_rotation.z) };
+		rotation.y += delta.x * 0.05f;
+		rotation.x += delta.y * 0.05f;
+		m_rotation.x = glm::radians(rotation.x);
+		m_rotation.y = glm::radians(rotation.y);
 	}
 }

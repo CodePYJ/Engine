@@ -32,8 +32,8 @@ namespace EE {
 
 		glm::vec3 GetPosition() { return m_position; }
 		void SetPosition(glm::vec3& position) { m_position = position; CalculateViewProjectionMatrix(); }
-		float GetRotation() { return m_rotation; }
-		void SetRotation(float rotation) { m_rotation = rotation; CalculateViewProjectionMatrix(); }
+		glm::vec3 GetRotation() { return m_rotation; }
+		void SetRotation(glm::vec3 rotation) { m_rotation = rotation; CalculateViewProjectionMatrix(); }
 		float GetViewPort() { return m_aspectRatio; }
 		void SetViewPort(float aspectRatio) { m_aspectRatio = aspectRatio; CalculateProjectionMatrix(); }
 		ProjectionType GetProjectionType() { return cameraType; }
@@ -52,15 +52,15 @@ namespace EE {
 		glm::mat4 m_view = glm::mat4(1.0f);
 		glm::mat4 m_view_projection = glm::mat4(1.0f);
 
-		glm::vec3 m_position = {0.0f, 0.0f, 0.0f};
-		float m_rotation = 0.0f;
+		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 m_rotation = { 0.0f, 0.0f, 0.0f };
 		float m_aspectRatio = 0.0f;
 		float m_size = 1.0f;
 		float m_fov = 45.0f;
 		float p_near = 0.01f, p_far = 1000.0f;	//perspective
 		float o_near = -1.0f, o_far = 1.0f;	//orthographic
 
-		ProjectionType cameraType = ProjectionType::Orthographic;
+		ProjectionType cameraType = ProjectionType::Perspective;
 	};
 
 }

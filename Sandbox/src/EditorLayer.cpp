@@ -144,8 +144,8 @@ namespace EE {
 				auto cameraController = mScene_ptr->GetComponent<CameraComponent>(cam).cameraController;
 				auto& cameraTrans = mScene_ptr->GetComponent<TransformComponent>(cam);
 				glm::mat4 camProjection = cameraController->GetCamera().GetProjectionMatrix();
-				glm::mat4 camView = glm::inverse(cameraTrans.GetTransform());
-				//glm::mat4 camView = cameraController->GetCamera().GetViewMatrix();
+				//glm::mat4 camView = glm::inverse(cameraTrans.GetTransform());
+				glm::mat4 camView = cameraController->GetCamera().GetViewMatrix();
 				//Transform
 				auto& transData = mScene_ptr->GetComponent<TransformComponent>(selectedEntity);
 				glm::mat4 transform = transData.GetTransform();
@@ -167,13 +167,6 @@ namespace EE {
 
 			ImGui::End();
 		}
-		else {
-			//CreatQuadImGui();
-			ImGui::Begin("viewPort");
-			unsigned int tex = m_Framebuffer.GetColorAttachmentID();
-			ImGui::Image((void*)tex, ImVec2{ viewportSize.x, viewportSize.y });
-			ImGui::End();
-		}
 	}
 
 	void EditorLayer::OnEvent(Event& event)
@@ -191,19 +184,19 @@ namespace EE {
 		switch (e.GetKeyCode())
 		{
 		// Gizmos
-		case GE_KEY_Q:
+		case GE_KEY_Z:
 			if(control)
 				m_GizmoType = -1;
 			break;
-		case GE_KEY_W:
+		case GE_KEY_X:
 			if (control)
 				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 			break;
-		case GE_KEY_E:
+		case GE_KEY_C:
 			if (control)
 				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 			break;
-		case GE_KEY_R:
+		case GE_KEY_V:
 			if (control)
 				m_GizmoType = ImGuizmo::OPERATION::SCALE;
 			break;
