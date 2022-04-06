@@ -10,7 +10,7 @@ static int item_current_shaderIndex = 0;
 static int item_current_objIndex = 0;
 
 ExampleLayer::ExampleLayer()
-	:Layer("Example"),  CameraController(16.0f/9.0f), m_Framebuffer(1600, 900)
+	:Layer("Example"),  CameraController(16.0f/9.0f)//, m_Framebuffer(1600, 900)
 {
 	
 }

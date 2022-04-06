@@ -60,6 +60,8 @@ namespace EE {
 
 		virtual int GetEventCategory() { return EventCategory::EventCategoryMouseButton | EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput; }
 
+		int GetButton() { return m_button; }
+
 	protected:
 		int m_button;
 	};

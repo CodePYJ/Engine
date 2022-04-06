@@ -21,11 +21,15 @@ void main()
 #shader fragment
 #version 330 core
 
-out vec4 FragColor;
+layout(location = 0) out vec4 color0;
+layout(location = 1) out int color1;
+
+uniform int entity;
 
 in vec3 color;
 
 void main()
 {
-    FragColor = vec4(color,1.0);
+    color0 = vec4(color,1.0);
+    color1 = entity;
 }

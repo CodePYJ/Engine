@@ -53,7 +53,6 @@ namespace EE {
 
 	void SceneHierarchyPanel::DrawEntityNode()
 	{
-		//uint32_t livingEntityCount = activeScene_ptr->GetCooptr()->GetLivingEntityCount();
 		std::vector<Entity> livingEntities = activeScene_ptr->GetCooptr()->GetLivingEntities();
 
 		for(Entity entity : livingEntities) {

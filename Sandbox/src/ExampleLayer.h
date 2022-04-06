@@ -31,7 +31,7 @@ private:
 
 private:
 	EE::Renderer renderer;
-	EE::Framebuffer m_Framebuffer;
+	//EE::Framebuffer m_Framebuffer;
 	EE::CameraController CameraController;
 
 	glm::vec2 viewportSize = {0.0f, 0.0f};

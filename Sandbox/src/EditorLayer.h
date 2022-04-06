@@ -23,6 +23,7 @@ namespace EE {
 		virtual void OnEvent(Event& event) override;
 
 		void OnKeyPressed(KeyPressedEvent& e);
+		void OnMousePressed(MouseButtonPressedEvent& e);
 	private:
 		EE::Renderer renderer;
 		EE::Framebuffer m_Framebuffer;
@@ -30,8 +31,8 @@ namespace EE {
 		std::shared_ptr<Scene> mScene_ptr;
 		glm::vec2 viewportSize = { 0.0f, 0.0f };
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
-
+		glm::vec2 m_ViewportBounds[2];
 		int m_GizmoType = -1;
-
+		Entity selectedEntity= -1;
 	};
 }

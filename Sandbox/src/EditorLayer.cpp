@@ -7,11 +7,13 @@
 
 #include "Engine/Math/Math.h"
 #include "Engine/Core/KeyCode.h"
+#include "Engine/Core/MouseCodes.h"
+
 
 namespace EE {
 
 	EditorLayer::EditorLayer()
-		:Layer("EditorLayer"), m_Framebuffer(1600, 900)
+		:Layer("EditorLayer")
 	{
 		
 	}
@@ -25,6 +27,12 @@ namespace EE {
 	{
 		mScene_ptr = std::make_shared<Scene>();
 		sceneHierarchyPanel.SetActiveScene(mScene_ptr);
+		FramebufferSpecification fbSpec;
+		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
+		fbSpec.Width = 1600;
+		fbSpec.Height = 900;
+		m_Framebuffer.SetFramebufferSpec(fbSpec);
+		m_Framebuffer.Init();
 	}
 
 	void EditorLayer::OnDetach()
@@ -35,7 +43,26 @@ namespace EE {
 	void EditorLayer::OnUpdate(Timestep timestep)
 	{
 		m_Framebuffer.Bind();
+		renderer.Clear();
+		m_Framebuffer.ClearAttachment(1, -1);
+
 		mScene_ptr->OnUpdate(timestep);
+
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= m_ViewportBounds[0].x;
+		my -= m_ViewportBounds[0].y;
+		glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+		my = viewportSize.y - my;
+		int mouseX = (int)mx;
+		int mouseY = (int)my;
+
+		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+		{
+			selectedEntity = m_Framebuffer.ReadPixel(1, mouseX, mouseY);
+			//EE_TRACE(selectedEntity);
+		}
+
+
 		m_Framebuffer.Unbind();
 	}
 
@@ -54,17 +81,13 @@ namespace EE {
 			if (opt_fullscreen)
 			{
 				const ImGuiViewport* viewport = ImGui::GetMainViewport();
-				ImGui::SetNextWindowPos(viewport->WorkPos);
-				ImGui::SetNextWindowSize(viewport->WorkSize);
+				ImGui::SetNextWindowPos(viewport->Pos);
+				ImGui::SetNextWindowSize(viewport->Size);
 				ImGui::SetNextWindowViewport(viewport->ID);
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 				window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 				window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-			}
-			else
-			{
-				dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
 			}
 
 			// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
@@ -113,7 +136,10 @@ namespace EE {
 
 			sceneHierarchyPanel.OnImGuiRender();
 
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 			ImGui::Begin("viewport");
+			auto viewportOffset = ImGui::GetCursorPos(); // Includes tab bar
+
 			m_ViewportFocused = ImGui::IsWindowFocused();
 			m_ViewportHovered = ImGui::IsWindowHovered();
 			EE::Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
@@ -126,8 +152,17 @@ namespace EE {
 				if(mScene_ptr->GetActiveCamera()!=-1 && mScene_ptr->GetCooptr()->HasComponent<CameraComponent>(mScene_ptr->GetActiveCamera()))
 					mScene_ptr->GetComponent<CameraComponent>(mScene_ptr->GetActiveCamera()).cameraController->OnResize(viewportSize.x, viewportSize.y);
 			}
-			unsigned int tex = m_Framebuffer.GetColorAttachmentID();
+			unsigned int tex = m_Framebuffer.GetColorAttachmentID(0);
 			ImGui::Image((void*)tex, ImVec2{ viewportSize.x, viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+			auto windowSize = ImGui::GetWindowSize();
+			ImVec2 minBound = ImGui::GetWindowPos();
+			minBound.x += viewportOffset.x;
+			minBound.y += viewportOffset.y;
+
+			ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
+			m_ViewportBounds[0] = { minBound.x, minBound.y };
+			m_ViewportBounds[1] = { maxBound.x, maxBound.y };
 
 			//Gizmos
 			Entity selectedEntity = mScene_ptr->GetSelectedEntity();
@@ -164,6 +199,7 @@ namespace EE {
 			}
 
 			ImGui::End();
+			ImGui::PopStyleVar();	//viewport
 
 			ImGui::End();
 		}
@@ -175,6 +211,7 @@ namespace EE {
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(std::bind(&EditorLayer::OnKeyPressed, this, std::placeholders::_1));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(std::bind(&EditorLayer::OnMousePressed, this, std::placeholders::_1));
 	}
 
 	void EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -202,5 +239,14 @@ namespace EE {
 			break;
 		}
 	}
+
+	void EditorLayer::OnMousePressed(MouseButtonPressedEvent& e)
+	{
+		if (e.GetButton() == Mouse::ButtonLeft) {
+			if(m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(GE_KEY_LEFT_ALT))
+				sceneHierarchyPanel.SetSelectedEntity(selectedEntity);
+		}
+	}
+
 
 }

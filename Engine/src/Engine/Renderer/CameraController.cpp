@@ -11,20 +11,32 @@ namespace EE {
 
 	void CameraController::OnUpdate(Timestep ts)
 	{
-		if (Input::IsKeyPressed(GE_KEY_A))
-			m_position.x -= translationSpeed * ts.GetSecond();
-		if (Input::IsKeyPressed(GE_KEY_D))
-			m_position.x += translationSpeed * ts.GetSecond();
-		if (Input::IsKeyPressed(GE_KEY_W))
-			m_position.y += translationSpeed * ts.GetSecond();
-		if (Input::IsKeyPressed(GE_KEY_S))
-			m_position.y -= translationSpeed * ts.GetSecond();
+		if (Input::IsKeyPressed(GE_KEY_A)) {
+			m_position.x -= translationSpeed * ts.GetSecond() * cos(m_rotation.y) * cos(m_rotation.z);
+			m_position.z -= translationSpeed * ts.GetSecond() * sin(m_rotation.y) * cos(m_rotation.z);
+			m_position.y += translationSpeed * ts.GetSecond() * sin(m_rotation.z) * cos(m_rotation.y);
+		}
+		if (Input::IsKeyPressed(GE_KEY_D)) {
+			m_position.x += translationSpeed * ts.GetSecond() * cos(m_rotation.y * cos(m_rotation.z));
+			m_position.z += translationSpeed * ts.GetSecond() * sin(m_rotation.y * cos(m_rotation.z));
+			m_position.y -= translationSpeed * ts.GetSecond() * sin(m_rotation.z * cos(m_rotation.y));
+		}
+		if (Input::IsKeyPressed(GE_KEY_W)) {
+			m_position.x += translationSpeed * ts.GetSecond() * sin(m_rotation.z) * cos(m_rotation.x);
+			m_position.y += translationSpeed * ts.GetSecond() * cos(m_rotation.z) * cos(m_rotation.x);
+			m_position.z -= translationSpeed * ts.GetSecond() * sin(m_rotation.x) * cos(m_rotation.y);
+		}
+		if (Input::IsKeyPressed(GE_KEY_S)) {
+			m_position.x -= translationSpeed * ts.GetSecond() * sin(m_rotation.z) * cos(m_rotation.x);
+			m_position.y -= translationSpeed * ts.GetSecond() * cos(m_rotation.z) * cos(m_rotation.x);
+			m_position.z += translationSpeed * ts.GetSecond() * sin(m_rotation.x) * cos(m_rotation.y);
+		}
 
 		if (Input::IsKeyPressed(GE_KEY_LEFT_ALT)) {
 			glm::vec2 mousePos = { Input::GetMouseX(), Input::GetMouseY() };
 			glm::vec2 delta = mousePos - mouseInitialPos;
 			mouseInitialPos = mousePos;
-			if (Input::IsMouseButtonPressed(1)) {	//right:1  left:0
+			if (Input::IsMouseButtonPressed(0)) {	// left:0 right:1
 					MouseRotate(delta);
 			}
 		}

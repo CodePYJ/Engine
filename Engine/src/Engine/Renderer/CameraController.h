@@ -46,9 +46,10 @@ namespace EE {
 	private:
 		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_rotation = { 0.0f, 0.0f, 0.0f };
-		float translationSpeed = 2.0f, rotationSpeed = 2.0f, zoomLevel = 1.0f;
+		float translationSpeed = 2.5f, rotationSpeed = 2.0f, zoomLevel = 1.0f;
 		float m_aspectRatio = 0.0f;
 		glm::vec2 mouseInitialPos = { 0.0f, 0.0f };
 		Camera m_camera;
 	};
+
 }

@@ -23,7 +23,7 @@ namespace EE {
 
 	void RenderSystem::Update(Timestep ts)
 	{
-		renderer.Clear();
+		//renderer.Clear();
 
 		for (Entity entity : mEntities)
 		{
@@ -38,6 +38,7 @@ namespace EE {
 				renderable.data_ptr->shader->SetUniformMat4("transform", transData.GetTransform());
 				renderable.data_ptr->shader->SetUniform3f("u_color", renderable.color);
 				renderable.data_ptr->shader->SetUniformMat4("u_ViewProjection", renderable.ViewProjection);
+				renderable.data_ptr->shader->SetUniform1i("entity", entity);
 			}
 			glDrawElements(GL_TRIANGLES, renderable.data_ptr->EBO->GetCount(), GL_UNSIGNED_INT, nullptr);
 		}

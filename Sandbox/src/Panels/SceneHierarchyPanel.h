@@ -49,7 +49,7 @@ namespace EE{
 		}
 
 	private:
-		Entity selectedEntity = -1;		//Entity
+		Entity selectedEntity = -1;
 		std::shared_ptr<Scene> activeScene_ptr;
 	};
 }
