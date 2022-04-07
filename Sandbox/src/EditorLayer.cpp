@@ -134,7 +134,9 @@ namespace EE {
 				ImGui::EndMenuBar();
 			}
 
+			//	Panels
 			sceneHierarchyPanel.OnImGuiRender();
+			contentBrowserPanel.OnImGuiRenderer();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 			ImGui::Begin("viewport");
@@ -149,7 +151,7 @@ namespace EE {
 			if (viewportSize != *((glm::vec2*)&temViewportSzie)) {
 				viewportSize = { temViewportSzie.x, temViewportSzie.y };
 				m_Framebuffer.Resize(viewportSize.x, viewportSize.y);
-				if(mScene_ptr->GetActiveCamera()!=-1 && mScene_ptr->GetCooptr()->HasComponent<CameraComponent>(mScene_ptr->GetActiveCamera()))
+				if(mScene_ptr->GetActiveCamera()!=-1)
 					mScene_ptr->GetComponent<CameraComponent>(mScene_ptr->GetActiveCamera()).cameraController->OnResize(viewportSize.x, viewportSize.y);
 			}
 			unsigned int tex = m_Framebuffer.GetColorAttachmentID(0);

@@ -3,9 +3,10 @@
 #include "Engine/Core/Layer.h"
 #include "Engine/Renderer/Framebuffer.h"
 #include <glm/glm.hpp>
-#include "Panels/SceneHierarchyPanel.h"
 #include "Engine/Renderer/Renderer.h"
 #include "Engine/Events/KeyEvent.h"
+#include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 
 
 namespace EE {
@@ -27,12 +28,13 @@ namespace EE {
 	private:
 		EE::Renderer renderer;
 		EE::Framebuffer m_Framebuffer;
-		SceneHierarchyPanel sceneHierarchyPanel;
 		std::shared_ptr<Scene> mScene_ptr;
 		glm::vec2 viewportSize = { 0.0f, 0.0f };
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		glm::vec2 m_ViewportBounds[2];
 		int m_GizmoType = -1;
 		Entity selectedEntity= -1;
+		SceneHierarchyPanel sceneHierarchyPanel;
+		ContentBrowserPanel contentBrowserPanel;
 	};
 }

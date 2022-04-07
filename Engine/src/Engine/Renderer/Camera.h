@@ -58,7 +58,7 @@ namespace EE {
 		float m_size = 1.0f;
 		float m_fov = 45.0f;
 		float p_near = 0.01f, p_far = 1000.0f;	//perspective
-		float o_near = -1.0f, o_far = 1.0f;	//orthographic
+		float o_near = 1.0f, o_far = -1.0f;	//orthographic
 
 		ProjectionType cameraType = ProjectionType::Perspective;
 	};

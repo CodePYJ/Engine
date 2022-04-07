@@ -27,8 +27,10 @@ namespace EE {
 
 		glm::mat4 R_view = glm::inverse(R_view_inverse);
 		m_view = glm::transpose(R_view) * glm::transpose(T_view);//glsl是列为主
-		//m_view= //glm::inverse(glm::rotate(glm::mat4(1.0f), m_rotation, glm::vec3(0, 0, 1))) *
-			//glm::translate(glm::mat4(1.0f), -1.0f * m_position);
+		//m_view = glm::inverse(glm::rotate(glm::mat4(1.0f), m_rotation.z, glm::vec3(0, 0, 1)) *
+		//	glm::rotate(glm::mat4(1.0f), m_rotation.x, glm::vec3(1, 0, 0)) *
+		//	glm::rotate(glm::mat4(1.0f), m_rotation.y, glm::vec3(0, 1, 0)))
+		//	* glm::translate(glm::mat4(1.0f), -1.0f * m_position);
 		m_view_projection= m_projection  * m_view;
 	}
 
