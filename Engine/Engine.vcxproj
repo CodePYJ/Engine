@@ -119,6 +119,7 @@
     <ClInclude Include="src\Engine\Events\WindowEvent.h" />
     <ClInclude Include="src\Engine\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Engine\Math\Math.h" />
+    <ClInclude Include="src\Engine\Platform\Windows\FileDialogs.h" />
     <ClInclude Include="src\Engine\Platform\Windows\WinInput.h" />
     <ClInclude Include="src\Engine\Platform\Windows\WinWindow.h" />
     <ClInclude Include="src\Engine\Renderer\Camera.h" />
@@ -567,6 +568,7 @@
     <ClCompile Include="src\Engine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Engine\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Engine\Math\Math.cpp" />
+    <ClCompile Include="src\Engine\Platform\Windows\FileDialogs.cpp" />
     <ClCompile Include="src\Engine\Platform\Windows\WinInput.cpp" />
     <ClCompile Include="src\Engine\Platform\Windows\WinWindow.cpp" />
     <ClCompile Include="src\Engine\Renderer\Camera.cpp" />
@@ -603,4 +605,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project> 
+</Project>

@@ -2,7 +2,7 @@ Scene: Untitled
 Entities:
   - Entity: 0
     TagComponent:
-      Tag: entity 0
+      Tag: square 1
     TransformComponent:
       Position: [0, 0, 1.20000005]
       Rotation: [0, 0, 0]
@@ -13,7 +13,7 @@ Entities:
     TagComponent:
       Tag: camera
     TransformComponent:
-      Position: [0, 0, 0]
+      Position: [-0.279998779, -0.0639629364, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
@@ -26,3 +26,12 @@ Entities:
         OrthographicNear: 1
         OrthographicFar: -1
       Primary: true
+  - Entity: 2
+    TagComponent:
+      Tag: square 2
+    TransformComponent:
+      Position: [-0.600000024, 0, 1.10000002]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Renderable2DComponent:
+      color: [0.795366764, 0.378303409, 0.178113028]

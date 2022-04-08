@@ -25,6 +25,12 @@ namespace EE {
 
 		void OnKeyPressed(KeyPressedEvent& e);
 		void OnMousePressed(MouseButtonPressedEvent& e);
+
+		void NewScene();
+		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
+		void SaveSceneAs();
+
 	private:
 		EE::Renderer renderer;
 		EE::Framebuffer m_Framebuffer;

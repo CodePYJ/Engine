@@ -9,9 +9,12 @@
 #include "Engine/Core/KeyCode.h"
 #include "Engine/Core/MouseCodes.h"
 #include "Engine/Scene/SceneSerializer.h"
+#include "Engine/Platform/Windows/FileDialogs.h"
 
 
 namespace EE {
+
+	extern const std::filesystem::path assetsPath;
 
 	EditorLayer::EditorLayer()
 		:Layer("EditorLayer")
@@ -127,8 +130,17 @@ namespace EE {
 				{
 					// Disabling fullscreen would allow the window to be moved to the front of other windows,
 					// which we can't undo at the moment without finer window depth/z control.
-					ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
-					ImGui::Separator();
+					//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
+
+					if (ImGui::MenuItem("New", "Ctrl+N"))
+						NewScene();
+
+					if (ImGui::MenuItem("Open...", "Ctrl+O"))
+						OpenScene();
+
+					if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+						SaveSceneAs();
+
 					if (ImGui::MenuItem("Close", NULL, false))
 						dockspaceOpen = false;
 					ImGui::EndMenu();
@@ -154,7 +166,7 @@ namespace EE {
 			if (viewportSize != *((glm::vec2*)&temViewportSzie)) {
 				viewportSize = { temViewportSzie.x, temViewportSzie.y };
 				m_Framebuffer.Resize(viewportSize.x, viewportSize.y);
-				if(mScene_ptr->GetActiveCamera()!=-1)
+				if(mScene_ptr->GetActiveCamera() != -1)
 					mScene_ptr->GetComponent<CameraComponent>(mScene_ptr->GetActiveCamera()).cameraController->OnResize(viewportSize.x, viewportSize.y);
 			}
 			unsigned int tex = m_Framebuffer.GetColorAttachmentID(0);
@@ -168,6 +180,16 @@ namespace EE {
 			ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
 			m_ViewportBounds[0] = { minBound.x, minBound.y };
 			m_ViewportBounds[1] = { maxBound.x, maxBound.y };
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					OpenScene(std::filesystem::path(assetsPath) / path);
+				}
+				ImGui::EndDragDropTarget();
+			}
 
 			//Gizmos
 			Entity selectedEntity = mScene_ptr->GetSelectedEntity();
@@ -253,5 +275,46 @@ namespace EE {
 		}
 	}
 
+	void EditorLayer::NewScene()
+	{
+		mScene_ptr = std::make_shared<Scene>();
+		sceneHierarchyPanel.SetActiveScene(mScene_ptr);
+	}
 
+	void EditorLayer::OpenScene()
+	{
+		std::string filepath = FileDialogs::OpenFile("Engine Scene (*.engine)\0*.engine\0");
+		if (!filepath.empty())
+		{
+			OpenScene(filepath);
+		}
+	}
+
+	void EditorLayer::OpenScene(const std::filesystem::path& path)
+	{
+		if (path.extension().string() != ".engine")
+		{
+			EE_WARN("Could not load {0} - not a scene file");
+			return;
+		}
+
+		mScene_ptr = std::make_shared<Scene>();
+
+		SceneSerializer serializer(mScene_ptr);
+		if (serializer.Deserialize(path.string()))
+		{
+			sceneHierarchyPanel.SetActiveScene(mScene_ptr);
+			mScene_ptr->GetComponent<CameraComponent>(mScene_ptr->GetActiveCamera()).cameraController->OnResize(viewportSize.x, viewportSize.y);
+		}
+	}
+
+	void EditorLayer::SaveSceneAs()
+	{
+		std::string filepath = FileDialogs::SaveFile("Engine Scene (*.engine)\0*.engine\0");
+		if (!filepath.empty())
+		{
+			SceneSerializer serializer(mScene_ptr);
+			serializer.Serialize(filepath);
+		}
+	}
 }

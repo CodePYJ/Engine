@@ -15,11 +15,6 @@ namespace EE {
 		ImGui::Begin("Scene Hierarchy");
 		DrawEntityNode();
 
-		if (ImGui::Button("save")) {
-			SceneSerializer serializer(activeScene_ptr);
-			serializer.Serialize("D:/WorkSpace/CppWorkSpace/Engine/Engine/Sandbox/assets/scenes/example.engine");
-		}
-
 		if (ImGui::BeginPopupContextWindow(0, 1, false))
 		{
 			if (ImGui::MenuItem("Create Empty Entity")) {
