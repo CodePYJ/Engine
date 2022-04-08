@@ -25,6 +25,9 @@
     <Filter Include="src\Engine\ImGui">
       <UniqueIdentifier>{BC1B88A8-A814-A7FA-D146-8C7FBD9E8606}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Engine\Math">
+      <UniqueIdentifier>{2B817A79-970C-E83D-A01D-6B320C28443E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Engine\Platform">
       <UniqueIdentifier>{A63124B0-1293-01BE-9B00-48700761387D}</UniqueIdentifier>
     </Filter>
@@ -90,6 +93,9 @@
     <ClInclude Include="src\Engine\Core\Log.h">
       <Filter>src\Engine\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Core\MouseCodes.h">
+      <Filter>src\Engine\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Core\Timestep.h">
       <Filter>src\Engine\Core</Filter>
     </ClInclude>
@@ -150,6 +156,9 @@
     <ClInclude Include="src\Engine\ImGui\ImGuiLayer.h">
       <Filter>src\Engine\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Math\Math.h">
+      <Filter>src\Engine\Math</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Platform\Windows\WinInput.h">
       <Filter>src\Engine\Platform\Windows</Filter>
     </ClInclude>
@@ -196,6 +205,9 @@
       <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Scene\Scene.h">
+      <Filter>src\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Scene\SceneSerializer.h">
       <Filter>src\Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h">
@@ -1449,8 +1461,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Math\Math.h" />
-    <ClInclude Include="src\Engine\Core\MouseCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Core\Application.cpp">
@@ -1485,6 +1495,9 @@
     </ClCompile>
     <ClCompile Include="src\Engine\ImGui\ImGuiLayer.cpp">
       <Filter>src\Engine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Math\Math.cpp">
+      <Filter>src\Engine\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Platform\Windows\WinInput.cpp">
       <Filter>src\Engine\Platform\Windows</Filter>
@@ -1531,12 +1544,14 @@
     <ClCompile Include="src\Engine\Scene\Scene.cpp">
       <Filter>src\Engine\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Scene\SceneSerializer.cpp">
+      <Filter>src\Engine\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
       <Filter>vendor\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Math\Math.cpp" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
+
 namespace EE {
 
 	Application* Application::s_app = nullptr;

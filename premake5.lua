@@ -16,10 +16,12 @@ IncludeDir["ImGui"] = "Engine/vendor/imgui"
 IncludeDir["glm"] = "Engine/vendor/glm"
 IncludeDir["stb_image"] = "Engine/vendor/stb_image"
 IncludeDir["ImGuizmo"] = "Engine/vendor/ImGuizmo"
+IncludeDir["yaml_cpp"] = "Engine/vendor/yaml-cpp/include"
 
 include "Engine/vendor/GLFW"
 include "Engine/vendor/Glad"
 include "Engine/vendor/imgui"
+include "Engine/vendor/yaml-cpp"
 
 project "Engine"
 	location "Engine"
@@ -49,7 +51,8 @@ project "Engine"
 	defines
 	{
 		"_CRT_SECURE_NO_WARNINGS",
-		"GLFW_INCLUDE_NONE"
+		"GLFW_INCLUDE_NONE",
+		"YAML_CPP_STATIC_DEFINE"
 	}
 
 	includedirs
@@ -60,7 +63,8 @@ project "Engine"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links
@@ -68,6 +72,7 @@ project "Engine"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"yaml-cpp",
 		"opengl32.lib"
 	}
 
@@ -118,7 +123,8 @@ project "Sandbox"
 		"Engine/vendor",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links

@@ -23,14 +23,14 @@ namespace EE {
 		float GetOrthoNear() { return m_camera.GetOrthographicNearClip(); }
 		void SetOrthoNear(float n) { m_camera.SetOrthographicNearClip(n); }
 		float GetOrthoFar() { return m_camera.GetOrthographicFarClip(); }
-		void SetOrthoFar(float f) { m_camera.SetOrthographicNearClip(f); }
+		void SetOrthoFar(float f) { m_camera.SetOrthographicFarClip(f); }
 
 		float GetPerspFov() { return m_camera.GetPerspectiveVerticalFOV(); }
 		void SetPerspFov(float fov) { m_camera.SetPerspectiveVerticalFOV(fov); }
 		float GetPerspNear() { return m_camera.GetPerspectiveNearClip(); }
 		void SetPerspNear(float n) { m_camera.SetPerspectiveNearClip(n); }
 		float GetPerspFar() { return m_camera.GetPerspectiveFarClip(); }
-		void SetPerspFar(float f) { m_camera.SetPerspectiveNearClip(f); }
+		void SetPerspFar(float f) { m_camera.SetPerspectiveFarClip(f); }
 
 		glm::vec3 GetPosition() { return m_position; }
 		void SetPosition(glm::vec3 position) { m_position = position; m_camera.SetPosition(position); }

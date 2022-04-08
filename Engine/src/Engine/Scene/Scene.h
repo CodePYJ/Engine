@@ -39,6 +39,12 @@ namespace EE {
 			return mCoo_ptr->GetComponent<T>(entity);
 		}
 
+		template<typename T>
+		bool HasComponent(Entity entity)
+		{
+			return mCoo_ptr->HasComponent<T>(entity);
+		}
+
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& event);
 		void SetActiveCamera(Entity camera) 
@@ -55,6 +61,23 @@ namespace EE {
 		void SetSelectedEntity(Entity entity) { selectedEntity = entity; }
 
 		Coordinator* GetCooptr() { return mCoo_ptr.get(); }
+		
+		std::vector<Entity> GetLivingEntities() { return mCoo_ptr->GetLivingEntities(); }
+
+		void PushCamera(Entity entity) { cameras.push_back(entity); }
+		void PopCamera(Entity entity) 
+		{ 
+			auto it = std::find(cameras.begin(), cameras.end(), entity);
+			if (it != cameras.end())
+				cameras.erase(it);
+		}
+
+		Entity GetRandomCamera()
+		{
+			if (cameras.empty())
+				return -1;
+			return cameras[0];
+		}
 
 	private:
 		std::unique_ptr<Coordinator> mCoo_ptr;		//一个Scene只有一个Coo
@@ -63,7 +86,7 @@ namespace EE {
 		Entity selectedEntity = -1;
 		std::shared_ptr<RenderSystem> renderSys_ptr;
 		std::shared_ptr<CameraControlSystem> cameraControlSys_ptr;
-
+		std::vector<Entity> cameras;
 		float viewPortAspectRatio;
 	};
 

@@ -17,6 +17,7 @@ namespace EE {
 		virtual void OnImGuiRender() override;
 		void BlockEvents(bool block) { m_BlockEvents = block; }
 		void  SetThemeColors();
+		void SetDarkThemeColors();
 		void Begin();
 		void End();
 	private:

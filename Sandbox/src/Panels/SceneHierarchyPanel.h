@@ -21,7 +21,7 @@ namespace EE{
 		void DrawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
 		{
 			const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
-			if (activeScene_ptr->GetCooptr()->HasComponent<T>(entity)) {
+			if (activeScene_ptr->HasComponent<T>(entity)) {
 				auto& component = activeScene_ptr->GetComponent<T>(entity);
 
 				ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
@@ -43,6 +43,9 @@ namespace EE{
 					ImGui::TreePop();
 				}
 				if (removeComponent) {
+					if (activeScene_ptr->HasComponent<CameraComponent>(entity))
+						if (activeScene_ptr->GetActiveCamera() == entity)
+							activeScene_ptr->SetActiveCamera(-1);
 					activeScene_ptr->RemoveComponent<T>(entity);
 				}
 			}

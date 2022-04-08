@@ -8,6 +8,7 @@
 #include "Engine/Math/Math.h"
 #include "Engine/Core/KeyCode.h"
 #include "Engine/Core/MouseCodes.h"
+#include "Engine/Scene/SceneSerializer.h"
 
 
 namespace EE {
@@ -33,6 +34,8 @@ namespace EE {
 		fbSpec.Height = 900;
 		m_Framebuffer.SetFramebufferSpec(fbSpec);
 		m_Framebuffer.Init();
+		SceneSerializer serializer(mScene_ptr);
+		serializer.Deserialize("D:/WorkSpace/CppWorkSpace/Engine/Engine/Sandbox/assets/scenes/example.engine");
 	}
 
 	void EditorLayer::OnDetach()

@@ -5,6 +5,7 @@
 #include "Engine/ECS/Entity.h"
 #include "Engine.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "Engine/Scene/SceneSerializer.h"
 
 
 namespace EE {
@@ -13,6 +14,11 @@ namespace EE {
 	{
 		ImGui::Begin("Scene Hierarchy");
 		DrawEntityNode();
+
+		if (ImGui::Button("save")) {
+			SceneSerializer serializer(activeScene_ptr);
+			serializer.Serialize("D:/WorkSpace/CppWorkSpace/Engine/Engine/Sandbox/assets/scenes/example.engine");
+		}
 
 		if (ImGui::BeginPopupContextWindow(0, 1, false))
 		{
@@ -53,12 +59,12 @@ namespace EE {
 
 	void SceneHierarchyPanel::DrawEntityNode()
 	{
-		std::vector<Entity> livingEntities = activeScene_ptr->GetCooptr()->GetLivingEntities();
+		std::vector<Entity> livingEntities = activeScene_ptr->GetLivingEntities();
 
 		for(Entity entity : livingEntities) {
 			ImGuiTreeNodeFlags flags = ((selectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 			flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-			TagComponent& tagComponent = activeScene_ptr->GetCooptr()->GetComponent<TagComponent>(entity);
+			TagComponent& tagComponent = activeScene_ptr->GetComponent<TagComponent>(entity);
 			bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tagComponent.tag.c_str());
 			if (ImGui::IsItemClicked())
 			{
@@ -160,7 +166,7 @@ namespace EE {
 
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
 	{
-		if (activeScene_ptr->GetCooptr()->HasComponent<TagComponent>(entity)) {
+		if (activeScene_ptr->HasComponent<TagComponent>(entity)) {
 			std::string& tagName= activeScene_ptr->GetComponent<TagComponent>(entity).tag;
 			char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
@@ -179,7 +185,7 @@ namespace EE {
 				DrawVec3Control("Scale", component.scale, 1.0f);
 			});
 
-		DrawComponent<CameraComponent>("Camera", entity, [](auto& component)
+		DrawComponent<CameraComponent>("Camera", entity, [this, entity](auto& component)
 			{
 				std::shared_ptr<CameraController> cameraController = component.cameraController;
 				ImGui::Checkbox("Primary", &component.primary);
@@ -247,7 +253,7 @@ namespace EE {
 					glm::mat4(1.0f),
 					glm::mat4(1.0f)
 				});
-
+			activeScene_ptr->PushCamera(selectedEntity);
 			activeScene_ptr->SetActiveCamera(selectedEntity);
 			ImGui::CloseCurrentPopup();
 		}
