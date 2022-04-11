@@ -14,14 +14,14 @@ namespace EE {
 		~VertexArray();
 
 		void AddBuffer(VertexBuffer& vb, VertexBufferLayout& layout);
-		void AddEBO(IndexBuffer& ebo);
+		void AddEBO(std::shared_ptr<IndexBuffer>& ebo);
 		void Bind();
 		void Unbind();
 
-		IndexBuffer GetEBO() { return m_EBO; }
+		IndexBuffer GetEBO() { return *m_EBO; }
 
 		private:
 			unsigned int m_RendererID;
-			IndexBuffer m_EBO;
+			std::shared_ptr<IndexBuffer> m_EBO;
 	};
 }

@@ -30,9 +30,8 @@ namespace EE {
 
 	struct Renderable2DComponent
 	{
-		std::shared_ptr<Renderer2DData> data_ptr;
 		glm::vec3 color;
-		glm::mat4 ViewProjection;
+		Render2DType type;
 	};
 
 	struct ShaderComponent

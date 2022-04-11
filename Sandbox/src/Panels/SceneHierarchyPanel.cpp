@@ -13,24 +13,10 @@ namespace EE {
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		ImGui::Begin("Scene Hierarchy");
-		DrawEntityNode();
 
-		if (ImGui::BeginPopupContextWindow(0, 1, false))
-		{
-			if (ImGui::MenuItem("Create Empty Entity")) {
-				Entity entity = activeScene_ptr->CreateEntity();
-				std::string name = "entity ";
-				activeScene_ptr->AddComponent<TagComponent>(entity, { name + std::to_string(entity) });
-				activeScene_ptr->AddComponent<TransformComponent>(entity,
-					{
-						glm::vec3(0.0f, 0.0f, 0.0f),
-						glm::vec3(0.0f, 0.0f, 0.0f),
-						glm::vec3(1.0f, 1.0f, 1.0f)
-					});
-				SetSelectedEntity(entity);
-			}
-			ImGui::EndPopup();
-		}
+		DrawPopupWindow();
+
+		DrawEntityNode();
 
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 			selectedEntity = -1;
@@ -50,6 +36,82 @@ namespace EE {
 			}
 		}
 		ImGui::End();	//Properties
+	}
+
+	void SceneHierarchyPanel::DrawPopupWindow()
+	{
+		if (ImGui::BeginPopupContextWindow(0, 1, false))
+		{
+			if (ImGui::MenuItem("Create Empty Entity")) {
+				Entity entity = activeScene_ptr->CreateEntity();
+				std::string name = "entity ";
+				activeScene_ptr->AddComponent<TagComponent>(entity, { name + std::to_string(entity) });
+				activeScene_ptr->AddComponent<TransformComponent>(entity,
+					{
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(1.0f, 1.0f, 1.0f)
+					});
+				SetSelectedEntity(entity);
+			}
+			if (ImGui::MenuItem("Create Camera")) {
+				Entity entity = activeScene_ptr->CreateEntity();
+				std::string name = "camera ";
+				activeScene_ptr->AddComponent<TagComponent>(entity, { name + std::to_string(entity) });
+				activeScene_ptr->AddComponent<TransformComponent>(entity,
+					{
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(1.0f, 1.0f, 1.0f)
+					});
+				activeScene_ptr->AddComponent<CameraComponent>(entity,
+					{
+						std::make_shared<CameraController>(activeScene_ptr->GetAspectRatio()),
+						glm::mat4(1.0f),
+						glm::mat4(1.0f),
+						true
+					});
+				activeScene_ptr->PushCamera(entity);
+				activeScene_ptr->SetActiveCamera(entity);
+				SetSelectedEntity(entity);
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::MenuItem("Create Square")) {
+				Entity entity = activeScene_ptr->CreateEntity();
+				std::string name = "square ";
+				activeScene_ptr->AddComponent<TagComponent>(entity, { name + std::to_string(entity) });
+				activeScene_ptr->AddComponent<TransformComponent>(entity,
+					{
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(1.0f, 1.0f, 1.0f)
+					});
+				activeScene_ptr->AddComponent<Renderable2DComponent>(entity,
+					{
+						glm::vec3(0.5f, 0.5f, 0.3f),
+						Render2DType::SQUARE
+					});
+				SetSelectedEntity(entity);
+			}
+			if (ImGui::MenuItem("Create Circle")) {
+				Entity entity = activeScene_ptr->CreateEntity();
+				std::string name = "circle ";
+				activeScene_ptr->AddComponent<TagComponent>(entity, { name + std::to_string(entity) });
+				activeScene_ptr->AddComponent<TransformComponent>(entity,
+					{
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(1.0f, 1.0f, 1.0f)
+					});
+				activeScene_ptr->AddComponent<Renderable2DComponent>(entity,
+					{
+						glm::vec3(0.5f, 0.5f, 0.0f),
+						Render2DType::CIRCLE
+					});
+				SetSelectedEntity(entity);
+			}
+			ImGui::EndPopup();
+		}
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode()
@@ -242,11 +304,12 @@ namespace EE {
 	void SceneHierarchyPanel::DrawAddComponent()
 	{
 		if (ImGui::MenuItem("Camera")) {
-			activeScene_ptr->AddComponent<CameraComponent>((Entity)selectedEntity,
+			activeScene_ptr->AddComponent<CameraComponent>(selectedEntity,
 				{
 					std::make_shared<CameraController>(activeScene_ptr->GetAspectRatio()),
 					glm::mat4(1.0f),
-					glm::mat4(1.0f)
+					glm::mat4(1.0f),
+					true
 				});
 			activeScene_ptr->PushCamera(selectedEntity);
 			activeScene_ptr->SetActiveCamera(selectedEntity);
@@ -254,11 +317,10 @@ namespace EE {
 		}
 
 		if (ImGui::MenuItem("Renderable")) {
-			activeScene_ptr->AddComponent<Renderable2DComponent>((Entity)selectedEntity,
+			activeScene_ptr->AddComponent<Renderable2DComponent>(selectedEntity,
 				{
-					std::make_shared<Renderer2DData>(),
 					glm::vec3(0.5f, 0.5f, 0.0f),
-					glm::mat4(1.0f)
+					Render2DType::SQUARE
 				});
 
 			ImGui::CloseCurrentPopup();

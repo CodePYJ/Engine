@@ -10,6 +10,7 @@ namespace EE{
 	{
 	public:
 		void OnImGuiRender();
+		void DrawPopupWindow();
 		void DrawEntityNode();
 		void DrawComponents(Entity entity);
 		//void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValues = 0.0f, float columnWidth = 100.0f);

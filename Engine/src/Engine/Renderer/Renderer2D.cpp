@@ -5,55 +5,68 @@
 
 namespace EE {
 
-	Renderer2DData::Renderer2DData()
+	void Renderer2D::RendererInit()
 	{
-		VAO = std::make_unique<EE::VertexArray>();
-		VAO->Bind();
+		renderdata.quad_VAO = std::make_shared<VertexArray>();
+		renderdata.quad_VBO = std::make_shared<VertexBuffer>(renderdata.MaxVertices*sizeof(QuardVertex));
 
-		VBO = std::make_unique<EE::VertexBuffer>(vertices, verSize);
-		layout.PushFloat(3);		//position
-		layout.PushFloat(3);		//color
-		layout.PushFloat(3);		//normal
+		renderdata.quad_layout.PushFloat(3);	//position;
+		renderdata.quad_layout.PushFloat(3);	//color;
+		renderdata.quad_layout.PushFloat(3);	//normal;
+		renderdata.quad_layout.PushFloat(2);	//TexCoord;
+		renderdata.quad_layout.PushInt(1);	//entityID;
+		renderdata.quad_VAO->AddBuffer(*renderdata.quad_VBO, renderdata.quad_layout);
+		renderdata.quad_vertex_base = new QuardVertex[renderdata.MaxVertices];
+		uint32_t* quad_indices = new uint32_t[renderdata.MaxIndices];
+		uint32_t offect = 0;
+		for (int i = 0; i < renderdata.MaxIndices; i += 6) {
+			quad_indices[i + 0] = offect + 0;
+			quad_indices[i + 1] = offect + 1;
+			quad_indices[i + 2] = offect + 2;
 
-		EBO = std::make_unique<EE::IndexBuffer>(indices, indCount);
-		VAO->AddBuffer(*VBO, layout);
-		VAO->AddEBO(*EBO);
+			quad_indices[i + 3] = offect + 2;
+			quad_indices[i + 4] = offect + 3;
+			quad_indices[i + 5] = offect + 1;
+			offect += 4;
+		}
+		std::shared_ptr<IndexBuffer> EBO = std::make_shared<IndexBuffer>(quad_indices, renderdata.MaxIndices);
+		renderdata.quad_VAO->AddEBO(EBO);
+		renderdata.quad_shader = std::make_shared<Shader>("assets/shaders/test.shader");
+		delete[] quad_indices;
 
-		shader = std::make_unique<EE::Shader>(shaderPath);
-		shader->Bind();
-		shader->SetUniformMat4("transform", glm::mat4(1.0f));
+		renderdata.quad_vertex_position[0] = { -0.5f, -0.5f, 0.0f,1.0f };
+		renderdata.quad_vertex_position[1] = { 0.5f, -0.5f, 0.0f,1.0f };
+		renderdata.quad_vertex_position[2] = { -0.5f, 0.5f, 0.0f,1.0f };
+		renderdata.quad_vertex_position[3] = { 0.5f, 0.5f, 0.0f, 1.0f };
 	}
 
-	void Renderer2D::RendererInit(std::shared_ptr<Renderer2DData> renderdata)
+	static void RendererSquareInit(std::shared_ptr<Renderer2DData> renderdata)
 	{
-		renderdata->VAO = std::make_unique<EE::VertexArray>();
-		renderdata->VAO->Bind();
 
-		renderdata->VBO = std::make_unique<EE::VertexBuffer>(renderdata->vertices, renderdata->verSize);
-		renderdata->layout.PushFloat(3);		//position
-		renderdata->layout.PushFloat(3);		//color
-		renderdata->layout.PushFloat(3);		//normal
+	}
 
-		renderdata->EBO = std::make_unique<EE::IndexBuffer>(renderdata->indices, renderdata->indCount);
-		renderdata->VAO->AddBuffer(*(renderdata->VBO), renderdata->layout);
-		renderdata->VAO->AddEBO(*(renderdata->EBO));
+	static void RendererCircleInit(std::shared_ptr<Renderer2DData> renderdata)
+	{
 
-		renderdata->shader = std::make_unique<EE::Shader>(renderdata->shaderPath);
-		renderdata->shader->Bind();
-		renderdata->shader->SetUniformMat4("transform", glm::mat4(1.0f));
 	}
 
 	void Renderer2D::Shutdown()
 	{
-
+		delete[] renderdata.quad_vertex_base;
 	}
 
-	void Renderer2D::BeginScene(Camera& camera)
-	{
+	void Renderer2D::BeginScene(Render2DType type, const glm::mat4& view_projection)
+	{	
+		if (type == Render2DType::SQUARE) {
+			renderdata.quad_index_count = 0;
+			renderdata.quad_vertex_ptr = renderdata.quad_vertex_base;
+			renderdata.quad_shader->Bind();
+			renderdata.quad_shader->SetUniformMat4("u_ViewProjection", view_projection);
+		}
+		else if (type == Render2DType::CIRCLE)
+		{
 
-	/*	currentObj->shader->SetUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-		if(!currentObj->isLight())
-			currentObj->shader->SetUniformMat4("viewMatrix", camera.GetViewMatrix());*/
+		}
 	}
 
 	void Renderer2D::EndScene()
@@ -61,21 +74,27 @@ namespace EE {
 
 	}
 
+	void Renderer2D::Flush()
+	{
+		renderdata.quad_VAO->Bind();
+		uint32_t data_size = (uint32_t)((uint8_t*)renderdata.quad_vertex_ptr - (uint8_t*)renderdata.quad_vertex_base);
+		renderdata.quad_VBO->SetData(renderdata.quad_vertex_base, data_size);
+		glDrawElements(GL_TRIANGLES, renderdata.quad_index_count, GL_UNSIGNED_INT, nullptr);
+	}
+
 
 	// Primitives
 
-	void Renderer2D::DrawQuad(glm::vec3 lightPos)
+	void Renderer2D::DrawQuad(const glm::mat4& transform , const glm::vec3& color, Entity entity)
 	{
-		//glm::mat4 transform;
-		/*transform = glm::translate(glm::mat4(1.0f), currentObj->GetPosition());
-		transform = glm::rotate(transform, glm::radians(currentObj->GetRotation()), glm::vec3(0.0, 0.0, 1.0))
-			* glm::scale(glm::mat4(1.0f), currentObj->GetSize());
-		currentObj->shader->SetUniformMat4("transform", transform);
-		currentObj->shader->SetUniform4f("lightColor", glm::vec4(1.0, 1.0, 1.0, 1.0));
-		if (!currentObj->isLight()) {
-			currentObj->shader->SetUniform4f("objectColor", currentObj->GetColor());
-			currentObj->shader->SetUniform3f("lightPos", lightPos);
-		}*/
-		//glDrawElements(GL_TRIANGLES, currentObj->EBO->GetCount(), GL_UNSIGNED_INT, nullptr);//为什么通过VAO获取EBO画不出来
+		int quad_vertex_count = 4;
+		for (int i = 0; i < quad_vertex_count; i++) {
+			renderdata.quad_vertex_ptr->position = transform * renderdata.quad_vertex_position[i];
+			renderdata.quad_vertex_ptr->color = color;
+			renderdata.quad_vertex_ptr->entityID = entity;
+			renderdata.quad_vertex_ptr++;
+		}
+		renderdata.quad_index_count += 6;
+
 	}
 }

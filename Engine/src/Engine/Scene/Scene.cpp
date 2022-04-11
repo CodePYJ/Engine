@@ -23,7 +23,7 @@ namespace EE {
 
 	Scene::~Scene()
 	{
-
+		
 	}
 
 	void Scene::OnUpdate(Timestep ts)

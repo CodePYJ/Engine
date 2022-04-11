@@ -57,7 +57,6 @@ namespace YAML {
 			return true;
 		}
 	};
-
 }
 
 namespace EE {
@@ -165,7 +164,8 @@ namespace EE {
 			out << YAML::BeginMap; // TransformComponent
 
 			auto& renderable = m_ScenePtr->GetComponent<Renderable2DComponent>(entity);
-			out << YAML::Key << "color" << YAML::Value << renderable.color;
+			out << YAML::Key << "Color" << YAML::Value << renderable.color;
+			out << YAML::Key << "Type" << YAML::Value << (int)renderable.type;
 
 			out << YAML::EndMap; // TransformComponent
 		}
@@ -242,12 +242,12 @@ namespace EE {
 
 				auto renderableComponent = yaml_entity["Renderable2DComponent"];
 				if (renderableComponent) {
-					glm::vec3 color = renderableComponent["color"].as<glm::vec3>();
+					glm::vec3 color = renderableComponent["Color"].as<glm::vec3>();
+					//int type = renderableComponent["Type"].as<int>();
 					m_ScenePtr->AddComponent<Renderable2DComponent>(deserializedEntity,
 						{
-							std::make_shared<Renderer2DData>(),
 							color,
-							glm::mat4(1.0f)
+							Render2DType::SQUARE
 						});
 				}
 			}//for

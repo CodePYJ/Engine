@@ -24,21 +24,20 @@ namespace EE {
 
 	EditorLayer::~EditorLayer()
 	{
-
+		Renderer2D::Shutdown();
 	}
 
 	void EditorLayer::OnAttach()
 	{
 		mScene_ptr = std::make_shared<Scene>();
 		sceneHierarchyPanel.SetActiveScene(mScene_ptr);
+		Renderer2D::RendererInit();
 		FramebufferSpecification fbSpec;
 		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
 		fbSpec.Width = 1600;
 		fbSpec.Height = 900;
 		m_Framebuffer.SetFramebufferSpec(fbSpec);
 		m_Framebuffer.Init();
-		SceneSerializer serializer(mScene_ptr);
-		serializer.Deserialize("D:/WorkSpace/CppWorkSpace/Engine/Engine/Sandbox/assets/scenes/example.engine");
 	}
 
 	void EditorLayer::OnDetach()
@@ -65,7 +64,7 @@ namespace EE {
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
 		{
 			selectedEntity = m_Framebuffer.ReadPixel(1, mouseX, mouseY);
-			//EE_TRACE(selectedEntity);
+			EE_TRACE(selectedEntity);
 		}
 
 

@@ -50,7 +50,6 @@ namespace EE {
 
 		T& GetData(Entity entity)
 		{
-			EE_ASSERT(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end(), "Retrieving non-existent component.");
 
 			// Return a reference to the entity's component
 			return mComponentArray[mEntityToIndexMap[entity]];

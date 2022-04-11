@@ -19,29 +19,26 @@ namespace EE {
 		signature.set(SceneCoo_ptr->GetComponentType<Renderable2DComponent>());
 		signature.set(SceneCoo_ptr->GetComponentType<TagComponent>());
 		SceneCoo_ptr->SetSystemSignature<RenderSystem>(signature);
+
 	}
 
 	void RenderSystem::Update(Timestep ts)
 	{
 		//renderer.Clear();
 
+		glm::mat4 view_projection = SceneCoo_ptr->msgEvent.getMat4Msg(MsgType::CAMERA_MSG);
+		Renderer2D::BeginScene(Render2DType::SQUARE, view_projection);
 		for (Entity entity : mEntities)
 		{
-			auto& renderable = SceneCoo_ptr->GetComponent<Renderable2DComponent>(entity);
-			auto& transData = SceneCoo_ptr->GetComponent<TransformComponent>(entity);
+			Renderable2DComponent& renderable = SceneCoo_ptr->GetComponent<Renderable2DComponent>(entity);
+			TransformComponent& transData = SceneCoo_ptr->GetComponent<TransformComponent>(entity);
 			
-			renderable.data_ptr->VAO->Bind();
-			renderable.data_ptr->shader->Bind();
-			renderable.ViewProjection = SceneCoo_ptr->msgEvent.getMat4Msg(MsgType::CAMERA_MSG);
-
-			if (!playing) {
-				renderable.data_ptr->shader->SetUniformMat4("transform", transData.GetTransform());
-				renderable.data_ptr->shader->SetUniform3f("u_color", renderable.color);
-				renderable.data_ptr->shader->SetUniformMat4("u_ViewProjection", renderable.ViewProjection);
-				renderable.data_ptr->shader->SetUniform1i("entity", entity);
+			if (renderable.type == Render2DType::SQUARE) {
+				Renderer2D::DrawQuad(transData.GetTransform(), renderable.color, entity);
 			}
-			glDrawElements(GL_TRIANGLES, renderable.data_ptr->EBO->GetCount(), GL_UNSIGNED_INT, nullptr);
 		}
+		Renderer2D::Flush();
+		Renderer2D::EndScene();
 	}
 
 	void RenderSystem::OnEvent(Event& event)

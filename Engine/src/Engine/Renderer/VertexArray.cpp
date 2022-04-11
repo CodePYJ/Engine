@@ -6,6 +6,7 @@ namespace EE {
 	VertexArray::VertexArray()
 	{
 		glGenVertexArrays(1, &m_RendererID);
+		Bind();
 	}
 
 	VertexArray::~VertexArray()
@@ -22,14 +23,17 @@ namespace EE {
 		for (unsigned int i = 0; i < elements.size(); i++) {
 			const auto& element = elements[i];
 			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.GetStride(), (void *)offset);
+			if(element.type == GL_INT)
+				glVertexAttribIPointer(i, element.count, element.type, layout.GetStride(), (void*)offset);
+			else
+				glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.GetStride(), (void *)offset);
 			offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
 		}
 	}
 
-	void VertexArray::AddEBO(IndexBuffer& ebo)
+	void VertexArray::AddEBO(std::shared_ptr<IndexBuffer>& ebo)
 	{
-		ebo.Bind();
+		ebo->Bind();
 		m_EBO = ebo;
 	}
 
