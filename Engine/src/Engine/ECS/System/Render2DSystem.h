@@ -6,7 +6,7 @@
 
 namespace EE {
 
-	class RenderSystem: public System
+	class Render2DSystem: public System
 	{
 	public:
 		void Init(Coordinator* coo_ptr);

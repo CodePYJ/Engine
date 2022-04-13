@@ -9,6 +9,7 @@
 
 #include "Engine/Renderer/Renderer2D.h"
 #include "Engine/Renderer/CameraController.h"
+#include "Engine/Renderer/Model.h"
 
 
 namespace EE {
@@ -34,9 +35,9 @@ namespace EE {
 		Render2DType type;
 	};
 
-	struct ShaderComponent
+	struct MeshComponent
 	{
-		std::string path;
+		std::shared_ptr<Model> model;
 	};
 
 	struct CameraComponent

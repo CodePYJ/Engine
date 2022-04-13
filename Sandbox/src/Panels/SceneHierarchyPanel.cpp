@@ -110,6 +110,22 @@ namespace EE {
 					});
 				SetSelectedEntity(entity);
 			}
+			if (ImGui::MenuItem("Create Mesh")) {
+				Entity entity = activeScene_ptr->CreateEntity();
+				std::string name = "mesh ";
+				activeScene_ptr->AddComponent<TagComponent>(entity, { name + std::to_string(entity) });
+				activeScene_ptr->AddComponent<TransformComponent>(entity,
+					{
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(1.0f, 1.0f, 1.0f)
+					});
+				activeScene_ptr->AddComponent<MeshComponent>(entity, 
+					{ 
+						std::make_shared<Model>("assets/models/nanosuit/nanosuit.obj") 
+					});
+				SetSelectedEntity(entity);
+			}
 			ImGui::EndPopup();
 		}
 	}
@@ -293,11 +309,16 @@ namespace EE {
 				}
 			});
 
-		DrawComponent<Renderable2DComponent>("Renderer", entity, [](auto& component)
+		DrawComponent<Renderable2DComponent>("Renderer2D", entity, [](auto& component)
 			{
 				float color[3] = { component.color.x, component.color.y , component.color.z };
 				ImGui::ColorEdit3("Color", color);
 				component.color.x = color[0], component.color.y = color[1], component.color.z = color[2];
+			});
+
+		DrawComponent<MeshComponent>("Mesh", entity, [](auto& component)
+			{
+				
 			});
 	}
 
@@ -316,12 +337,19 @@ namespace EE {
 			ImGui::CloseCurrentPopup();
 		}
 
-		if (ImGui::MenuItem("Renderable")) {
+		if (ImGui::MenuItem("Renderable2D")) {
 			activeScene_ptr->AddComponent<Renderable2DComponent>(selectedEntity,
 				{
 					glm::vec3(0.5f, 0.5f, 0.0f),
 					Render2DType::SQUARE
 				});
+
+			ImGui::CloseCurrentPopup();
+		}
+
+		if (ImGui::MenuItem("Mesh")) {
+			activeScene_ptr->AddComponent<MeshComponent>(selectedEntity,
+				{ nullptr });
 
 			ImGui::CloseCurrentPopup();
 		}

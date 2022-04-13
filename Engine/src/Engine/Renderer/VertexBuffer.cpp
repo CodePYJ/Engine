@@ -10,6 +10,13 @@ namespace EE {
 		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
 	}
 
+	VertexBuffer::VertexBuffer(unsigned int size, const void* data)
+	{
+		glGenBuffers(1, &m_RendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+	}
+
 	VertexBuffer::~VertexBuffer()
 	{
 		glDeleteBuffers(1, &m_RendererID);

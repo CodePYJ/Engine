@@ -38,6 +38,7 @@ namespace EE {
 		renderdata.quad_vertex_position[1] = { 0.5f, -0.5f, 0.0f,1.0f };
 		renderdata.quad_vertex_position[2] = { -0.5f, 0.5f, 0.0f,1.0f };
 		renderdata.quad_vertex_position[3] = { 0.5f, 0.5f, 0.0f, 1.0f };
+		renderdata.quad_VAO->Unbind();
 	}
 
 	static void RendererSquareInit(std::shared_ptr<Renderer2DData> renderdata)
@@ -71,12 +72,14 @@ namespace EE {
 
 	void Renderer2D::EndScene()
 	{
-
+		renderdata.quad_VBO->Unbind();
+		renderdata.quad_VAO->Unbind();
 	}
 
 	void Renderer2D::Flush()
 	{
 		renderdata.quad_VAO->Bind();
+		renderdata.quad_VBO->Bind();
 		uint32_t data_size = (uint32_t)((uint8_t*)renderdata.quad_vertex_ptr - (uint8_t*)renderdata.quad_vertex_base);
 		renderdata.quad_VBO->SetData(renderdata.quad_vertex_base, data_size);
 		glDrawElements(GL_TRIANGLES, renderdata.quad_index_count, GL_UNSIGNED_INT, nullptr);

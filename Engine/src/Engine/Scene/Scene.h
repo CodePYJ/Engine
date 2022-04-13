@@ -4,7 +4,8 @@
 #include "Engine/Core/Timestep.h"
 #include "Engine/ECS/Coordinator.h"
 #include "Engine/Renderer/Renderer2D.h"
-#include "Engine/ECS/System/RenderSystem.h"
+#include "Engine/ECS/System/Render2DSystem.h"
+#include "Engine/ECS/System/Render3DSystem.h"
 #include "Engine/ECS/System/CameraControlSystem.h"
 #include "Engine/ECS/Entity.h"
 #include "Engine/Events/Event.h"
@@ -78,16 +79,18 @@ namespace EE {
 				return -1;
 			return cameras[0];
 		}
-
+		void SetBlock(bool block) { m_block = block; }
 	private:
 		std::unique_ptr<Coordinator> mCoo_ptr;		//一个Scene只有一个Coo
 		std::vector<Entity> entities;
 		Entity activeCamera = -1;
 		Entity selectedEntity = -1;
-		std::shared_ptr<RenderSystem> renderSys_ptr;
+		std::shared_ptr<Render2DSystem> render2DSys_ptr;
+		std::shared_ptr<Render3DSystem> render3DSys_ptr;
 		std::shared_ptr<CameraControlSystem> cameraControlSys_ptr;
 		std::vector<Entity> cameras;
 		float viewPortAspectRatio;
+		bool m_block = false;
 	};
 
 }

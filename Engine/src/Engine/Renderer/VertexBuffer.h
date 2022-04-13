@@ -8,6 +8,7 @@ namespace EE {
 	{
 	public:
 		VertexBuffer(unsigned int size);
+		VertexBuffer(unsigned int size, const void* data);
 		~VertexBuffer();
 
 		void Bind();

@@ -4,7 +4,7 @@ Entities:
     TagComponent:
       Tag: entity 0
     TransformComponent:
-      Position: [0, 0, 1.20000005]
+      Position: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Renderable2DComponent:
@@ -14,7 +14,7 @@ Entities:
     TagComponent:
       Tag: camera
     TransformComponent:
-      Position: [0, 0, 0]
+      Position: [0, 0, 3]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:

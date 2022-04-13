@@ -1,28 +1,28 @@
 #include "Engine/EEpch.h"
-#include "RenderSystem.h"
+#include "Render2DSystem.h"
 #include "../Component/Components.h"
 #include "../MsgEvent.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/quaternion.hpp>
+//#define GLM_ENABLE_EXPERIMENTAL
+//#include <glm/gtx/quaternion.hpp>
 
 namespace EE {
 
-	void RenderSystem::Init(Coordinator* coo_ptr)
+	void Render2DSystem::Init(Coordinator* coo_ptr)
 	{
 		SceneCoo_ptr = coo_ptr;
 		Signature signature;
 		signature.set(SceneCoo_ptr->GetComponentType<TransformComponent>());
 		signature.set(SceneCoo_ptr->GetComponentType<Renderable2DComponent>());
 		signature.set(SceneCoo_ptr->GetComponentType<TagComponent>());
-		SceneCoo_ptr->SetSystemSignature<RenderSystem>(signature);
+		SceneCoo_ptr->SetSystemSignature<Render2DSystem>(signature);
 
 	}
 
-	void RenderSystem::Update(Timestep ts)
+	void Render2DSystem::Update(Timestep ts)
 	{
 		//renderer.Clear();
 
@@ -41,7 +41,7 @@ namespace EE {
 		Renderer2D::EndScene();
 	}
 
-	void RenderSystem::OnEvent(Event& event)
+	void Render2DSystem::OnEvent(Event& event)
 	{
 
 	}

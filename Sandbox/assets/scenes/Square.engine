@@ -4,7 +4,7 @@ Entities:
     TagComponent:
       Tag: front
     TransformComponent:
-      Position: [0, 0, 1]
+      Position: [0, -2.98023224e-08, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Renderable2DComponent:
@@ -14,13 +14,13 @@ Entities:
     TagComponent:
       Tag: camera
     TransformComponent:
-      Position: [0.624553442, 1.14236009, -0.247744858]
-      Rotation: [-0.567232907, 0.0462514758, 0]
+      Position: [1.40262771, 3.1641438, 3.03265285]
+      Rotation: [0.714886785, -0.073444128, 0]
       Scale: [1, 1, 1]
     CameraComponent:
       Camera:
         ProjectionType: 0
-        PerspectiveFOV: 60
+        PerspectiveFOV: 45
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
         OrthographicSize: 3.75
@@ -31,7 +31,7 @@ Entities:
     TagComponent:
       Tag: top
     TransformComponent:
-      Position: [0, 0.5, 1.5]
+      Position: [0, 0.5, -0.5]
       Rotation: [1.57079637, 0, 0]
       Scale: [1, 0.999958634, 0.999958634]
     Renderable2DComponent:
@@ -41,9 +41,19 @@ Entities:
     TagComponent:
       Tag: right
     TransformComponent:
-      Position: [0.5, 0, 1.5]
+      Position: [0.5, 0, -0.5]
       Rotation: [0, 1.57079637, 0]
-      Scale: [0.999951005, 1, 0.999951005]
+      Scale: [0.999950111, 1, 0.999950111]
     Renderable2DComponent:
       Color: [0.0646680817, 0.118214212, 0.930501938]
+      Type: 1
+  - Entity: 4
+    TagComponent:
+      Tag: bottom
+    TransformComponent:
+      Position: [0, -0.5, -1.02314115]
+      Rotation: [1.57079637, 0, 0]
+      Scale: [4, 3.99992895, 0.999981999]
+    Renderable2DComponent:
+      Color: [0.602316618, 0.60231638, 0.569758952]
       Type: 1

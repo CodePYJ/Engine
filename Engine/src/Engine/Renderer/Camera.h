@@ -43,7 +43,9 @@ namespace EE {
 		glm::mat4 GetProjectionMatrix() { return m_projection; }
 		glm::mat4 GetViewMatrix() { return m_view; }
 		glm::mat4 GetViewProjectionMatrix() { return m_view_projection; }
+		glm::vec3 GetFrontDirection();
 
+		float GetR() { return r; }
 	private:
 		void CalculateViewProjectionMatrix();
 
@@ -51,6 +53,7 @@ namespace EE {
 		glm::mat4 m_projection = glm::mat4(1.0f);
 		glm::mat4 m_view = glm::mat4(1.0f);
 		glm::mat4 m_view_projection = glm::mat4(1.0f);
+		glm::mat4 m_rotate_matrix = glm::mat4(1.0f);
 
 		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_rotation = { 0.0f, 0.0f, 0.0f };
@@ -59,8 +62,9 @@ namespace EE {
 		float m_fov = 45.0f;
 		float p_near = 0.01f, p_far = 1000.0f;	//perspective
 		float o_near = 1.0f, o_far = -1.0f;	//orthographic
-
 		ProjectionType cameraType = ProjectionType::Perspective;
+
+		float r = 0.0f;
 	};
 
 }

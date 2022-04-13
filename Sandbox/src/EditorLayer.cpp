@@ -1,5 +1,5 @@
 #include "EditorLayer.h"
-#include "Engine/ECS/System/RenderSystem.h"
+//#include "Engine/ECS/System/Render2DSystem.h"
 #include "Engine/ECS/Coordinator.h"
 #include <imgui/imgui.h>
 #include "Engine/Core/Application.h"
@@ -64,7 +64,7 @@ namespace EE {
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
 		{
 			selectedEntity = m_Framebuffer.ReadPixel(1, mouseX, mouseY);
-			EE_TRACE(selectedEntity);
+			//EE_TRACE(selectedEntity);
 		}
 
 
@@ -159,7 +159,7 @@ namespace EE {
 			m_ViewportFocused = ImGui::IsWindowFocused();
 			m_ViewportHovered = ImGui::IsWindowHovered();
 			EE::Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
-
+			mScene_ptr->SetBlock(m_ViewportHovered);//update
 			ImVec2 temViewportSzie = ImGui::GetContentRegionAvail();
 			mScene_ptr->SetAspectRatio(temViewportSzie.x, temViewportSzie.y);
 			if (viewportSize != *((glm::vec2*)&temViewportSzie)) {

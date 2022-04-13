@@ -14,14 +14,14 @@ namespace EE {
 		SceneCoo_ptr->SetSystemSignature<CameraControlSystem>(signature);
 	}
 
-	void CameraControlSystem::Update(Timestep ts)
+	void CameraControlSystem::Update(Timestep ts, bool block)
 	{
 		if (activeCamera != -1) {
 			CameraComponent& camera = SceneCoo_ptr->GetComponent<CameraComponent>(activeCamera);
 			TransformComponent& trans = SceneCoo_ptr->GetComponent<TransformComponent>(activeCamera);
 			camera.cameraController->SetPosition(trans.position);
 			camera.cameraController->SetRotation(trans.rotation);
-			camera.cameraController->OnUpdate(ts);
+			camera.cameraController->OnUpdate(ts, block);
 			trans.position = camera.cameraController->GetPosition();
 			trans.rotation = camera.cameraController->GetRotation();
 

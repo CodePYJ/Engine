@@ -129,7 +129,10 @@
     <ClInclude Include="src\Engine\ECS\System\CameraControlSystem.h">
       <Filter>src\Engine\ECS\System</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\ECS\System\RenderSystem.h">
+    <ClInclude Include="src\Engine\ECS\System\Render2DSystem.h">
+      <Filter>src\Engine\ECS\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ECS\System\Render3DSystem.h">
       <Filter>src\Engine\ECS\System</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\ECS\SystemManager.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="src\Engine\Math\Math.h">
       <Filter>src\Engine\Math</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Platform\Windows\FileDialogs.h">
+      <Filter>src\Engine\Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Platform\Windows\WinInput.h">
       <Filter>src\Engine\Platform\Windows</Filter>
     </ClInclude>
@@ -175,6 +181,12 @@
       <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Renderer\IndexBuffer.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Mesh.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Model.h">
       <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Renderer\RenderObj.h">
@@ -1461,7 +1473,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Platform\Windows\FileDialogs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Core\Application.cpp">
@@ -1482,7 +1493,10 @@
     <ClCompile Include="src\Engine\ECS\System\CameraControlSystem.cpp">
       <Filter>src\Engine\ECS\System</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\ECS\System\RenderSystem.cpp">
+    <ClCompile Include="src\Engine\ECS\System\Render2DSystem.cpp">
+      <Filter>src\Engine\ECS\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ECS\System\Render3DSystem.cpp">
       <Filter>src\Engine\ECS\System</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\EEpch.cpp">
@@ -1500,6 +1514,9 @@
     <ClCompile Include="src\Engine\Math\Math.cpp">
       <Filter>src\Engine\Math</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Platform\Windows\FileDialogs.cpp">
+      <Filter>src\Engine\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Platform\Windows\WinInput.cpp">
       <Filter>src\Engine\Platform\Windows</Filter>
     </ClCompile>
@@ -1516,6 +1533,12 @@
       <Filter>src\Engine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Renderer\IndexBuffer.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Mesh.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Model.cpp">
       <Filter>src\Engine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Renderer\RenderObj.cpp">
@@ -1554,6 +1577,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Platform\Windows\FileDialogs.cpp" />
   </ItemGroup>
 </Project>

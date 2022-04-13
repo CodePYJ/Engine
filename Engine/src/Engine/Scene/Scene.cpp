@@ -11,12 +11,15 @@ namespace EE {
 		mCoo_ptr->Init();
 
 		mCoo_ptr->RegisterComponent<Renderable2DComponent>();
+		mCoo_ptr->RegisterComponent<MeshComponent>();
 		mCoo_ptr->RegisterComponent<TransformComponent>();
 		mCoo_ptr->RegisterComponent<CameraComponent>();
 		mCoo_ptr->RegisterComponent<TagComponent>();
 
-		renderSys_ptr = mCoo_ptr->RegisterSystem<RenderSystem>();
-		renderSys_ptr->Init(mCoo_ptr.get());
+		render2DSys_ptr = mCoo_ptr->RegisterSystem<Render2DSystem>();
+		render3DSys_ptr = mCoo_ptr->RegisterSystem<Render3DSystem>();
+		render2DSys_ptr->Init(mCoo_ptr.get());
+		render3DSys_ptr->Init(mCoo_ptr.get());
 		cameraControlSys_ptr = mCoo_ptr->RegisterSystem<CameraControlSystem>();
 		cameraControlSys_ptr->Init(mCoo_ptr.get());
 	}
@@ -28,13 +31,15 @@ namespace EE {
 
 	void Scene::OnUpdate(Timestep ts)
 	{
-		renderSys_ptr->Update(ts);
-		cameraControlSys_ptr->Update(ts);
+		render2DSys_ptr->Update(ts);
+		render3DSys_ptr->Update(ts);
+		cameraControlSys_ptr->Update(ts, m_block);
 	}
 
 	void Scene::OnEvent(Event& event)
 	{
-		renderSys_ptr->OnEvent(event);
+		render2DSys_ptr->OnEvent(event);
+		render3DSys_ptr->OnEvent(event);
 		cameraControlSys_ptr->OnEvent(event);
 	}
 

@@ -19,6 +19,8 @@ namespace EE {
 		inline int GetHeight() { return m_Height; }
 		inline unsigned int GetRendererID() { return m_RendererID; }
 
+		std::string type;
+
 	private:
 		unsigned int m_RendererID;
 		std::string m_FilePath;

@@ -17,6 +17,7 @@ IncludeDir["glm"] = "Engine/vendor/glm"
 IncludeDir["stb_image"] = "Engine/vendor/stb_image"
 IncludeDir["ImGuizmo"] = "Engine/vendor/ImGuizmo"
 IncludeDir["yaml_cpp"] = "Engine/vendor/yaml-cpp/include"
+IncludeDir["assimp"] = "Engine/vendor/assimp/include"
 
 include "Engine/vendor/GLFW"
 include "Engine/vendor/Glad"
@@ -45,7 +46,9 @@ project "Engine"
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
 		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
-		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp"
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp",
+		-- "%{prj.name}/vendor/assimp/**.h",
+		-- "%{prj.name}/vendor/assimp/**.hpp"
 	}
 
 	defines
@@ -64,7 +67,8 @@ project "Engine"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.assimp}"
 	}
 
 	links
@@ -73,8 +77,11 @@ project "Engine"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
+		"Engine/vendor/assimp/bin/Debug/assimp-vc142-mtd.lib",
+		--"Engine/vendor/assimp/bin/Debug",
 		"opengl32.lib"
 	}
+
 
 	filter "files:vendor/ImGuizmo/**.cpp"
 	flags { "NoPCH" }
@@ -87,7 +94,6 @@ project "Engine"
 		"ENGINE_PLATFORM_WINDOWS",
 		"ENGINE_BUILD_DLL"
 	}
-
 
 	filter "configurations:Debug"
 		defines "ENGINE_DEBUG"
@@ -124,12 +130,18 @@ project "Sandbox"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.assimp}"
 	}
 
 	links
 	{
 		"Engine"
+	}
+
+	postbuildcommands
+	{
+		'{COPY} "Engine/vendor/assimp/bin/Debug/assimp-vc142-mtd.dll" "%{cfg.targetdir}"'
 	}
 
 	filter "system:windows"

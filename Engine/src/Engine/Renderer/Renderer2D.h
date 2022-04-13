@@ -65,7 +65,7 @@ namespace EE {
 
 	struct Renderer2DData
 	{
-		static const uint32_t MaxQuads = 2000;
+		static const uint32_t MaxQuads = 500;
 		static const uint32_t MaxVertices = MaxQuads * 4;
 		static const uint32_t MaxIndices = MaxQuads * 6;
 

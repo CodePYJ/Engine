@@ -14,7 +14,7 @@ namespace EE {
 	{
 	public:
 		void Init(Coordinator* coo_ptr);
-		void Update(Timestep ts);
+		void Update(Timestep ts, bool block);
 		void OnEvent(Event& event);
 		void SetActiveCamera(Entity camera);
 	private:
