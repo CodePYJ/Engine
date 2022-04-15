@@ -24,6 +24,20 @@ namespace EE {
 			stbi_image_free(m_LocalBuffer);
 	}
 
+	Texture::Texture(uint32_t width, uint32_t height)
+		:m_Width(width), m_Height(height)
+	{
+		glGenTextures(1, &m_RendererID);
+		glBindTexture(GL_TEXTURE_2D, m_RendererID);
+		glTextureStorage2D(m_RendererID, 1, GL_RGBA8, m_Width, m_Height);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
+
 	Texture::~Texture()
 	{
 		glDeleteTextures(1, &m_RendererID);
@@ -38,5 +52,13 @@ namespace EE {
 	void Texture::Unbind()
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	void Texture::SetData(void* data, uint32_t size)
+	{
+		//GLenum m_DataFormat = GL_RGBA;
+		//uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
+		EE_ASSERT(size == m_Width * m_Height * 4, "Data must be entire texture!");
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	}
 }

@@ -52,7 +52,7 @@ namespace EE {
 		}
 
 		for (unsigned int i = 0; i < mesh.mNumFaces; i++) {
-			for (int j = 0; j < mesh.mFaces[i].mNumIndices; j++) {
+			for (unsigned int j = 0; j < mesh.mFaces[i].mNumIndices; j++) {
 				temp_indices.push_back(mesh.mFaces[i].mIndices[j]);
 			}
 		}
@@ -60,26 +60,21 @@ namespace EE {
 		return Mesh(temp_vertices, temp_indices, {});
 	}
 
-	void Model::Draw()
+	void Model::Draw(MeshProperty property)
 	{
 		for (Mesh mesh : meshes) {
-			mesh.SetViewProjection(m_view_projection);
+			mesh.SetMeshProperty(property);
 			mesh.Draw();
 		}
 	}
 
-	void Model::SetViewProjection(glm::mat4 view_projection)
-	{
-		m_view_projection = view_projection;
-	}
-
 	void Model::ProcessNode(aiNode& node, const aiScene& scene)
 	{
-		for (int i = 0; i < node.mNumMeshes; i++) {
+		for (unsigned int i = 0; i < node.mNumMeshes; i++) {
 			aiMesh* curMesh = scene.mMeshes[node.mMeshes[i]];
 			meshes.push_back(ProcessMesh(*curMesh, scene));
 		}
-		for (int i = 0; i < node.mNumChildren; i++) {
+		for (unsigned int i = 0; i < node.mNumChildren; i++) {
 			ProcessNode(*node.mChildren[i], scene);
 		}
 	}

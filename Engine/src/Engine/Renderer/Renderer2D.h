@@ -2,12 +2,12 @@
 
 #include <glm/glm.hpp>
 #include "Camera.h"
-#include "Renderer2D.h"
 #include "VertexArray.h"
 #include "Shader.h"
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "Engine/ECS/Entity.h"
+#include "Engine/Renderer/Texture.h"
 
 
 namespace EE {
@@ -23,6 +23,7 @@ namespace EE {
 		glm::vec3 color;
 		glm::vec3 normal;
 		glm::vec2 texCoord;
+		int texIndex;
 		int entityID;
 	};
 
@@ -68,16 +69,22 @@ namespace EE {
 		static const uint32_t MaxQuads = 500;
 		static const uint32_t MaxVertices = MaxQuads * 4;
 		static const uint32_t MaxIndices = MaxQuads * 6;
+		static const uint32_t MaxTextureSlots = 4;
 
 		std::shared_ptr<VertexArray> quad_VAO;
 		std::shared_ptr<VertexBuffer> quad_VBO;
-		std::shared_ptr<EE::Shader> quad_shader;
+		std::shared_ptr<Texture> white_texture;
+		std::shared_ptr<Shader> quad_shader;
 		VertexBufferLayout quad_layout;
+
+		uint32_t quad_count = 0;
 		uint32_t quad_index_count = 0;
+		uint32_t texture_slot_index = 1;
 		QuardVertex* quad_vertex_base = nullptr;
 		QuardVertex* quad_vertex_ptr = nullptr;
 
 		glm::vec4 quad_vertex_position[4];
+		std::array<std::shared_ptr<Texture>, MaxTextureSlots> texture_slots;
 	};
 	static Renderer2DData renderdata;
 
@@ -92,6 +99,6 @@ namespace EE {
 
 		static void Flush();
 
-		static void DrawQuad(const glm::mat4& transform, const glm::vec3& color, Entity entity);
+		static void DrawQuad(const glm::mat4& transform, const glm::vec3& color, Entity entity, std::shared_ptr<Texture> texture = nullptr);
 	};
 }

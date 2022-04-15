@@ -34,7 +34,7 @@ namespace EE {
 			TransformComponent& transData = SceneCoo_ptr->GetComponent<TransformComponent>(entity);
 			
 			if (renderable.type == Render2DType::SQUARE) {
-				Renderer2D::DrawQuad(transData.GetTransform(), renderable.color, entity);
+				Renderer2D::DrawQuad(transData.GetTransform(), renderable.color, entity, renderable.texture);
 			}
 		}
 		Renderer2D::Flush();

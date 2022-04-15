@@ -5,6 +5,8 @@
 #include "Engine/Renderer/Camera.h"
 #include "Engine/Renderer/CameraController.h"
 #include "Engine/Renderer/Renderer2D.h"
+#include <string>
+
 
 namespace YAML {
 
@@ -169,6 +171,20 @@ namespace EE {
 
 			out << YAML::EndMap; // TransformComponent
 		}
+
+		if (m_ScenePtr->HasComponent<MeshComponent>(entity))
+		{
+			out << YAML::Key << "MeshComponent";
+			out << YAML::BeginMap; // TransformComponent
+
+			auto& renderable = m_ScenePtr->GetComponent<MeshComponent>(entity);
+			out << YAML::Key << "modelPath" << YAML::Value << renderable.path;
+			out << YAML::Key << "objName" << YAML::Value << renderable.obj_name;
+			out << YAML::Key << "Color" << YAML::Value << renderable.color;
+
+			out << YAML::EndMap; // TransformComponent
+		}
+
 		out << YAML::EndMap; // Entity
 	}
 
@@ -250,6 +266,18 @@ namespace EE {
 							Render2DType::SQUARE
 						});
 				}
+
+				auto meshComponent = yaml_entity["MeshComponent"];
+				if (meshComponent) {
+					m_ScenePtr->AddComponent<MeshComponent>(deserializedEntity,
+						{
+							std::make_shared<Model>(meshComponent["modelPath"].as<std::string>()),
+							meshComponent["objName"].as<std::string>(),
+							meshComponent["modelPath"].as<std::string>(),
+							meshComponent["Color"].as<glm::vec3>()
+						});
+				}
+
 			}//for
 		}
 	}

@@ -16,10 +16,12 @@ namespace EE {
 		glm::vec2 texCoords;
 	};
 
-	//struct Textrue
-	//{
-
-	//};
+	struct MeshProperty {
+		glm::mat4 view_projection;
+		glm::mat4 transform;
+		glm::vec3 color;
+		int entity;
+	};
 
 	class Mesh
 	{
@@ -29,7 +31,7 @@ namespace EE {
 
 		void SetupMesh();
 		void Draw();
-		void SetViewProjection(glm::mat4 view_projection);
+		void SetMeshProperty(MeshProperty property);
 
 	private:
 		std::shared_ptr<VertexArray> vao = nullptr;
@@ -40,8 +42,9 @@ namespace EE {
 		std::vector<Vertex> m_vertices;
 		std::vector<unsigned int> m_indices;
 		std::vector<Texture> m_textures;
-		glm::mat4 m_view_projection;
+		MeshProperty m_property;
 	};
+
 }
 
 

@@ -55,10 +55,13 @@ namespace EE {
 
 		float translationSpeed = 2.5f, rotationSpeed = 2.0f, zoomLevel = 1.0f;
 		float m_aspectRatio = 0.0f;
-		glm::vec2 mouseInitialPos = { 0.0f, 0.0f };
+		glm::vec2 mouseInitialPos_right = { 0.0f, 0.0f };
+		glm::vec2 mouseInitialPos_left = { 0.0f, 0.0f };
 		Camera m_camera;
-		bool mouse_button_falg = true;
 		glm::vec3 m_focal_point = { 0.0, 0.0, 0.0 };
+		bool mouse_button_falg_right = true;
+		bool mouse_button_falg_left = true;
+
 	};
 
 }

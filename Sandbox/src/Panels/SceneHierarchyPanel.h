@@ -2,6 +2,7 @@
 
 #include "Engine/EEpch.h"
 #include "Engine/Scene/Scene.h"
+#include "Engine/Renderer/Texture.h"
 
 
 namespace EE{
@@ -55,6 +56,7 @@ namespace EE{
 	private:
 		Entity selectedEntity = -1;
 		std::shared_ptr<Scene> activeScene_ptr;
+		std::shared_ptr<Texture> nullTex = std::make_shared<Texture>("assets/textures/null.png");
 	};
 }
 

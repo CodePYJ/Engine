@@ -46,16 +46,23 @@ namespace EE {
 		vao->Bind();
 		vbo->Bind();
 		shader_test->Bind();
-		shader_test->SetUniformMat4("u_ViewProjection", m_view_projection);
+		shader_test->SetUniformMat4("u_ViewProjection", m_property.view_projection);
+		shader_test->SetUniformMat4("u_transform", m_property.transform);
+		shader_test->SetUniform3f("u_color", m_property.color);
+		shader_test->SetUniform1i("u_entity", m_property.entity);
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
 		vao->Unbind();
 		vbo->Unbind();
+
 		//shader_test->Unbind();
 		//m_textures[i].Unbind();
-		
 	}
-	void Mesh::SetViewProjection(glm::mat4 view_projection)
+
+	void Mesh::SetMeshProperty(MeshProperty property)
 	{
-		m_view_projection = view_projection;
+		m_property.view_projection = property.view_projection;
+		m_property.transform = property.transform;
+		m_property.color = property.color;
+		m_property.entity = property.entity;
 	}
 }

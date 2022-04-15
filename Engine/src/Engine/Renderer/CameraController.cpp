@@ -36,12 +36,12 @@ namespace EE {
 
 			if (Input::IsMouseButtonPressed(Mouse::ButtonRight)) {
 				glm::vec2 mousePos = { Input::GetMouseX(), Input::GetMouseY() };
-				if (mouse_button_falg) {
-					mouseInitialPos = mousePos;
-					mouse_button_falg = false;
+				if (mouse_button_falg_right) {
+					mouseInitialPos_right = mousePos;
+					mouse_button_falg_right = false;
 				}
-				glm::vec2 delta = mousePos - mouseInitialPos;
-				mouseInitialPos = mousePos;
+				glm::vec2 delta = mousePos - mouseInitialPos_right;
+				mouseInitialPos_right = mousePos;
 				CameraRotate_RBP(delta);
 
 				if (m_rotation.z > 180.0f)
@@ -50,16 +50,17 @@ namespace EE {
 					m_rotation.z += 360.0f;
 			}
 
-			if (Input::IsMouseButtonPressed(Mouse::ButtonLeft)) {
-				glm::vec2 mousePos = { Input::GetMouseX(), Input::GetMouseY() };
-				if (mouse_button_falg) {
-					mouseInitialPos = mousePos;
-					mouse_button_falg = false;
+			if (Input::IsKeyPressed(GE_KEY_LEFT_ALT))
+				if (Input::IsMouseButtonPressed(Mouse::ButtonLeft)) {
+					glm::vec2 mousePos = { Input::GetMouseX(), Input::GetMouseY() };
+					if (mouse_button_falg_left) {
+						mouseInitialPos_left = mousePos;
+						mouse_button_falg_left = false;
+					}
+					glm::vec2 delta = mousePos - mouseInitialPos_left;
+					mouseInitialPos_left = mousePos;
+					CameraRotate_LBP(delta);
 				}
-				glm::vec2 delta = mousePos - mouseInitialPos;
-				mouseInitialPos = mousePos;
-				CameraRotate_LBP(delta);
-			}
 		}
 
 		m_camera.SetPosition(m_position);
@@ -109,8 +110,14 @@ namespace EE {
 
 	void CameraController::OnMouseReleased(MouseButtonReleasedEvent& e)
 	{
-		mouseInitialPos = { 0.0f, 0.0f };
-		mouse_button_falg = true;
+		if (e.GetButton() == Mouse::ButtonRight) {
+			mouseInitialPos_right = { 0.0f, 0.0f };
+			mouse_button_falg_right = true;
+		}
+		if (e.GetButton() == Mouse::ButtonLeft) {
+			mouseInitialPos_left = { 0.0f, 0.0f };
+			mouse_button_falg_left = true;
+		}
 	}
 
 	void CameraController::OnWindowResized(WindowResizeEvent& e)

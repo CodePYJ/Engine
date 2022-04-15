@@ -10,9 +10,15 @@
 #include "Engine/Renderer/Renderer2D.h"
 #include "Engine/Renderer/CameraController.h"
 #include "Engine/Renderer/Model.h"
+#include "Engine/Renderer/Texture.h"
 
 
 namespace EE {
+
+	struct TagComponent
+	{
+		std::string tag;
+	};
 
 	struct TransformComponent
 	{
@@ -33,11 +39,15 @@ namespace EE {
 	{
 		glm::vec3 color;
 		Render2DType type;
+		std::shared_ptr<Texture> texture;
 	};
 
 	struct MeshComponent
 	{
 		std::shared_ptr<Model> model;
+		std::string obj_name = "Null";
+		std::string path;
+		glm::vec3 color;
 	};
 
 	struct CameraComponent
@@ -48,9 +58,13 @@ namespace EE {
 		bool primary;
 	};
 
-	struct TagComponent
-	{
-		std::string tag;
-	};
+	//struct Phone
+
+	//struct LightComponent
+	//{
+	//	glm::vec3 color;
+
+	//};
+
 
 }

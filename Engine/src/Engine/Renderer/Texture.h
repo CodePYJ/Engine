@@ -9,7 +9,9 @@ namespace EE {
 	class EE_API Texture
 	{
 	public:
-		Texture(const std::string& path);
+		Texture(const std::string& path); 
+		Texture(uint32_t width, uint32_t height);
+
 		~Texture();
 
 		void Bind(unsigned int slot = 0);
@@ -18,6 +20,12 @@ namespace EE {
 		inline int GetWidth() { return m_Width; }
 		inline int GetHeight() { return m_Height; }
 		inline unsigned int GetRendererID() { return m_RendererID; }
+		void SetData(void* data, uint32_t size);
+
+		bool operator==(const Texture& other) const
+		{
+			return m_RendererID == other.m_RendererID;
+		}
 
 		std::string type;
 

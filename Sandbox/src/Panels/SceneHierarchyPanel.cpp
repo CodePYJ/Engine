@@ -5,10 +5,13 @@
 #include "Engine/ECS/Entity.h"
 #include "Engine.h"
 #include <glm/gtc/type_ptr.hpp>
+#include <filesystem>
 #include "Engine/Scene/SceneSerializer.h"
 
 
 namespace EE {
+
+	extern const std::filesystem::path assetsPath;
 
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
@@ -122,7 +125,7 @@ namespace EE {
 					});
 				activeScene_ptr->AddComponent<MeshComponent>(entity, 
 					{ 
-						std::make_shared<Model>("assets/models/nanosuit/nanosuit.obj") 
+						
 					});
 				SetSelectedEntity(entity);
 			}
@@ -309,16 +312,46 @@ namespace EE {
 				}
 			});
 
-		DrawComponent<Renderable2DComponent>("Renderer2D", entity, [](auto& component)
+		DrawComponent<Renderable2DComponent>("Renderer2D", entity, [this](auto& component)
 			{
-				float color[3] = { component.color.x, component.color.y , component.color.z };
-				ImGui::ColorEdit3("Color", color);
-				component.color.x = color[0], component.color.y = color[1], component.color.z = color[2];
+				ImGui::ColorEdit3("Color", glm::value_ptr(component.color));
+				if (ImGui::TreeNode("Texture"))
+				{
+					ImGui::Image((ImTextureID)(component.texture ? component.texture->GetRendererID() : nullTex->GetRendererID()), { 80.0f, 80.0f }, { 0, 1 }, { 1, 0 });
+					if (ImGui::BeginDragDropTarget()) {
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+						{
+							const wchar_t* path = (const wchar_t*)payload->Data;
+							std::filesystem::path texturePath = std::filesystem::path(assetsPath) / path;
+							component.texture = std::make_shared<Texture>(texturePath.string());
+						}
+						ImGui::EndDragDropTarget();
+					}	//DragDrop
+					ImGui::TreePop();
+				}	//TreeNode
 			});
 
 		DrawComponent<MeshComponent>("Mesh", entity, [](auto& component)
 			{
-				
+				ImGui::ColorEdit3("Color", glm::value_ptr(component.color));
+				ImGui::Columns(2);
+				ImGui::Text("Model");
+				ImGui::NextColumn();
+				ImGui::Text(component.obj_name.c_str());
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+					{
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path modelPath = std::filesystem::path(assetsPath) / path;
+						component.obj_name = modelPath.filename().string();
+						component.path = modelPath.string();
+						component.model = std::make_shared<Model>(modelPath.string());
+					}
+					ImGui::EndDragDropTarget();
+				}	//DragDrop
+				ImGui::NextColumn();
+				ImGui::Columns(1);
+				ImGui::Spacing();
 			});
 	}
 
