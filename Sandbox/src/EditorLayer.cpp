@@ -67,7 +67,6 @@ namespace EE {
 			//EE_TRACE(selectedEntity);
 		}
 
-
 		m_Framebuffer.Unbind();
 	}
 

@@ -6,6 +6,7 @@
 #include "Engine/Renderer/Renderer2D.h"
 #include "Engine/ECS/System/Render2DSystem.h"
 #include "Engine/ECS/System/Render3DSystem.h"
+#include "Engine/ECS/System/LightSystem.h"
 #include "Engine/ECS/System/CameraControlSystem.h"
 #include "Engine/ECS/Entity.h"
 #include "Engine/Events/Event.h"
@@ -87,6 +88,7 @@ namespace EE {
 		Entity selectedEntity = -1;
 		std::shared_ptr<Render2DSystem> render2DSys_ptr;
 		std::shared_ptr<Render3DSystem> render3DSys_ptr;
+		std::shared_ptr<LightSystem> lightSys_ptr;
 		std::shared_ptr<CameraControlSystem> cameraControlSys_ptr;
 		std::vector<Entity> cameras;
 		float viewPortAspectRatio;

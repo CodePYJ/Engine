@@ -17,7 +17,6 @@ namespace EE {
 	};
 
 	struct MeshProperty {
-		glm::mat4 view_projection;
 		glm::mat4 transform;
 		glm::vec3 color;
 		int entity;
@@ -27,9 +26,10 @@ namespace EE {
 	{
 	public:
 		Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+		Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, std::string shader_path);
 		~Mesh();
 
-		void SetupMesh();
+		void SetupMesh(std::string shader_path);
 		void Draw();
 		void SetMeshProperty(MeshProperty property);
 
@@ -43,6 +43,7 @@ namespace EE {
 		std::vector<unsigned int> m_indices;
 		std::vector<Texture> m_textures;
 		MeshProperty m_property;
+		std::string m_shader_path = "assets/shaders/mesh.shader";
 	};
 
 }

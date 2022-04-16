@@ -6,14 +6,20 @@ namespace EE {
 	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
 		:m_vertices(vertices), m_indices(indices), m_textures(textures)
 	{
-		SetupMesh();
+		SetupMesh(m_shader_path);
+	}
+
+	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, std::string shader_path)
+		:m_vertices(vertices), m_indices(indices), m_textures(textures), m_shader_path(shader_path)
+	{
+		SetupMesh(m_shader_path);
 	}
 
 	Mesh::~Mesh()
 	{
 
 	}
-	void Mesh::SetupMesh()
+	void Mesh::SetupMesh(std::string shader_path)
 	{
 		vao = std::make_shared<VertexArray>();
 		vbo = std::make_shared<VertexBuffer>(sizeof(Vertex) * m_vertices.size(), &m_vertices[0]);
@@ -26,7 +32,8 @@ namespace EE {
 		layout.PushFloat(2);	//texcoords
 
 		vao->AddBuffer(*vbo, layout);
-		shader_test = std::make_shared<Shader>("assets/shaders/mesh.shader");
+
+		shader_test = std::make_shared<Shader>(shader_path);
 		vao->Unbind();
 	}
 
@@ -42,14 +49,18 @@ namespace EE {
 				m_textures[i].Bind(i);
 			}
 		}*/
-
+		//float ambientStrength;
+		//float specularStrength;
+		//int specularIndex;
+		//vec3 lightPos;
+		//vec3 lightColor;
 		vao->Bind();
 		vbo->Bind();
 		shader_test->Bind();
-		shader_test->SetUniformMat4("u_ViewProjection", m_property.view_projection);
 		shader_test->SetUniformMat4("u_transform", m_property.transform);
 		shader_test->SetUniform3f("u_color", m_property.color);
 		shader_test->SetUniform1i("u_entity", m_property.entity);
+
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
 		vao->Unbind();
 		vbo->Unbind();
@@ -60,7 +71,6 @@ namespace EE {
 
 	void Mesh::SetMeshProperty(MeshProperty property)
 	{
-		m_property.view_projection = property.view_projection;
 		m_property.transform = property.transform;
 		m_property.color = property.color;
 		m_property.entity = property.entity;

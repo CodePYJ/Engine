@@ -115,6 +115,7 @@
     <ClInclude Include="src\Engine\ECS\MsgEvent.h" />
     <ClInclude Include="src\Engine\ECS\System.h" />
     <ClInclude Include="src\Engine\ECS\System\CameraControlSystem.h" />
+    <ClInclude Include="src\Engine\ECS\System\LightSystem.h" />
     <ClInclude Include="src\Engine\ECS\System\Render2DSystem.h" />
     <ClInclude Include="src\Engine\ECS\System\Render3DSystem.h" />
     <ClInclude Include="src\Engine\ECS\SystemManager.h" />
@@ -133,6 +134,7 @@
     <ClInclude Include="src\Engine\Renderer\CameraController.h" />
     <ClInclude Include="src\Engine\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Engine\Renderer\IndexBuffer.h" />
+    <ClInclude Include="src\Engine\Renderer\Light.h" />
     <ClInclude Include="src\Engine\Renderer\Mesh.h" />
     <ClInclude Include="src\Engine\Renderer\Model.h" />
     <ClInclude Include="src\Engine\Renderer\RenderObj.h" />
@@ -140,6 +142,7 @@
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Engine\Renderer\Shader.h" />
     <ClInclude Include="src\Engine\Renderer\Texture.h" />
+    <ClInclude Include="src\Engine\Renderer\UniformBuffer.h" />
     <ClInclude Include="src\Engine\Renderer\VertexArray.h" />
     <ClInclude Include="src\Engine\Renderer\VertexBuffer.h" />
     <ClInclude Include="src\Engine\Renderer\VertexBufferLayout.h" />
@@ -571,6 +574,7 @@
     <ClCompile Include="src\Engine\Core\Log.cpp" />
     <ClCompile Include="src\Engine\ECS\Entity.cpp" />
     <ClCompile Include="src\Engine\ECS\System\CameraControlSystem.cpp" />
+    <ClCompile Include="src\Engine\ECS\System\LightSystem.cpp" />
     <ClCompile Include="src\Engine\ECS\System\Render2DSystem.cpp" />
     <ClCompile Include="src\Engine\ECS\System\Render3DSystem.cpp" />
     <ClCompile Include="src\Engine\EEpch.cpp" />
@@ -585,6 +589,7 @@
     <ClCompile Include="src\Engine\Renderer\CameraController.cpp" />
     <ClCompile Include="src\Engine\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Engine\Renderer\IndexBuffer.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Light.cpp" />
     <ClCompile Include="src\Engine\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Engine\Renderer\Model.cpp" />
     <ClCompile Include="src\Engine\Renderer\RenderObj.cpp" />
@@ -592,6 +597,7 @@
     <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Engine\Renderer\Shader.cpp" />
     <ClCompile Include="src\Engine\Renderer\Texture.cpp" />
+    <ClCompile Include="src\Engine\Renderer\UniformBuffer.cpp" />
     <ClCompile Include="src\Engine\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Engine\Renderer\VertexBuffer.cpp" />
     <ClCompile Include="src\Engine\Renderer\VertexBufferLayout.cpp" />

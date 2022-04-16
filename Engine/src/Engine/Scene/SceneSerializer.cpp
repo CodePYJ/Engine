@@ -6,6 +6,7 @@
 #include "Engine/Renderer/CameraController.h"
 #include "Engine/Renderer/Renderer2D.h"
 #include <string>
+#include "Engine/Renderer/Light.h"
 
 
 namespace YAML {
@@ -177,13 +178,28 @@ namespace EE {
 			out << YAML::Key << "MeshComponent";
 			out << YAML::BeginMap; // TransformComponent
 
-			auto& renderable = m_ScenePtr->GetComponent<MeshComponent>(entity);
-			out << YAML::Key << "modelPath" << YAML::Value << renderable.path;
-			out << YAML::Key << "objName" << YAML::Value << renderable.obj_name;
-			out << YAML::Key << "Color" << YAML::Value << renderable.color;
+			auto& mesh = m_ScenePtr->GetComponent<MeshComponent>(entity);
+			out << YAML::Key << "modelPath" << YAML::Value << mesh.path;
+			out << YAML::Key << "objName" << YAML::Value << mesh.obj_name;
+			out << YAML::Key << "Color" << YAML::Value << mesh.color;
 
 			out << YAML::EndMap; // TransformComponent
 		}
+
+		if (m_ScenePtr->HasComponent<LightComponent>(entity))
+		{
+			out << YAML::Key << "LightComponent";
+			out << YAML::BeginMap; // TransformComponent
+
+			auto& light = m_ScenePtr->GetComponent<LightComponent>(entity);
+			out << YAML::Key << "ambientStrength" << YAML::Value << light.light_property.ambientStrength;
+			out << YAML::Key << "specularStrength" << YAML::Value << light.light_property.specularStrength;
+			out << YAML::Key << "specularIndex" << YAML::Value << light.light_property.specularIndex;
+			out << YAML::Key << "lightColor" << YAML::Value << light.light_property.lightColor;
+
+			out << YAML::EndMap; // TransformComponent
+		}
+
 
 		out << YAML::EndMap; // Entity
 	}
@@ -275,6 +291,20 @@ namespace EE {
 							meshComponent["objName"].as<std::string>(),
 							meshComponent["modelPath"].as<std::string>(),
 							meshComponent["Color"].as<glm::vec3>()
+						});
+				}
+
+				auto lightComponent = yaml_entity["LightComponent"];
+				if (lightComponent) {
+					m_ScenePtr->AddComponent<LightComponent>(deserializedEntity,
+						{
+							std::make_shared<Light>(),
+							{
+								lightComponent["ambientStrength"].as<float>(),
+								lightComponent["specularStrength"].as<float>(),
+								lightComponent["specularIndex"].as<int>(),
+								lightComponent["lightColor"].as<glm::vec3>()
+							}
 						});
 				}
 

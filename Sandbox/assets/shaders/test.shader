@@ -13,11 +13,17 @@ out vec2 texCoord;
 out flat int texIndex;
 out flat int entity;
 
-uniform mat4 u_ViewProjection;
+layout(std140, binding=0) uniform Camera
+{
+    mat4 projection;
+    mat4 view;
+};
+
+//uniform mat4 u_ViewProjection;
 
 void main()
 {
-    gl_Position = u_ViewProjection * vec4(aPos, 1.0);
+    gl_Position = projection * view * vec4(aPos, 1.0);
     color = aColor;
     entity = aEntityID;
     texCoord = aTexCoord;

@@ -3,7 +3,7 @@
 
 namespace EE {
 
-	void Camera::CalculateViewProjectionMatrix()
+	void Camera::CalculateViewMatrix()
 	{
 		float x = m_position.x;
 		float y = m_position.y;
@@ -34,8 +34,8 @@ namespace EE {
 						0,									0,								0,				1
 		};
 		glm::mat4 R_view = glm::inverse(m_rotate_matrix);
-		m_view = glm::transpose(R_view) * glm::transpose(T_view);//glsl是列为主
-		m_view_projection= m_projection  * m_view;
+		view_and_projection.m_view = glm::transpose(R_view) * glm::transpose(T_view);//glsl是列为主
+		//m_view_projection= m_projection  * m_view;
 
 		r = std::sqrt(x * x + z * z + y * y);
 
@@ -49,12 +49,12 @@ namespace EE {
 			float top = m_size;
 			float bottom = -m_size;
 
-			m_projection= glm::ortho(left, right, bottom, top, o_near, o_far);
+			view_and_projection.m_projection= glm::ortho(left, right, bottom, top, o_near, o_far);
 		}
 		else {
-			m_projection = glm::perspective(glm::radians(m_fov), m_aspectRatio, p_near, p_far);
+			view_and_projection.m_projection = glm::perspective(glm::radians(m_fov), m_aspectRatio, p_near, p_far);
 		}
-		CalculateViewProjectionMatrix();
+
 	}
 
 	glm::vec3 Camera::GetFrontDirection()

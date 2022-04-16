@@ -4,7 +4,7 @@ Entities:
     TagComponent:
       Tag: camera 0
     TransformComponent:
-      Position: [0, 0, 4]
+      Position: [0, 0, 5]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
@@ -19,9 +19,9 @@ Entities:
       Primary: true
   - Entity: 1
     TagComponent:
-      Tag: mesh 1
+      Tag: sphere
     TransformComponent:
-      Position: [0, 0, 0]
+      Position: [-1.39999998, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     MeshComponent:
@@ -30,13 +30,24 @@ Entities:
       Color: [0.872586846, 0.872578084, 0.872578084]
   - Entity: 2
     TagComponent:
-      Tag: light 2
+      Tag: light
     TransformComponent:
-      Position: [1, 0.400000006, 2.5999999]
+      Position: [1.89999998, 0, 0.699999988]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     LightComponent:
       ambientStrength: 0.300000012
-      specularStrength: 0.300000012
+      specularStrength: 0.150000006
       specularIndex: 32
       lightColor: [0.783783793, 0.783775926, 0.783775926]
+  - Entity: 3
+    TagComponent:
+      Tag: box
+    TransformComponent:
+      Position: [0.321166694, 0, 0.600000024]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      modelPath: assets\models\box.obj
+      objName: box.obj
+      Color: [0.687256694, 0.68725872, 0.687251866]

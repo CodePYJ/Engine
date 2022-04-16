@@ -7,6 +7,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <filesystem>
 #include "Engine/Scene/SceneSerializer.h"
+#include "Engine/Renderer/Light.h"
+
 
 
 namespace EE {
@@ -30,6 +32,7 @@ namespace EE {
 		if (selectedEntity != -1) {
 			DrawComponents(selectedEntity);
 
+			ImGui::Spacing();
 			if (ImGui::Button("Add Component"))
 				ImGui::OpenPopup("AddComponent");
 			if (ImGui::BeginPopup("AddComponent"))
@@ -127,6 +130,23 @@ namespace EE {
 					{ 
 						
 					});
+				SetSelectedEntity(entity);
+			}
+			if (ImGui::MenuItem("Create Light")) {
+				Entity entity = activeScene_ptr->CreateEntity();
+				std::string name = "light ";
+				activeScene_ptr->AddComponent<TagComponent>(entity, { name + std::to_string(entity) });
+				activeScene_ptr->AddComponent<TransformComponent>(entity,
+					{
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(1.0f, 1.0f, 1.0f)
+					});
+				activeScene_ptr->AddComponent<LightComponent>(entity,
+					{
+						std::make_shared<Light>()
+					});
+
 				SetSelectedEntity(entity);
 			}
 			ImGui::EndPopup();
@@ -351,7 +371,14 @@ namespace EE {
 				}	//DragDrop
 				ImGui::NextColumn();
 				ImGui::Columns(1);
-				ImGui::Spacing();
+			});
+
+		DrawComponent<LightComponent>("Mesh", entity, [](auto& component)
+			{
+				ImGui::ColorEdit3("Color", glm::value_ptr(component.light_property.lightColor));
+				ImGui::DragFloat("ambient strength", &component.light_property.ambientStrength, 0.01f, 0.0f, 1.0f, "%.2f");
+				ImGui::DragFloat("specular strength", &component.light_property.specularStrength, 0.01f, 0.0f, 1.0f, "%.2f");
+				ImGui::DragInt("specular index", &component.light_property.specularIndex, 1, 0, 1000);
 			});
 	}
 
@@ -383,6 +410,15 @@ namespace EE {
 		if (ImGui::MenuItem("Mesh")) {
 			activeScene_ptr->AddComponent<MeshComponent>(selectedEntity,
 				{ nullptr });
+
+			ImGui::CloseCurrentPopup();
+		}
+
+		if (ImGui::MenuItem("Light")) {
+			activeScene_ptr->AddComponent<LightComponent>(selectedEntity,
+				{ 
+					std::make_shared<Light>()
+				});
 
 			ImGui::CloseCurrentPopup();
 		}

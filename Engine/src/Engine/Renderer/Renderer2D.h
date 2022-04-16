@@ -47,23 +47,6 @@ namespace EE {
 		std::string shaderPath = "assets/shaders/render2D_Circle.shader";
 	};
 
-	struct Light
-	{
-		float vertices[36] = {
-			-0.2f, -0.2f, 0.0f,  0.8f, 0.2f, 0.0f,  -1.0f, -1.0f, 1.0f,
-			0.2f, -0.2f, 0.0f,   0.8f, 0.8f, 0.0f,	1.0f, -1.0f, 1.0f,
-			-0.2f, 0.2f, 0.0f,   0.2f, 0.8f, 0.0f,	-1.0f, 1.0f, 1.0f,
-			0.2f, 0.2f, 0.0f,     0.8f, 0.2f, 0.0f,	1.0f, 1.0f, 1.0f
-		};
-		unsigned int verSize = 36 * sizeof(float);
-		unsigned int indices[6] = {
-				0, 1, 2,
-				2, 3, 1
-		};
-		unsigned int indCount = 6;
-		std::string shaderPath = "assets/shaders/test.shader";
-	};
-
 	struct Renderer2DData
 	{
 		static const uint32_t MaxQuads = 500;
@@ -94,6 +77,7 @@ namespace EE {
 		static void RendererInit();
 		static void Shutdown();
 
+		static void BeginScene(Render2DType renderType);
 		static void BeginScene(Render2DType renderType, const glm::mat4& view_projection);
 		static void EndScene();
 

@@ -62,6 +62,21 @@ namespace EE {
 		delete[] renderdata.quad_vertex_base;
 	}
 
+	void Renderer2D::BeginScene(Render2DType type)
+	{
+		if (type == Render2DType::SQUARE) {
+			renderdata.quad_count = 0;
+			renderdata.quad_index_count = 0;
+			renderdata.texture_slot_index = 1;
+			renderdata.quad_vertex_ptr = renderdata.quad_vertex_base;
+			renderdata.quad_shader->Bind();
+		}
+		else if (type == Render2DType::CIRCLE)
+		{
+
+		}
+	}
+
 	void Renderer2D::BeginScene(Render2DType type, const glm::mat4& view_projection)
 	{	
 		if (type == Render2DType::SQUARE) {
@@ -94,7 +109,6 @@ namespace EE {
 		renderdata.quad_VBO->SetData(renderdata.quad_vertex_base, data_size);
 		glDrawElements(GL_TRIANGLES, renderdata.quad_index_count, GL_UNSIGNED_INT, nullptr);
 	}
-
 
 	// Primitives
 

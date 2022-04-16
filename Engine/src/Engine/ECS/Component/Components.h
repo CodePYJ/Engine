@@ -11,6 +11,7 @@
 #include "Engine/Renderer/CameraController.h"
 #include "Engine/Renderer/Model.h"
 #include "Engine/Renderer/Texture.h"
+#include "Engine/Renderer/Light.h"
 
 
 namespace EE {
@@ -35,6 +36,14 @@ namespace EE {
 		}
 	};
 
+	struct CameraComponent
+	{
+		std::shared_ptr<CameraController> cameraController;
+		glm::mat4 view;
+		glm::mat4 projection;
+		bool primary;
+	};
+
 	struct Renderable2DComponent
 	{
 		glm::vec3 color;
@@ -50,21 +59,12 @@ namespace EE {
 		glm::vec3 color;
 	};
 
-	struct CameraComponent
+
+	struct LightComponent
 	{
-		std::shared_ptr<CameraController> cameraController;
-		glm::mat4 view;
-		glm::mat4 projection;
-		bool primary;
+		std::shared_ptr<Light> light;
+		LightProperty light_property;
 	};
-
-	//struct Phone
-
-	//struct LightComponent
-	//{
-	//	glm::vec3 color;
-
-	//};
 
 
 }

@@ -8,6 +8,12 @@ namespace EE {
 		LoadModel(path);
 	}
 
+	Model::Model(const std::string path, std::string shader_path)
+		:m_shader_path(shader_path)
+	{
+		LoadModel(path);
+	}
+
 	Model::~Model()
 	{
 
@@ -27,7 +33,13 @@ namespace EE {
 		ProcessNode(*scene->mRootNode, *scene);
 	}
 
-	Mesh Model::ProcessMesh(aiMesh& mesh, const aiScene& scene)
+	void Model::LoadModel(const std::string path, std::string shader_path)
+	{
+		m_shader_path = shader_path;
+		LoadModel(path);
+	}
+
+	Mesh Model::ProcessMesh(aiMesh& mesh, const aiScene& scene, std::string shader_path)
 	{
 		std::vector<Vertex> temp_vertices;
 		std::vector<unsigned int> temp_indices;
@@ -57,7 +69,10 @@ namespace EE {
 			}
 		}
 
-		return Mesh(temp_vertices, temp_indices, {});
+		if(shader_path.empty())
+			return Mesh(temp_vertices, temp_indices, {});
+		else
+			return Mesh(temp_vertices, temp_indices, {}, shader_path);
 	}
 
 	void Model::Draw(MeshProperty property)
@@ -72,7 +87,7 @@ namespace EE {
 	{
 		for (unsigned int i = 0; i < node.mNumMeshes; i++) {
 			aiMesh* curMesh = scene.mMeshes[node.mMeshes[i]];
-			meshes.push_back(ProcessMesh(*curMesh, scene));
+			meshes.push_back(ProcessMesh(*curMesh, scene, m_shader_path));
 		}
 		for (unsigned int i = 0; i < node.mNumChildren; i++) {
 			ProcessNode(*node.mChildren[i], scene);

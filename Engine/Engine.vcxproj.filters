@@ -1473,6 +1473,9 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Light.h" />
+    <ClInclude Include="src\Engine\ECS\System\LightSystem.h" />
+    <ClInclude Include="src\Engine\Renderer\UniformBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Core\Application.cpp">
@@ -1577,5 +1580,8 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Light.cpp" />
+    <ClCompile Include="src\Engine\ECS\System\LightSystem.cpp" />
+    <ClCompile Include="src\Engine\Renderer\UniformBuffer.cpp" />
   </ItemGroup>
 </Project>

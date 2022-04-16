@@ -11,6 +11,12 @@ namespace EE {
 	public:
 		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
 
+		struct ViewAndProjection
+		{
+			glm::mat4 m_projection = glm::mat4(1.0f);
+			glm::mat4 m_view = glm::mat4(1.0f);
+		};
+
 		Camera()  = default;
 
 		void SetOrthographic(float size, float nearClip, float farClip) { m_size = size; o_near = nearClip; o_far = farClip; }
@@ -31,27 +37,27 @@ namespace EE {
 		void SetPerspectiveFarClip(float farClip) { p_far = farClip; CalculateProjectionMatrix(); }
 
 		glm::vec3 GetPosition() { return m_position; }
-		void SetPosition(glm::vec3& position) { m_position = position; CalculateViewProjectionMatrix(); }
+		void SetPosition(glm::vec3& position) { m_position = position; CalculateViewMatrix(); }
 		glm::vec3 GetRotation() { return m_rotation; }
-		void SetRotation(glm::vec3 rotation) { m_rotation = rotation; CalculateViewProjectionMatrix(); }
+		void SetRotation(glm::vec3 rotation) { m_rotation = rotation; CalculateViewMatrix(); }
 		float GetViewPort() { return m_aspectRatio; }
 		void SetViewPort(float aspectRatio) { m_aspectRatio = aspectRatio; CalculateProjectionMatrix(); }
 		ProjectionType GetProjectionType() { return cameraType; }
 		void SetProjectionType(ProjectionType type) { cameraType = type; CalculateProjectionMatrix(); }
 
 		void CalculateProjectionMatrix();
-		glm::mat4 GetProjectionMatrix() { return m_projection; }
-		glm::mat4 GetViewMatrix() { return m_view; }
-		glm::mat4 GetViewProjectionMatrix() { return m_view_projection; }
+		glm::mat4 GetProjectionMatrix() { return view_and_projection.m_projection; }
+		glm::mat4 GetViewMatrix() { return view_and_projection.m_view; }
+		ViewAndProjection GetViewAndProjectionStruct() { return view_and_projection; }
 		glm::vec3 GetFrontDirection();
 
 		float GetR() { return r; }
 	private:
-		void CalculateViewProjectionMatrix();
+		void CalculateViewMatrix();
 
 	private:
-		glm::mat4 m_projection = glm::mat4(1.0f);
-		glm::mat4 m_view = glm::mat4(1.0f);
+
+		ViewAndProjection view_and_projection;
 		glm::mat4 m_view_projection = glm::mat4(1.0f);
 		glm::mat4 m_rotate_matrix = glm::mat4(1.0f);
 

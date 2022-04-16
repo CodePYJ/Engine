@@ -24,10 +24,9 @@ namespace EE {
 
 	void Render2DSystem::Update(Timestep ts)
 	{
-		//renderer.Clear();
 
-		glm::mat4 view_projection = SceneCoo_ptr->msgEvent.getMat4Msg(MsgType::CAMERA_MSG);
-		Renderer2D::BeginScene(Render2DType::SQUARE, view_projection);
+		//glm::mat4 view_projection = SceneCoo_ptr->msgEvent.getMat4Msg(MsgType::CAMERA_MSG);
+		Renderer2D::BeginScene(Render2DType::SQUARE);
 		for (Entity entity : mEntities)
 		{
 			Renderable2DComponent& renderable = SceneCoo_ptr->GetComponent<Renderable2DComponent>(entity);

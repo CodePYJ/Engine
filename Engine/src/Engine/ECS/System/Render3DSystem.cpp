@@ -21,14 +21,13 @@ namespace EE {
 
 	void Render3DSystem::Update(Timestep ts)
 	{
-		glm::mat4 view_projection = SceneCoo_ptr->msgEvent.getMat4Msg(MsgType::CAMERA_MSG);
 		for (Entity entity : mEntities)
 		{
 			auto& meshComponent = SceneCoo_ptr->GetComponent<MeshComponent>(entity);
 			auto& model = meshComponent.model;
 			auto& transform = SceneCoo_ptr->GetComponent<TransformComponent>(entity).GetTransform();
 			if (model != nullptr) {
-				model->Draw({ view_projection, transform, meshComponent.color, entity});
+				model->Draw({ transform, meshComponent.color, entity});
 			}
 		}
 
