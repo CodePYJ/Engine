@@ -378,7 +378,7 @@ namespace EE {
 				ImGui::ColorEdit3("Color", glm::value_ptr(component.light_property.lightColor));
 				ImGui::DragFloat("ambient strength", &component.light_property.ambientStrength, 0.01f, 0.0f, 1.0f, "%.2f");
 				ImGui::DragFloat("specular strength", &component.light_property.specularStrength, 0.01f, 0.0f, 1.0f, "%.2f");
-				ImGui::DragInt("specular index", &component.light_property.specularIndex, 1, 0, 1000);
+				ImGui::DragInt("specular index", &component.light_property.specularIndex, 1, 1, 1000);
 			});
 	}
 

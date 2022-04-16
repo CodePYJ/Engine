@@ -20,7 +20,7 @@ namespace EE {
 		bool playing = false;
 		Coordinator* SceneCoo_ptr;
 		Renderer renderer;
-		unsigned int light_property_size = 64;
+		unsigned int light_property_size = 128;
 		std::shared_ptr<UniformBuffer> light_uniform_block;
 	};
 }

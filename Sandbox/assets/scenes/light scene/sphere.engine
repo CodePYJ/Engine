@@ -39,4 +39,4 @@ Entities:
       ambientStrength: 0.300000012
       specularStrength: 0.300000012
       specularIndex: 32
-      lightColor: [0.783783793, 0.783775926, 0.783775926]
+      lightColor: [1, 0.999989986, 0.999989986]

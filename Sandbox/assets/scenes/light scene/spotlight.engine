@@ -1,0 +1,75 @@
+Scene: Untitled
+Entities:
+  - Entity: 0
+    TagComponent:
+      Tag: red_box
+    TransformComponent:
+      Position: [-0.699999988, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      modelPath: assets\models\box.obj
+      objName: box.obj
+      Color: [0.841698825, 0.20148778, 0.20148778]
+  - Entity: 1
+    TagComponent:
+      Tag: yellow_box
+    TransformComponent:
+      Position: [0.699999988, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      modelPath: assets\models\box.obj
+      objName: box.obj
+      Color: [0.733590722, 0.710559249, 0.274742484]
+  - Entity: 2
+    TagComponent:
+      Tag: blue_box
+    TransformComponent:
+      Position: [0.699999988, -1.35000002, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      modelPath: assets\models\box.obj
+      objName: box.obj
+      Color: [0.223013967, 0.46060735, 0.65637064]
+  - Entity: 3
+    TagComponent:
+      Tag: green_box
+    TransformComponent:
+      Position: [-0.699999988, -1.35000002, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      modelPath: assets\models\box.obj
+      objName: box.obj
+      Color: [0.159821734, 0.583011627, 0.2741974]
+  - Entity: 4
+    TagComponent:
+      Tag: camera 4
+    TransformComponent:
+      Position: [0, 0, 5.30000019]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 45
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 1
+        OrthographicNear: 1
+        OrthographicFar: -1
+      Primary: true
+  - Entity: 5
+    TagComponent:
+      Tag: light 5
+    TransformComponent:
+      Position: [0.00419491529, -0.174999997, 2.5]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    LightComponent:
+      ambientStrength: 0.569999993
+      specularStrength: 0.300000012
+      specularIndex: 32
+      lightColor: [1, 1, 1]
