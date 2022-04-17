@@ -65,7 +65,7 @@ Entities:
     TagComponent:
       Tag: light 5
     TransformComponent:
-      Position: [0.00419491529, -0.174999997, 2.5]
+      Position: [0.00419491529, -0.174999997, 2.29999995]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     LightComponent:
@@ -73,3 +73,8 @@ Entities:
       specularStrength: 0.300000012
       specularIndex: 32
       lightColor: [1, 1, 1]
+      lightType: 2
+      Spotlight:
+        direction: [0, 0, -1]
+        innerCutoff: 0.899999976
+        outerCutoff: 0.75

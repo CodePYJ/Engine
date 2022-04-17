@@ -5,16 +5,29 @@
 
 namespace EE {
 
+	enum class LightType
+	{
+		PARALLEL_LIGHT = 0, POINT_LIGHT ,SPOT_LIGHT = 2
+	};
+
 	struct LightProperty
-	{																		
+	{
 		float ambientStrength = 0.3f;
 		float specularStrength = 0.3f;
 		int specularIndex = 32;
 		glm::vec3 lightColor = { 1.0, 1.0, 1.0 };	
 		glm::vec3 lightPos;
+	};
 
+	struct ParallelLight
+	{
+		glm::vec3 direction = { 0.0f,0.0f,-1.0f };
+	};
+
+	struct PointLight
+	{
 		//À•ºı										æ‡¿Î 50
-		float constant = 1.0f;				
+		float constant = 1.0f;
 		float linear = 0.09f;
 		float quadratic = 0.032f;
 	};
@@ -36,36 +49,27 @@ namespace EE {
 	{
 	public:
 		Light();
+		virtual ~Light() = default;
 
 		Model& GetLight() { return light; }
 
 		LightProperty GetLightProperty() { return m_light_property; }
-		void SetLightProperty(LightProperty light_property)
-		{ 
-			m_light_property = light_property; 
-			light_uniform_block.light_property_mat4_1 = {
-				light_property.ambientStrength, light_property.specularStrength, light_property.specularIndex, 1.0f,
-				light_property.lightPos[0], light_property.lightPos[1], light_property.lightPos[2], 1.0f,
-				light_property.lightColor[0], light_property.lightColor[1],light_property.lightColor[2], 1.0f,
-				light_property.constant,light_property.linear,light_property.quadratic,1.0f
-			};
-			if (spotlight) {
-				light_uniform_block.light_property_mat4_2 = {
-					m_spotlight.direction[0], m_spotlight.direction[1], m_spotlight.direction[2], 1.0f,
-					m_spotlight.inner_cutoff,m_spotlight.outer_cutoff,1.0f,1.0f,
-					1.0f,1.0f,1.0f,1.0f,
-					1.0f,1.0f,1.0f,1.0f
-				};
-			}
-		}
+		void SetLightProperty(LightProperty light_property);
 
+
+		LightType& GetLightType() { return m_light_type; }
+		void SetLightType(int light_type) { m_light_type = (LightType)light_type; }
+
+		ParallelLight m_parallel_light;
+		PointLight m_point_light;
+		Spotlight m_spotlight;
 		LightUniformBlock light_uniform_block;
 
 	private:
 		Model light;
 		LightProperty m_light_property;
-		Spotlight m_spotlight;
-		bool spotlight = true;
+		LightType m_light_type = LightType::PARALLEL_LIGHT;
+
 	};
 
 }

@@ -34,7 +34,6 @@ namespace EE {
 			auto& light_model = lightComponent.light->GetLight();
 			auto& transform = transformComponent.GetTransform();
 
-			light_model.Draw({ transform, lightComponent.light_property.lightColor, entity });
 
 			lightComponent.light->SetLightProperty({
 					lightComponent.light_property.ambientStrength,
@@ -43,9 +42,12 @@ namespace EE {
 					lightComponent.light_property.lightColor,
 					transformComponent.position
 				});
+
 			light_uniform_block->Bind();
 			light_uniform_block->SetData(light_property_size, &lightComponent.light->light_uniform_block);
 			light_uniform_block->Unbind();
+
+			light_model.Draw({ transform, lightComponent.light_property.lightColor, entity });
 		}
 
 	}

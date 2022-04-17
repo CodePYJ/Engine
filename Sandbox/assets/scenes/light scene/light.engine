@@ -4,8 +4,8 @@ Entities:
     TagComponent:
       Tag: camera 0
     TransformComponent:
-      Position: [0, 0, 5]
-      Rotation: [0, 0, 0]
+      Position: [-0.192144975, 3.44767618, 4.09045172]
+      Rotation: [0.650655508, 0.0628316551, 0]
       Scale: [1, 1, 1]
     CameraComponent:
       Camera:
@@ -30,16 +30,19 @@ Entities:
       Color: [0.872586846, 0.872578084, 0.872578084]
   - Entity: 2
     TagComponent:
-      Tag: light
+      Tag: parallel light (red)
     TransformComponent:
-      Position: [1.89999998, 0, 0.699999988]
+      Position: [2.5, 1.20000005, 1.89999998]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     LightComponent:
-      ambientStrength: 0.300000012
+      ambientStrength: 0.699999988
       specularStrength: 0.150000006
       specularIndex: 32
-      lightColor: [0.783783793, 0.783775926, 0.783775926]
+      lightColor: [1, 0, 0]
+      lightType: 0
+      ParallelLight:
+        direction: [-1, -1, -1]
   - Entity: 3
     TagComponent:
       Tag: box
@@ -51,3 +54,37 @@ Entities:
       modelPath: assets\models\box.obj
       objName: box.obj
       Color: [0.687256694, 0.68725872, 0.687251866]
+  - Entity: 4
+    TagComponent:
+      Tag: spotlight (yellow)
+    TransformComponent:
+      Position: [0.383340418, 0.416941792, 2.21168542]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    LightComponent:
+      ambientStrength: 0.300000012
+      specularStrength: 0.300000012
+      specularIndex: 32
+      lightColor: [0.60324055, 0.67181468, 0.238636851]
+      lightType: 2
+      Spotlight:
+        direction: [0, 0, -1]
+        innerCutoff: 0.899999976
+        outerCutoff: 0.800000012
+  - Entity: 5
+    TagComponent:
+      Tag: light 5
+    TransformComponent:
+      Position: [-2.13638163, 2.22997236, 0.719309568]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    LightComponent:
+      ambientStrength: 0.300000012
+      specularStrength: 0.300000012
+      specularIndex: 32
+      lightColor: [1, 1, 1]
+      lightType: 1
+      PointLight:
+        constant: 1
+        linear: 0.0900000036
+        quadratic: 0.0320000015

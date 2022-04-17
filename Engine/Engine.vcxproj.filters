@@ -1476,6 +1476,7 @@
     <ClInclude Include="src\Engine\Renderer\Light.h" />
     <ClInclude Include="src\Engine\ECS\System\LightSystem.h" />
     <ClInclude Include="src\Engine\Renderer\UniformBuffer.h" />
+    <ClInclude Include="src\Engine\Renderer\Light\ParallelLight.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Core\Application.cpp">
@@ -1583,5 +1584,6 @@
     <ClCompile Include="src\Engine\Renderer\Light.cpp" />
     <ClCompile Include="src\Engine\ECS\System\LightSystem.cpp" />
     <ClCompile Include="src\Engine\Renderer\UniformBuffer.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Light\ParallelLight.cpp" />
   </ItemGroup>
 </Project>
