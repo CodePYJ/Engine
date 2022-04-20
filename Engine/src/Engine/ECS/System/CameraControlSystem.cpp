@@ -31,7 +31,7 @@ namespace EE {
 			trans.rotation = cameraC.cameraController->GetRotation();
 
 			camera_uniform_block->Bind();
-			camera_uniform_block->SetData(sizeof(glm::mat4) * 2, &camera.GetViewAndProjectionStruct());
+			camera_uniform_block->SetData(0, sizeof(glm::mat4) * 2, &camera.GetViewAndProjectionStruct());
 			camera_uniform_block->Unbind();
 
 			//SceneCoo_ptr->msgEvent.SetMat4Msg(MsgType::CAMERA_MSG, camera.cameraController->GetCamera().GetViewProjectionMatrix());

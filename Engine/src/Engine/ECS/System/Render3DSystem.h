@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "../System.h"
 #include "Engine/ECS/Coordinator.h"
+#include "Engine/Renderer/Framebuffer.h"
 
 
 namespace EE {
@@ -18,6 +19,9 @@ namespace EE {
 		bool playing = false;
 		Coordinator* SceneCoo_ptr;
 		Renderer renderer;
+
+		//Framebuffer m_framebuffer;
+		//std::shared_ptr<Shader> defer_shader;
 	};
 }
 

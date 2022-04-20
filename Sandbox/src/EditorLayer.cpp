@@ -33,7 +33,11 @@ namespace EE {
 		sceneHierarchyPanel.SetActiveScene(mScene_ptr);
 		Renderer2D::RendererInit();
 		FramebufferSpecification fbSpec;
-		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
+		fbSpec.Attachments = {
+			{FramebufferTextureFormat::RGBA8, FramebufferTextureDataFormat::UNSIGNED_BYTE},
+			{FramebufferTextureFormat::RED_INTEGER, FramebufferTextureDataFormat::UNSIGNED_BYTE},
+			{FramebufferTextureFormat::Depth, FramebufferTextureDataFormat::None}
+		};
 		fbSpec.Width = 1600;
 		fbSpec.Height = 900;
 		m_Framebuffer.SetFramebufferSpec(fbSpec);

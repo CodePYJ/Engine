@@ -28,6 +28,7 @@ namespace EE {
 		void SetUniform3f(const std::string& name, const glm::vec3& value);
 		void SetUniform4f(const std::string& name, const glm::vec4& value);
 		void SetUniformMat4(const std::string& name, const glm::mat4& mat4);
+		unsigned int GetId() { return m_RendererID; }
 
 	private:
 		unsigned int GetUniformLocation(const std::string& name);

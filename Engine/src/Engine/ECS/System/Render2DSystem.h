@@ -4,6 +4,7 @@
 #include "../System.h"
 #include "Engine/ECS/Coordinator.h"
 
+
 namespace EE {
 
 	class Render2DSystem: public System

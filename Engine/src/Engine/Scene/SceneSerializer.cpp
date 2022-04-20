@@ -181,7 +181,9 @@ namespace EE {
 			auto& mesh = m_ScenePtr->GetComponent<MeshComponent>(entity);
 			out << YAML::Key << "modelPath" << YAML::Value << mesh.path;
 			out << YAML::Key << "objName" << YAML::Value << mesh.obj_name;
-			out << YAML::Key << "Color" << YAML::Value << mesh.color;
+			out << YAML::Key << "color" << YAML::Value << mesh.color;
+			out << YAML::Key << "specularStrength" << YAML::Value << mesh.specularStrength;
+			out << YAML::Key << "shininess" << YAML::Value << mesh.shininess;
 
 			out << YAML::EndMap; // TransformComponent
 		}
@@ -193,32 +195,30 @@ namespace EE {
 
 			auto& lightComponent = m_ScenePtr->GetComponent<LightComponent>(entity);
 			out << YAML::Key << "ambientStrength" << YAML::Value << lightComponent.light_property.ambientStrength;
-			out << YAML::Key << "specularStrength" << YAML::Value << lightComponent.light_property.specularStrength;
-			out << YAML::Key << "specularIndex" << YAML::Value << lightComponent.light_property.specularIndex;
 			out << YAML::Key << "lightColor" << YAML::Value << lightComponent.light_property.lightColor;
-			int light_type = (int)lightComponent.light->GetLightType();
+			int light_type = lightComponent.light_property.light_type;
 			out << YAML::Key << "lightType" << YAML::Value << light_type;
 
 			if (light_type == 0) {
 				out << YAML::Key << "ParallelLight" << YAML::Value;
 				out << YAML::BeginMap;
-				out << YAML::Key << "direction" << YAML::Value << lightComponent.light->m_parallel_light.direction;
+				out << YAML::Key << "direction" << YAML::Value << lightComponent.light_property.parallel_direction;
 				out << YAML::EndMap;
 			}
 			else if (light_type == 1) {
 				out << YAML::Key << "PointLight" << YAML::Value;
 				out << YAML::BeginMap;
-				out << YAML::Key << "constant" << YAML::Value << lightComponent.light->m_point_light.constant;
-				out << YAML::Key << "linear" << YAML::Value << lightComponent.light->m_point_light.linear;
-				out << YAML::Key << "quadratic" << YAML::Value << lightComponent.light->m_point_light.quadratic;
+				out << YAML::Key << "constant" << YAML::Value << lightComponent.light_property.constant;
+				out << YAML::Key << "linear" << YAML::Value << lightComponent.light_property.linear;
+				out << YAML::Key << "quadratic" << YAML::Value << lightComponent.light_property.quadratic;
 				out << YAML::EndMap;
 			}
 			else if (light_type == 2) {
 				out << YAML::Key << "Spotlight" << YAML::Value;
 				out << YAML::BeginMap;
-				out << YAML::Key << "direction" << YAML::Value << lightComponent.light->m_spotlight.direction;
-				out << YAML::Key << "innerCutoff" << YAML::Value << lightComponent.light->m_spotlight.inner_cutoff;
-				out << YAML::Key << "outerCutoff" << YAML::Value << lightComponent.light->m_spotlight.outer_cutoff;
+				out << YAML::Key << "direction" << YAML::Value << lightComponent.light_property.spot_direction;
+				out << YAML::Key << "innerCutoff" << YAML::Value << lightComponent.light_property.inner_cutoff;
+				out << YAML::Key << "outerCutoff" << YAML::Value << lightComponent.light_property.outer_cutoff;
 				out << YAML::EndMap;
 			}
 			out << YAML::EndMap;
@@ -314,7 +314,9 @@ namespace EE {
 							std::make_shared<Model>(meshComponent["modelPath"].as<std::string>()),
 							meshComponent["objName"].as<std::string>(),
 							meshComponent["modelPath"].as<std::string>(),
-							meshComponent["Color"].as<glm::vec3>()
+							meshComponent["color"].as<glm::vec3>(),
+							meshComponent["specularStrength"].as<float>(),
+							meshComponent["shininess"].as<int>()
 						});
 				}
 
@@ -322,33 +324,33 @@ namespace EE {
 				if (lightComponent) {
 					std::shared_ptr<Light> light_ptr = std::make_shared<Light>();
 					int light_type = lightComponent["lightType"].as<int>();
+					LightProperty light_property;
+					light_property.light_type = light_type;
 					light_ptr->SetLightType(light_type);
+					light_property.lightColor = lightComponent["lightColor"].as<glm::vec3>();
 
 					if (light_type == 0) {
 						auto& parallel_light = lightComponent["ParallelLight"];
-						light_ptr->m_parallel_light.direction = parallel_light["direction"].as<glm::vec3>();
+						light_property.parallel_direction = parallel_light["direction"].as<glm::vec3>();
 					}
 					else if (light_type == 1) {
 						auto& point_light = lightComponent["PointLight"];
-						light_ptr->m_point_light.constant = point_light["constant"].as<float>();
-						light_ptr->m_point_light.linear = point_light["linear"].as<float>();
-						light_ptr->m_point_light.quadratic = point_light["quadratic"].as<float>();
+						light_property.constant = point_light["constant"].as<float>();
+						light_property.linear = point_light["linear"].as<float>();
+						light_property.quadratic = point_light["quadratic"].as<float>();
 					}
 					else if (light_type == 2) {
 						auto& spotlight = lightComponent["Spotlight"];
-						light_ptr->m_spotlight.direction = spotlight["direction"].as<glm::vec3>();
-						light_ptr->m_spotlight.inner_cutoff = spotlight["innerCutoff"].as<float>();
-						light_ptr->m_spotlight.outer_cutoff = spotlight["outerCutoff"].as<float>();
+						light_property.spot_direction = spotlight["direction"].as<glm::vec3>();
+						light_property.inner_cutoff = spotlight["innerCutoff"].as<float>();
+						light_property.outer_cutoff = spotlight["outerCutoff"].as<float>();
 					}
+
+					light_ptr->SetLightProperty(light_property);
 					m_ScenePtr->AddComponent<LightComponent>(deserializedEntity,
 						{
 							light_ptr,
-							{
-								lightComponent["ambientStrength"].as<float>(),
-								lightComponent["specularStrength"].as<float>(),
-								lightComponent["specularIndex"].as<int>(),
-								lightComponent["lightColor"].as<glm::vec3>()
-							}
+							light_property
 						});
 				}
 

@@ -83,6 +83,14 @@ namespace EE {
 		}
 	}
 
+	void Model::DrawLight(MeshProperty property)
+	{
+		for (Mesh mesh : meshes) {
+			mesh.SetMeshProperty(property);
+			mesh.DrawLight();
+		}
+	}
+
 	void Model::ProcessNode(aiNode& node, const aiScene& scene)
 	{
 		for (unsigned int i = 0; i < node.mNumMeshes; i++) {

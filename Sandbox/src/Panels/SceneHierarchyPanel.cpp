@@ -369,20 +369,33 @@ namespace EE {
 					}
 					ImGui::EndDragDropTarget();
 				}	//DragDrop
-				ImGui::NextColumn();
 				ImGui::Columns(1);
+
+				ImGui::Spacing();
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 120.0f);
+				ImGui::Text("specular strength");
+				ImGui::NextColumn();
+				ImGui::DragFloat("##specular strength", &component.specularStrength, 0.01f, 0.0f, 1.0f, "%.2f");
+				ImGui::Columns(1);
+
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 120.0f);
+				ImGui::Text("shininess");
+				ImGui::NextColumn();
+				ImGui::DragInt("##shininess", &component.shininess, 1, 1, 1000);
+
 			});
 
 		DrawComponent<LightComponent>("Light", entity, [](auto& component)
 			{
-				static int light_type = 0;
 				ImGui::ColorEdit3("Color", glm::value_ptr(component.light_property.lightColor));
 				ImGui::Spacing();
 
-				ImGui::RadioButton("Parallel Light", &light_type, 0); ImGui::SameLine();
-				ImGui::RadioButton("Point Light", &light_type, 1); ImGui::SameLine();
-				ImGui::RadioButton("Spotlight", &light_type, 2);
-				component.light->SetLightType(light_type);
+				ImGui::RadioButton("Parallel Light", &component.light_property.light_type, 0); ImGui::SameLine();
+				ImGui::RadioButton("Point Light", &component.light_property.light_type, 1); ImGui::SameLine();
+				ImGui::RadioButton("Spotlight", &component.light_property.light_type, 2);
+				int light_type = component.light_property.light_type;
 
 				ImGui::Spacing();
 				if (ImGui::TreeNode("Basic")) {
@@ -392,28 +405,13 @@ namespace EE {
 					ImGui::NextColumn();
 					ImGui::DragFloat("##ambient strength", &component.light_property.ambientStrength, 0.01f, 0.0f, 1.0f, "%.2f");
 					ImGui::Columns(1);
-
-					ImGui::Columns(2);
-					ImGui::SetColumnWidth(0, 120.0f);
-					ImGui::Text("specular strength");
-					ImGui::NextColumn();
-					ImGui::DragFloat("##specular strength", &component.light_property.specularStrength, 0.01f, 0.0f, 1.0f, "%.2f");
-					ImGui::Columns(1);
-
-					ImGui::Columns(2);
-					ImGui::SetColumnWidth(0, 120.0f);
-					ImGui::Text("specular index");
-					ImGui::NextColumn();
-					ImGui::DragInt("##specular index", &component.light_property.specularIndex, 1, 1, 1000);
-
-					ImGui::Columns(1);
 					ImGui::Spacing();
 					ImGui::TreePop();
 				}
 
 				if (light_type == 0 && ImGui::TreeNode("Parallel Light Property")) {
 					ImGui::Spacing();
-					DrawVec3Control("Direction", component.light->m_parallel_light.direction);
+					DrawVec3Control("Direction", component.light_property.parallel_direction);
 					ImGui::TreePop();
 				}
 				else if (light_type == 1) {
@@ -423,21 +421,21 @@ namespace EE {
 						ImGui::SetColumnWidth(0, 100.0f);
 						ImGui::Text("Constant");
 						ImGui::NextColumn();
-						ImGui::DragFloat("##Constant", &component.light->m_point_light.constant, 0.1f, 0.0f, 1.0f, "%.1f");
+						ImGui::DragFloat("##Constant", &component.light_property.constant, 0.1f, 0.0f, 1.0f, "%.1f");
 						ImGui::Columns(1);
 
 						ImGui::Columns(2);
 						ImGui::SetColumnWidth(0, 100.0f);
 						ImGui::Text("Linear");
 						ImGui::NextColumn();
-						ImGui::DragFloat("##Linear", &component.light->m_point_light.linear, 0.001f, 0.0f, 1.0f, "%.3f");
+						ImGui::DragFloat("##Linear", &component.light_property.linear, 0.001f, 0.0f, 1.0f, "%.3f");
 						ImGui::Columns(1);
 
 						ImGui::Columns(2);
 						ImGui::SetColumnWidth(0, 100.0f);
 						ImGui::Text("Quadratic");
 						ImGui::NextColumn();
-						ImGui::DragFloat("##Quadratic", &component.light->m_point_light.quadratic, 0.001f, 0.0f, 1.0f, "%.3f");
+						ImGui::DragFloat("##Quadratic", &component.light_property.quadratic, 0.001f, 0.0f, 1.0f, "%.3f");
 
 						ImGui::Columns(1);
 						ImGui::TreePop();
@@ -446,7 +444,7 @@ namespace EE {
 				else if (light_type == 2) {
 					if (ImGui::TreeNode("Spot Light Property")) {
 						ImGui::Spacing();
-						DrawVec3Control("Direction", component.light->m_spotlight.direction);
+						DrawVec3Control("Direction", component.light_property.spot_direction);
 						ImGui::Spacing();
 						ImGui::Spacing();
 
@@ -454,14 +452,14 @@ namespace EE {
 						ImGui::SetColumnWidth(0, 100.0f);
 						ImGui::Text("Inner Cutoff");
 						ImGui::NextColumn();
-						ImGui::DragFloat("##Inner Cutoff", &component.light->m_spotlight.inner_cutoff, 0.1f, 0.0f, 1.0f, "%.1f");
+						ImGui::DragFloat("##Inner Cutoff", &component.light_property.inner_cutoff, 0.01f, 0.0f, 1.0f, "%.2f");
 						ImGui::Columns(1);
 
 						ImGui::Columns(2);
 						ImGui::SetColumnWidth(0, 100.0f);
 						ImGui::Text("Outer Cutoff");
 						ImGui::NextColumn();
-						ImGui::DragFloat("##Outer Cutoff", &component.light->m_spotlight.outer_cutoff, 0.1f, 0.0f, 1.0f, "%.1f");
+						ImGui::DragFloat("##Outer Cutoff", &component.light_property.outer_cutoff, 0.01f, 0.0f, 1.0f, "%.2f");
 
 						ImGui::Columns(1);
 						ImGui::TreePop();

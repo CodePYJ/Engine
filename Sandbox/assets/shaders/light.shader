@@ -25,9 +25,31 @@ void main()
 layout(location = 0) out vec4 color0;
 layout(location = 1) out int color1;
 
-layout(std140, binding = 1) uniform Light
+struct Light
 {
-    mat4 light_property;
+    int lightType;
+    float ambientStrength;
+    vec3 color;
+    vec3 position;
+
+    //parallel light
+    vec3 parallelDir;
+
+    //point light
+    float constant;
+    float mlinear;
+    float quadratic;
+
+    //spotlight
+    float innerCutoff;
+    float outerCutoff;
+    vec3 spotlightDir;
+};
+
+layout(std140, binding = 1) uniform uLight
+{
+    int lightCount;
+    Light lights[32];
 };
 
 uniform vec3 u_color;

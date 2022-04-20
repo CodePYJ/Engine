@@ -72,7 +72,7 @@ namespace EE {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrollEvent>(std::bind(&CameraController::OnMouseScrolled, this, std::placeholders::_1));
 		dispatcher.Dispatch<WindowResizeEvent>(std::bind(&CameraController::OnWindowResized, this, std::placeholders::_1));
-		//dispatcher.Dispatch<MouseButtonPressedEvent>(std::bind(&CameraController::OnMousePressed, this, std::placeholders::_1));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(std::bind(&CameraController::OnMousePressed, this, std::placeholders::_1));
 		dispatcher.Dispatch<MouseButtonReleasedEvent>(std::bind(&CameraController::OnMouseReleased, this, std::placeholders::_1));
 	}
 
@@ -111,11 +111,9 @@ namespace EE {
 	void CameraController::OnMouseReleased(MouseButtonReleasedEvent& e)
 	{
 		if (e.GetButton() == Mouse::ButtonRight) {
-			mouseInitialPos_right = { 0.0f, 0.0f };
 			mouse_button_falg_right = true;
 		}
 		if (e.GetButton() == Mouse::ButtonLeft) {
-			mouseInitialPos_left = { 0.0f, 0.0f };
 			mouse_button_falg_left = true;
 		}
 	}

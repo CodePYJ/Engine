@@ -27,7 +27,9 @@ Entities:
     MeshComponent:
       modelPath: assets\models\sphere.obj
       objName: sphere.obj
-      Color: [0.872586846, 0.872578084, 0.872578084]
+      color: [0.872586846, 0.872578084, 0.872578084]
+      specularStrength: 0.3
+      shininess: 32
   - Entity: 2
     TagComponent:
       Tag: light 2
@@ -37,8 +39,6 @@ Entities:
       Scale: [1, 1, 1]
     LightComponent:
       ambientStrength: 0.300000012
-      specularStrength: 0.300000012
-      specularIndex: 32
       lightColor: [1, 0.999989986, 0.999989986]
       lightType: 1
       PointLight:

@@ -21,13 +21,12 @@ uniform mat4 u_transform;
 void main()
 {
     FragPos = u_transform * vec4(aPos, 1.0);
-    Normal = aNormal;
+    Normal = vec3(u_transform * vec4(aNormal, 0.0f));
     transport_view = view;
     transport_transform = u_transform;
 
     gl_Position = projection * view * FragPos;
 }
-
 
 #shader fragment
 #version 450 core
@@ -40,85 +39,100 @@ in vec4 FragPos;
 in mat4 transport_view;
 in mat4 transport_transform;
 
-layout(std140, binding = 1) uniform Light
+struct Light
 {
-    mat4 light_property1;
-    mat4 light_property2;
+    int lightType;
+    float ambientStrength;
+    vec3 color;
+    vec3 position;
+
+    //parallel light
+    vec3 parallelDir;
+
+    //point light
+    float constant;
+    float mlinear;
+    float quadratic;
+
+    //spotlight
+    float innerCutoff;
+    float outerCutoff;
+    vec3 spotlightDir;
+};
+
+layout(std140, binding = 1) uniform uLight
+{
+    int lightCount;
+    Light lights[32];
 };
 
 uniform vec3 u_color;
 uniform int u_entity;
+uniform float specularStrength;
+uniform int shininess;
+
+vec3 BaseLight(Light light, vec3 normal, vec3 lightDir, vec3 viewDir, vec3 viewNorm)
+{
+    vec3 ambient = light.ambientStrength * light.color;
+
+    float diff = max(dot(normal, lightDir), 0.0);
+    vec3 diffuse = diff * light.color;
+
+    vec3 reflectDir = reflect(lightDir, viewNorm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+    vec3 specular = specularStrength * spec * light.color;
+    return ambient + diffuse + specular;
+}
+
+vec3 Spotlight(Light light, vec3 normal, vec3 lightDir, vec3 viewDir, vec3 viewNorm)
+{
+    vec3 ambient = light.ambientStrength * light.color;
+
+    float diff = max(dot(normal, lightDir), 0.0);
+    vec3 diffuse = diff * light.color;
+
+    vec3 reflectDir = reflect(lightDir, viewNorm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+    vec3 specular = specularStrength * spec * light.color;
+
+    float theta = dot(lightDir, normalize(-light.spotlightDir));
+    float spotlight_intensity = clamp((theta - light.outerCutoff) / (light.innerCutoff - light.outerCutoff), 0.0, 1.0);  //软化边缘
+    diffuse *= spotlight_intensity;
+    specular *= spotlight_intensity;    //不对ambient做影响
+
+    return ambient + diffuse + specular;
+}
 
 void main()
 {
-    float ambientStrength = light_property1[0][0];
-    float specularStrength = light_property1[0][1];
-    int specularIndex = int(light_property1[0][2]);
-    vec3 lightPos = { light_property1[1][0], light_property1[1][1], light_property1[1][2] };
-    vec4 lightColor = { light_property1[2][0], light_property1[2][1], light_property1[2][2], light_property1[2][3] };
-    float light_type = light_property1[3][0];
-
-    //
-    vec3 lightDir;
-    vec4 diffuse = vec4(1.0f);
-    vec4 specular = vec4(1.0f);
-    vec4 result = vec4(1.0f);
-
-    if (light_type == 0.0f) {   //parallel light
-        vec3 parallel_light_direction = { light_property2[0][0], light_property2[0][1], light_property2[0][2] };
-
-        lightDir = normalize(-1*parallel_light_direction);
-        specular = vec4(0.0f);
-        diffuse = vec4(0.0f);
-    }
-
-    else if (light_type == 1.0f) {  //point light
-        float point_light_constant = light_property2[0][0];
-        float point_light_linear = light_property2[0][1];
-        float point_light_quadratic = light_property2[0][2];
-
-        lightDir = normalize(lightPos - vec3(FragPos));
-        //attenuation
-        float distance = length(lightPos - vec3(FragPos));
-        float attenuation = 1.0f / 
-            (point_light_constant + 
-            point_light_linear * distance + 
-            point_light_quadratic * (distance * distance));
-        result *= attenuation;
-    }
-
-    else if (light_type == 2.0f) {  //soptlight
-        vec3 soptlight_direction = { light_property2[0][0], light_property2[0][1], light_property2[0][2] };
-        float spotlight_inner_cutoff = light_property2[1][0];
-        float spotlight_outer_cutoff = light_property2[1][1];
-
-        lightDir = normalize(lightPos - vec3(FragPos));
-
-        //spotlight_direction = vec3(transport_transform * vec4(spotlight_direction, 0.0));
-        float theta = dot(lightDir, normalize(-soptlight_direction));
-        float spotlight_intensity = clamp((theta - spotlight_outer_cutoff) / (spotlight_inner_cutoff - spotlight_outer_cutoff), 0.0, 1.0);  //软化边缘
-        diffuse *= spotlight_intensity;
-        specular *= spotlight_intensity;    //不对ambient做影响
-    }
-
-    
-    vec4 ambient = ambientStrength * vec4(1.0, 1.0, 1.0, 1.0);
-
-    vec3 norm = normalize(Normal);
-    //lightDir = normalize(lightPos - vec3(FragPos));
-    float diff = max(dot(norm, lightDir), 0.0);
-    diffuse *= diff * lightColor;
+    vec3 result;
 
     vec3 viewPos = vec3(transport_view * FragPos);
     vec3 viewNorm = normalize(vec3(transport_view * vec4(Normal,0.0f)));
-
     vec3 viewDir = normalize(vec3(0, 0, 0) - viewPos);
-    vec3 reflectDir = reflect(-lightDir, viewNorm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), specularIndex);
-    specular *= specularStrength * spec * lightColor;
+    vec3 norm = normalize(Normal);
 
-    result *= (ambient + diffuse + specular) * vec4(u_color, 1.0);
+    for (int i = 0; i < lightCount; i++) {
+        vec3 lightDir = normalize(lights[i].position - vec3(FragPos));
 
-    color0 = result;
+        if (lights[i].lightType == 0) {
+            result += BaseLight(lights[i], norm, normalize(-1 * lights[i].parallelDir), viewDir, viewNorm);
+        }
+
+        else if (lights[i].lightType == 1) {
+            float distance = length(lights[i].position - vec3(FragPos));
+            float attenuation = 1.0f /
+                (lights[i].constant +(lights[i].mlinear * distance) + lights[i].quadratic * (distance * distance));
+            result += BaseLight(lights[i], norm, lightDir, viewDir, viewNorm) * attenuation;
+        }
+
+        else if (lights[i].lightType == 2) {
+            result += Spotlight(lights[i], norm, lightDir, viewDir, viewNorm);
+        }
+    }
+
+    result *= u_color;
+
+    color0 = vec4(result, 1.0f);
     color1 = u_entity;
 }

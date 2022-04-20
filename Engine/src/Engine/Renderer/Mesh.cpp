@@ -60,6 +60,22 @@ namespace EE {
 		shader_test->SetUniformMat4("u_transform", m_property.transform);
 		shader_test->SetUniform3f("u_color", m_property.color);
 		shader_test->SetUniform1i("u_entity", m_property.entity);
+		shader_test->SetUniform1f("specularStrength", m_property.specularStrength);
+		shader_test->SetUniform1i("shininess", m_property.shininess);
+		//GLuint indices[3];
+		//const GLchar* names[] = { "lightCount", "lights[0]", "lights[1]" };
+		//glGetUniformIndices(shader_test->GetId(), 3, names, indices);
+		//EE_TRACE(indices[0]);
+		//EE_TRACE(indices[1]);
+		//EE_TRACE(indices[2]);
+		//int blocksize = 0;
+		//int offset[3];
+		//glGetActiveUniformBlockiv(shader_test->GetId(), 1, GL_UNIFORM_BLOCK_DATA_SIZE, &blocksize);
+		//glGetActiveUniformsiv(shader_test->GetId(), 3, indices, GL_UNIFORM_OFFSET, offset);
+		//EE_TRACE(blocksize);
+		//EE_TRACE(offset[0]);
+		//EE_TRACE(offset[1]);
+		//EE_TRACE(offset[2]);
 
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
 		vao->Unbind();
@@ -69,10 +85,25 @@ namespace EE {
 		//m_textures[i].Unbind();
 	}
 
+	void Mesh::DrawLight()
+	{
+		vao->Bind();
+		vbo->Bind();
+		shader_test->Bind();
+		shader_test->SetUniformMat4("u_transform", m_property.transform);
+		shader_test->SetUniform3f("u_color", m_property.color);
+		shader_test->SetUniform1i("u_entity", m_property.entity);
+		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
+		vao->Unbind();
+		vbo->Unbind();
+	}
+
 	void Mesh::SetMeshProperty(MeshProperty property)
 	{
 		m_property.transform = property.transform;
 		m_property.color = property.color;
 		m_property.entity = property.entity;
+		m_property.specularStrength = property.specularStrength;
+		m_property.shininess = property.shininess;
 	}
 }

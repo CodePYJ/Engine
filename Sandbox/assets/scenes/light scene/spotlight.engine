@@ -10,7 +10,9 @@ Entities:
     MeshComponent:
       modelPath: assets\models\box.obj
       objName: box.obj
-      Color: [0.841698825, 0.20148778, 0.20148778]
+      color: [0.841698825, 0.20148778, 0.20148778]
+      specularStrength: 0.3
+      shininess: 32
   - Entity: 1
     TagComponent:
       Tag: yellow_box
@@ -21,7 +23,9 @@ Entities:
     MeshComponent:
       modelPath: assets\models\box.obj
       objName: box.obj
-      Color: [0.733590722, 0.710559249, 0.274742484]
+      color: [0.733590722, 0.710559249, 0.274742484]
+      specularStrength: 0.3
+      shininess: 32
   - Entity: 2
     TagComponent:
       Tag: blue_box
@@ -32,7 +36,9 @@ Entities:
     MeshComponent:
       modelPath: assets\models\box.obj
       objName: box.obj
-      Color: [0.223013967, 0.46060735, 0.65637064]
+      color: [0.223013967, 0.46060735, 0.65637064]
+      specularStrength: 0.3
+      shininess: 32
   - Entity: 3
     TagComponent:
       Tag: green_box
@@ -43,7 +49,9 @@ Entities:
     MeshComponent:
       modelPath: assets\models\box.obj
       objName: box.obj
-      Color: [0.159821734, 0.583011627, 0.2741974]
+      color: [0.159821734, 0.583011627, 0.2741974]
+      specularStrength: 0.3
+      shininess: 32
   - Entity: 4
     TagComponent:
       Tag: camera 4
@@ -70,8 +78,6 @@ Entities:
       Scale: [1, 1, 1]
     LightComponent:
       ambientStrength: 0.569999993
-      specularStrength: 0.300000012
-      specularIndex: 32
       lightColor: [1, 1, 1]
       lightType: 2
       Spotlight:

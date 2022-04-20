@@ -57,6 +57,8 @@ namespace EE {
 		std::string obj_name = "Null";
 		std::string path;
 		glm::vec3 color;
+		float specularStrength;
+		int shininess;
 	};
 
 

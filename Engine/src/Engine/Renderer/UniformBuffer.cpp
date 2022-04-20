@@ -36,9 +36,9 @@ namespace EE {
 		glBindBufferRange(GL_UNIFORM_BUFFER, bind_point, block_id, start_pos, end_pos);
 	}
 
-	void UniformBuffer::SetData(unsigned int size, void* data)
+	void UniformBuffer::SetData(int start, unsigned int size, void* data)
 	{
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, size, data);
+		glBufferSubData(GL_UNIFORM_BUFFER, start, size, data);
 	}
 
 }

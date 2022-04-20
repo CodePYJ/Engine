@@ -12,6 +12,7 @@ namespace EE {
 		// Color
 		RGBA8,
 		RED_INTEGER,
+		RGB16F,
 
 		// Depth/stencil
 		DEPTH24STENCIL8,
@@ -20,13 +21,20 @@ namespace EE {
 		Depth = DEPTH24STENCIL8
 	};
 
+	enum class FramebufferTextureDataFormat
+	{
+		None = 0, UNSIGNED_BYTE, FLOAT
+	};
+
 	struct FramebufferTextureSpecification
 	{
 		FramebufferTextureSpecification() = default;
-		FramebufferTextureSpecification(FramebufferTextureFormat format)
-			: TextureFormat(format) {}
+		FramebufferTextureSpecification(FramebufferTextureFormat format, FramebufferTextureDataFormat data_formate)
+			: TextureFormat(format), TextureDataFormat(data_formate) {}
 
 		FramebufferTextureFormat TextureFormat = FramebufferTextureFormat::None;
+		FramebufferTextureDataFormat TextureDataFormat = FramebufferTextureDataFormat::None;
+
 		// TODO: filtering/wrap
 	};
 
@@ -61,10 +69,11 @@ namespace EE {
 		unsigned int GetColorAttachmentID(uint32_t index=0) { return m_ColorAttachments[index]; }
 		int ReadPixel(uint32_t attachmentIndex, int x, int y);
 		void ClearAttachment(uint32_t attachmentIndex, int value);
+		
 	private:
 		FramebufferSpecification m_Spec;
 		std::vector<FramebufferTextureSpecification> m_ColorAttachmentSpecifications;
-		FramebufferTextureSpecification m_DepthAttachmentSpecification = FramebufferTextureFormat::None;
+		FramebufferTextureSpecification m_DepthAttachmentSpecification = { FramebufferTextureFormat::None, FramebufferTextureDataFormat::None };
 		std::vector<uint32_t> m_ColorAttachments;
 		unsigned int m_RendererID = 0;
 		unsigned int m_DepthAttachment = 0;

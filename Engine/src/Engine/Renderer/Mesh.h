@@ -20,6 +20,8 @@ namespace EE {
 		glm::mat4 transform;
 		glm::vec3 color;
 		int entity;
+		float specularStrength = 0.2f;
+		int shininess = 1;
 	};
 
 	class Mesh
@@ -31,6 +33,7 @@ namespace EE {
 
 		void SetupMesh(std::string shader_path);
 		void Draw();
+		void DrawLight();
 		void SetMeshProperty(MeshProperty property);
 
 	private:

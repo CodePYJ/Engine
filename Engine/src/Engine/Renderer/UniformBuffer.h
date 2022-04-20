@@ -11,7 +11,7 @@ namespace EE {
 		void Unbind();
 		void SetBindPoint(int bind_point);
 		void SetBindPoint(int bind_point, int start_pos, int end_pos);
-		void SetData(unsigned int size, void* data);
+		void SetData(int start, unsigned int size, void* data);
 
 	private:
 		unsigned int block_id;

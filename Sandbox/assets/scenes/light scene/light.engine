@@ -27,7 +27,9 @@ Entities:
     MeshComponent:
       modelPath: assets\models\sphere.obj
       objName: sphere.obj
-      Color: [0.872586846, 0.872578084, 0.872578084]
+      color: [0.872586846, 0.872578084, 0.872578084]
+      specularStrength: 0.200000003
+      shininess: 29
   - Entity: 2
     TagComponent:
       Tag: parallel light (red)
@@ -36,13 +38,11 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     LightComponent:
-      ambientStrength: 0.699999988
-      specularStrength: 0.150000006
-      specularIndex: 32
-      lightColor: [1, 0, 0]
+      ambientStrength: 0.200000003
+      lightColor: [0.99227798, 0.551691234, 0.551691234]
       lightType: 0
       ParallelLight:
-        direction: [-1, -1, -1]
+        direction: [-0.800000012, -1, -1]
   - Entity: 3
     TagComponent:
       Tag: box
@@ -53,36 +53,34 @@ Entities:
     MeshComponent:
       modelPath: assets\models\box.obj
       objName: box.obj
-      Color: [0.687256694, 0.68725872, 0.687251866]
+      color: [0.687256694, 0.68725872, 0.687251866]
+      specularStrength: 0.300000012
+      shininess: 32
   - Entity: 4
     TagComponent:
       Tag: spotlight (yellow)
     TransformComponent:
-      Position: [0.383340418, 0.416941792, 2.21168542]
+      Position: [0.622885823, 0.416941792, 2.21168542]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     LightComponent:
-      ambientStrength: 0.300000012
-      specularStrength: 0.300000012
-      specularIndex: 32
-      lightColor: [0.60324055, 0.67181468, 0.238636851]
+      ambientStrength: 0.100000001
+      lightColor: [0.857645392, 0.942084968, 0.469223827]
       lightType: 2
       Spotlight:
         direction: [0, 0, -1]
         innerCutoff: 0.899999976
-        outerCutoff: 0.800000012
+        outerCutoff: 0.829999983
   - Entity: 5
     TagComponent:
-      Tag: light 5
+      Tag: point light
     TransformComponent:
-      Position: [-2.13638163, 2.22997236, 0.719309568]
+      Position: [-1.50999999, 1.96141481, 1.91999996]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     LightComponent:
-      ambientStrength: 0.300000012
-      specularStrength: 0.300000012
-      specularIndex: 32
-      lightColor: [1, 1, 1]
+      ambientStrength: 0.100000001
+      lightColor: [0, 0.500250816, 1]
       lightType: 1
       PointLight:
         constant: 1
