@@ -24,6 +24,7 @@ namespace EE {
 		void ProcessNode(aiNode& node, const aiScene& scene);
 		Mesh ProcessMesh(aiMesh& mesh, const aiScene& scene, std::string shader_path);
 		void Draw(MeshProperty property);
+		void SetTexture(std::shared_ptr<Texture> texture);
 		void DrawLight(MeshProperty property);
 
 	private:

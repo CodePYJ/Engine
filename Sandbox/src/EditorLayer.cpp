@@ -161,7 +161,7 @@ namespace EE {
 
 			m_ViewportFocused = ImGui::IsWindowFocused();
 			m_ViewportHovered = ImGui::IsWindowHovered();
-			EE::Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+			EE::Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused);
 			mScene_ptr->SetBlock(m_ViewportHovered);//update
 			ImVec2 temViewportSzie = ImGui::GetContentRegionAvail();
 			mScene_ptr->SetAspectRatio(temViewportSzie.x, temViewportSzie.y);

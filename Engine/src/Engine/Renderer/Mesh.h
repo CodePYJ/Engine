@@ -27,14 +27,15 @@ namespace EE {
 	class Mesh
 	{
 	public:
-		Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
-		Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, std::string shader_path);
+		Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<std::shared_ptr<Texture>> textures);
+		Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<std::shared_ptr<Texture>> textures, std::string shader_path);
 		~Mesh();
 
 		void SetupMesh(std::string shader_path);
 		void Draw();
 		void DrawLight();
 		void SetMeshProperty(MeshProperty property);
+		void AddTexture(std::shared_ptr<Texture> texture);
 
 	private:
 		std::shared_ptr<VertexArray> vao = nullptr;
@@ -44,7 +45,8 @@ namespace EE {
 
 		std::vector<Vertex> m_vertices;
 		std::vector<unsigned int> m_indices;
-		std::vector<Texture> m_textures;
+		std::vector<std::shared_ptr<Texture>> m_textures;
+		std::shared_ptr<Texture> texture_ptr;
 		MeshProperty m_property;
 		std::string m_shader_path = "assets/shaders/mesh.shader";
 	};

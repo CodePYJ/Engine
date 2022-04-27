@@ -1,0 +1,47 @@
+Scene: Untitled
+Entities:
+  - Entity: 0
+    TagComponent:
+      Tag: camera 0
+    TransformComponent:
+      Position: [1.34152067, 1.34355474, 3.47609138]
+      Rotation: [0.26808238, -0.234572113, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 45
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 1
+        OrthographicNear: 1
+        OrthographicFar: -1
+      Primary: true
+  - Entity: 1
+    TagComponent:
+      Tag: mesh 1
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [-3.14159226, 0, -3.14159226]
+      Scale: [0.999987006, 1, 0.999987006]
+    MeshComponent:
+      modelPath: assets\models\spot\spot_triangulated_good.obj
+      objName: spot_triangulated.obj
+      color: [0.559845567, 0.559839964, 0.559839964]
+      specularStrength: 0
+      shininess: 1
+  - Entity: 2
+    TagComponent:
+      Tag: light 2
+    TransformComponent:
+      Position: [0.886362076, 0.297794253, 1.56738591]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    LightComponent:
+      ambientStrength: 0.300000012
+      lightColor: [1, 1, 1]
+      lightType: 1
+      PointLight:
+        constant: 1
+        linear: 0.0900000036
+        quadratic: 0.0320000015

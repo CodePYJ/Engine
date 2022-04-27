@@ -13,6 +13,7 @@ layout(std140, binding = 0) uniform Camera
 
 out vec3 Normal;
 out vec4 FragPos;
+out vec2 TexCoord;
 out mat4 transport_view;
 out mat4 transport_transform;
 
@@ -24,6 +25,7 @@ void main()
     Normal = vec3(u_transform * vec4(aNormal, 0.0f));
     transport_view = view;
     transport_transform = u_transform;
+    TexCoord = aTexCoord;
 
     gl_Position = projection * view * FragPos;
 }
@@ -36,6 +38,7 @@ layout(location = 1) out int color1;
 
 in vec3 Normal;
 in vec4 FragPos;
+in vec2 TexCoord;
 in mat4 transport_view;
 in mat4 transport_transform;
 
@@ -70,6 +73,8 @@ uniform vec3 u_color;
 uniform int u_entity;
 uniform float specularStrength;
 uniform int shininess;
+uniform sampler2D u_texture;
+
 
 vec3 BaseLight(Light light, vec3 normal, vec3 lightDir, vec3 viewDir, vec3 viewNorm)
 {
@@ -78,10 +83,11 @@ vec3 BaseLight(Light light, vec3 normal, vec3 lightDir, vec3 viewDir, vec3 viewN
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 diffuse = diff * light.color;
 
-    vec3 reflectDir = reflect(lightDir, viewNorm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+    vec3 reflectDir = reflect(-lightDir, viewNorm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), float(shininess));
     vec3 specular = specularStrength * spec * light.color;
     return ambient + diffuse + specular;
+    return ambient+diffuse;
 }
 
 vec3 Spotlight(Light light, vec3 normal, vec3 lightDir, vec3 viewDir, vec3 viewNorm)
@@ -91,7 +97,7 @@ vec3 Spotlight(Light light, vec3 normal, vec3 lightDir, vec3 viewDir, vec3 viewN
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 diffuse = diff * light.color;
 
-    vec3 reflectDir = reflect(lightDir, viewNorm);
+    vec3 reflectDir = reflect(-lightDir, viewNorm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     vec3 specular = specularStrength * spec * light.color;
 
@@ -133,6 +139,6 @@ void main()
 
     result *= u_color;
 
-    color0 = vec4(result, 1.0f);
+    color0 = vec4(result, 1.0f) * texture(u_texture, TexCoord);
     color1 = u_entity;
 }

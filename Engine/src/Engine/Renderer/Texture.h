@@ -9,7 +9,7 @@ namespace EE {
 	class EE_API Texture
 	{
 	public:
-		Texture(const std::string& path); 
+		Texture(const std::string& path, int vertical = 1); 
 		Texture(uint32_t width, uint32_t height);
 
 		~Texture();

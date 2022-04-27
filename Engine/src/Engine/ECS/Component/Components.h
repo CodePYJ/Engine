@@ -56,9 +56,11 @@ namespace EE {
 		std::shared_ptr<Model> model;
 		std::string obj_name = "Null";
 		std::string path;
-		glm::vec3 color;
+		glm::vec3 color = { 0.5f,0.5f,0.5f };
 		float specularStrength;
-		int shininess;
+		int shininess = 1;
+		std::shared_ptr<Texture> texture;
+		bool flip_vertical = true;
 	};
 
 

@@ -45,23 +45,23 @@ namespace EE {
 		void OnMousePressed(MouseButtonPressedEvent& e);
 		void OnMouseReleased(MouseButtonReleasedEvent& e);
 		void OnWindowResized(WindowResizeEvent& e);
-		void CameraRotate_RBP(glm::vec2 delta);
+		void CameraMove(glm::vec2 delta);
 		void CameraRotate_LBP(glm::vec2 delta);
 
 	private:
 		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_rotation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_temp_rotation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 gaze_point = { 0.0f,0.0f ,0.0f };
 
 		float translationSpeed = 2.5f, rotationSpeed = 2.0f, zoomLevel = 1.0f;
 		float m_aspectRatio = 0.0f;
-		glm::vec2 mouseInitialPos_right = { 0.0f, 0.0f };
-		glm::vec2 mouseInitialPos_left = { 0.0f, 0.0f };
+		glm::vec2 mouseInitialPos = { 0.0f, 0.0f };
 		Camera m_camera;
-		glm::vec3 m_focal_point = { 0.0, 0.0, 0.0 };
-		bool mouse_button_falg_right = true;
-		bool mouse_button_falg_left = true;
-
+		Timestep mts;
+		float r_horizontal = 0.0f;
+		float r_vertical = 0.0f;
+		bool button_flag = false;
 	};
 
 }

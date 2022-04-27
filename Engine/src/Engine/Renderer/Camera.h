@@ -49,11 +49,23 @@ namespace EE {
 		glm::mat4 GetProjectionMatrix() { return view_and_projection.m_projection; }
 		glm::mat4 GetViewMatrix() { return view_and_projection.m_view; }
 		ViewAndProjection GetViewAndProjectionStruct() { return view_and_projection; }
-		glm::vec3 GetFrontDirection();
 
-		float GetR() { return r; }
+		float GetR()
+		{
+			glm::vec3 temp = gaze_point - m_position;
+			float r = sqrt(temp.x * temp.x + temp.y * temp.y + temp.z * temp.z);
+			return r;
+		}
+
+		void SetGazePoint(glm::vec3& gaze) { gaze_point = gaze; }
+
+		glm::vec3 right_vector;
+		glm::vec3 up_vector;
+		glm::vec3 lookat = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 gaze_point = glm::vec3(0.0f, 0.0f, 0.0f);
 	private:
 		void CalculateViewMatrix();
+		void CalculateViewMatrix2();
 
 	private:
 
@@ -69,8 +81,9 @@ namespace EE {
 		float p_near = 0.01f, p_far = 1000.0f;	//perspective
 		float o_near = 1.0f, o_far = -1.0f;	//orthographic
 		ProjectionType cameraType = ProjectionType::Perspective;
-
 		float r = 0.0f;
+		glm::vec3 last_position = {0.0f, 0.0f, 0.0f};
+		
 	};
 
 }

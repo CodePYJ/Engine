@@ -83,6 +83,13 @@ namespace EE {
 		}
 	}
 
+	void Model::SetTexture(std::shared_ptr<Texture> texture)
+	{
+		for (Mesh& mesh : meshes) {
+			mesh.AddTexture(texture);
+		}
+	}
+
 	void Model::DrawLight(MeshProperty property)
 	{
 		for (Mesh mesh : meshes) {

@@ -41,8 +41,10 @@ namespace EE {
 	void CameraControlSystem::OnEvent(Event& event)
 	{
 		if (activeCamera != -1) {
+			TransformComponent& trans = SceneCoo_ptr->GetComponent<TransformComponent>(activeCamera);
 			CameraComponent& camera = SceneCoo_ptr->GetComponent<CameraComponent>(activeCamera);
 			camera.cameraController->OnEvent(event);
+			trans.position = camera.cameraController->GetPosition();
 		}
 	}
 

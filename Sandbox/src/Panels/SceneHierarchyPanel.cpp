@@ -275,6 +275,7 @@ namespace EE {
 		DrawComponent<TransformComponent>("Transform", entity, [](auto& component)
 			{
 				DrawVec3Control("Translation", component.position);
+
 				glm::vec3 rotation = glm::degrees(component.rotation);
 				DrawVec3Control("Rotation", rotation);
 				component.rotation = glm::radians(rotation);
@@ -351,7 +352,7 @@ namespace EE {
 				}	//TreeNode
 			});
 
-		DrawComponent<MeshComponent>("Mesh", entity, [](auto& component)
+		DrawComponent<MeshComponent>("Mesh", entity, [this](auto& component)
 			{
 				ImGui::ColorEdit3("Color", glm::value_ptr(component.color));
 				ImGui::Columns(2);
@@ -371,6 +372,25 @@ namespace EE {
 				}	//DragDrop
 				ImGui::Columns(1);
 
+				ImGui::Image((ImTextureID)(component.texture ? component.texture->GetRendererID() : nullTex->GetRendererID()), { 80.0f, 80.0f }, { 0, 1 }, { 1, 0 });
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+					{
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path texturePath = std::filesystem::path(assetsPath) / path;
+						if(component.flip_vertical)
+							component.texture = std::make_shared<Texture>(texturePath.string());
+						else
+							component.texture = std::make_shared<Texture>(texturePath.string(), 0);
+						component.model->SetTexture(component.texture);
+						//component.texture->Bind();
+					}
+					ImGui::EndDragDropTarget();
+				}	//DragDrop
+
+				ImGui::Checkbox("flip vertical", &component.flip_vertical);
+
 				ImGui::Spacing();
 				ImGui::Columns(2);
 				ImGui::SetColumnWidth(0, 120.0f);
@@ -384,6 +404,7 @@ namespace EE {
 				ImGui::Text("shininess");
 				ImGui::NextColumn();
 				ImGui::DragInt("##shininess", &component.shininess, 1, 1, 1000);
+				ImGui::Columns(1);
 
 			});
 

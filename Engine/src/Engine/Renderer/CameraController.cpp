@@ -13,58 +13,28 @@ namespace EE {
 	void CameraController::OnUpdate(Timestep ts, bool block)
 	{
 		if (block) {
-			if (Input::IsKeyPressed(GE_KEY_A)) {
-				m_position.x -= translationSpeed * ts.GetSecond() * cos(m_rotation.y) * cos(m_rotation.z);
-				m_position.z -= translationSpeed * ts.GetSecond() * sin(m_rotation.y) * cos(m_rotation.z);
-				m_position.y += translationSpeed * ts.GetSecond() * sin(m_rotation.z) * cos(m_rotation.y);
-			}
-			if (Input::IsKeyPressed(GE_KEY_D)) {
-				m_position.x += translationSpeed * ts.GetSecond() * cos(m_rotation.y * cos(m_rotation.z));
-				m_position.z += translationSpeed * ts.GetSecond() * sin(m_rotation.y * cos(m_rotation.z));
-				m_position.y -= translationSpeed * ts.GetSecond() * sin(m_rotation.z * cos(m_rotation.y));
-			}
-			if (Input::IsKeyPressed(GE_KEY_W)) {
-				m_position.x += translationSpeed * ts.GetSecond() * sin(m_rotation.z) * cos(m_rotation.x);
-				m_position.y += translationSpeed * ts.GetSecond() * cos(m_rotation.z) * cos(m_rotation.x);
-				m_position.z -= translationSpeed * ts.GetSecond() * sin(m_rotation.x) * cos(m_rotation.y);
-			}
-			if (Input::IsKeyPressed(GE_KEY_S)) {
-				m_position.x -= translationSpeed * ts.GetSecond() * sin(m_rotation.z) * cos(m_rotation.x);
-				m_position.y -= translationSpeed * ts.GetSecond() * cos(m_rotation.z) * cos(m_rotation.x);
-				m_position.z += translationSpeed * ts.GetSecond() * sin(m_rotation.x) * cos(m_rotation.y);
-			}
-
 			if (Input::IsMouseButtonPressed(Mouse::ButtonRight)) {
 				glm::vec2 mousePos = { Input::GetMouseX(), Input::GetMouseY() };
-				if (mouse_button_falg_right) {
-					mouseInitialPos_right = mousePos;
-					mouse_button_falg_right = false;
-				}
-				glm::vec2 delta = mousePos - mouseInitialPos_right;
-				mouseInitialPos_right = mousePos;
-				CameraRotate_RBP(delta);
-
-				if (m_rotation.z > 180.0f)
-					m_rotation.z -= 360.0f;
-				else if (m_rotation.z <= -180.0f)
-					m_rotation.z += 360.0f;
+				glm::vec2 delta = (mousePos - mouseInitialPos) * 0.006f;
+				mouseInitialPos = mousePos;
+				float threshold = 0.02f;
+				m_position -= m_camera.right_vector * (delta.x > threshold || delta.x < -threshold ? delta.x : 0.0f);
+				m_position += m_camera.up_vector * (delta.y > threshold || delta.y < -threshold ? delta.y : 0.0f);
+				gaze_point -= m_camera.right_vector * (delta.x > threshold || delta.x < -threshold ? delta.x : 0.0f);
+				gaze_point += m_camera.up_vector * (delta.y > threshold || delta.y < -threshold ? delta.y : 0.0f);
 			}
 
-			if (Input::IsKeyPressed(GE_KEY_LEFT_ALT))
-				if (Input::IsMouseButtonPressed(Mouse::ButtonLeft)) {
-					glm::vec2 mousePos = { Input::GetMouseX(), Input::GetMouseY() };
-					if (mouse_button_falg_left) {
-						mouseInitialPos_left = mousePos;
-						mouse_button_falg_left = false;
-					}
-					glm::vec2 delta = mousePos - mouseInitialPos_left;
-					mouseInitialPos_left = mousePos;
-					CameraRotate_LBP(delta);
-				}
+			if (button_flag && Input::IsMouseButtonPressed(Mouse::ButtonLeft)) {
+				glm::vec2 mousePos = { Input::GetMouseX(), Input::GetMouseY() };
+				glm::vec2 delta = mousePos - mouseInitialPos;
+				mouseInitialPos = mousePos;
+				CameraRotate_LBP(delta);
+			}
 		}
 
 		m_camera.SetPosition(m_position);
 		m_camera.SetRotation(m_rotation);
+		m_camera.SetGazePoint(gaze_point);
 	}
 
 	void CameraController::OnEvent(Event& e)
@@ -84,37 +54,31 @@ namespace EE {
 
 	void CameraController::OnMouseScrolled(MouseScrollEvent& e)
 	{
-		if (m_camera.GetProjectionType() == Camera::ProjectionType::Orthographic) {
-			zoomLevel -= e.GetYOffset() * 0.25f;
-			zoomLevel = std::max(zoomLevel, 0.25f);
-			m_camera.SetOrthographicSize(zoomLevel);
-		}
-		else {
-			float fov = m_camera.GetPerspectiveVerticalFOV();
-			fov -= e.GetYOffset() * 0.8;
-			fov = std::max(fov, 0.0f);
-			m_camera.SetPerspectiveVerticalFOV(fov);
-		}
-
+		m_position += e.GetYOffset() * 0.25f * m_camera.lookat;
 	}
 
 	void CameraController::OnMousePressed(MouseButtonPressedEvent& e)
 	{
-		if (e.GetButton() == Mouse::ButtonLeft) {
+		//glfw只会捕获一次按键，持续按下会action会变为repeat
+		glm::vec2 mousePos = { Input::GetMouseX(), Input::GetMouseY() };
+		mouseInitialPos = mousePos;
 
+		if (e.GetButton() == Mouse::ButtonLeft) {
+			r_vertical = m_camera.GetR();
+			r_horizontal = r_vertical * cos(m_rotation.x);
+			button_flag = true;
 		}
 		if (e.GetButton() == Mouse::ButtonRight) {
-			//glfw只会捕获一次按键，持续按下会action会变为repeat
 		}
 	}
 
 	void CameraController::OnMouseReleased(MouseButtonReleasedEvent& e)
 	{
 		if (e.GetButton() == Mouse::ButtonRight) {
-			mouse_button_falg_right = true;
+
 		}
 		if (e.GetButton() == Mouse::ButtonLeft) {
-			mouse_button_falg_left = true;
+			button_flag = false;
 		}
 	}
 
@@ -123,22 +87,20 @@ namespace EE {
 		OnResize((float)e.GetWidth(), (float)e.GetHeight());
 	}
 
-	void CameraController::CameraRotate_RBP(glm::vec2 delta)
+	void CameraController::CameraMove(glm::vec2 delta)
 	{
-		glm::vec3 rotation = { glm::degrees(m_rotation.x), glm::degrees(m_rotation.y), glm::degrees(m_rotation.z) };
-		rotation.y += delta.x * 0.08f;
-		rotation.x += delta.y * 0.08f;
-		m_rotation.x = glm::radians(rotation.x);
-		m_rotation.y = glm::radians(rotation.y);
+
 	}
 
 	void CameraController::CameraRotate_LBP(glm::vec2 delta)
 	{
-		glm::vec3 rotation = { glm::degrees(m_rotation.x), glm::degrees(m_rotation.y), glm::degrees(m_rotation.z) };
-		rotation.y += delta.x * 0.08f;
+		glm::vec3 rotation = glm::degrees(m_rotation);
 		rotation.x += delta.y * 0.08f;
-		m_rotation.x = glm::radians(rotation.x);
-		m_rotation.y = glm::radians(rotation.y);
-		m_position = m_focal_point - m_camera.GetFrontDirection() * m_camera.GetR();
+		rotation.y += delta.x * 0.08f;
+		m_rotation = glm::radians(rotation);
+		m_position.x = -r_horizontal * sin(m_rotation.y);
+		m_position.z = r_horizontal * cos(m_rotation.y);
+		m_position.y = r_vertical * sin(m_rotation.x);
+		m_position += m_camera.gaze_point;
 	}
 }

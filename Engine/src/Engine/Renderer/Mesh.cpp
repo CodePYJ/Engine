@@ -3,13 +3,13 @@
 
 namespace EE {
 
-	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<std::shared_ptr<Texture>> textures)
 		:m_vertices(vertices), m_indices(indices), m_textures(textures)
 	{
 		SetupMesh(m_shader_path);
 	}
 
-	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, std::string shader_path)
+	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<std::shared_ptr<Texture>> textures, std::string shader_path)
 		:m_vertices(vertices), m_indices(indices), m_textures(textures), m_shader_path(shader_path)
 	{
 		SetupMesh(m_shader_path);
@@ -39,50 +39,29 @@ namespace EE {
 
 	void Mesh::Draw()
 	{
-		/*for (int i = 0; i < m_textures.size(); i++) {
-			if (m_textures[i].type == "diffuse") {
-				m_textures[i].Bind(i);
-				shader_test->Bind();
-				shader_test->SetUniform1i("diffuse", 0);
-			}
-			else if (m_textures[i].type == "specular") {
-				m_textures[i].Bind(i);
-			}
-		}*/
-		//float ambientStrength;
-		//float specularStrength;
-		//int specularIndex;
-		//vec3 lightPos;
-		//vec3 lightColor;
 		vao->Bind();
 		vbo->Bind();
 		shader_test->Bind();
+
+		//for (int i = 0; i < m_textures.size(); i++) {
+		//	m_textures[i]->Bind(i);
+		//}
+		if (texture_ptr)
+			texture_ptr->Bind();
 		shader_test->SetUniformMat4("u_transform", m_property.transform);
 		shader_test->SetUniform3f("u_color", m_property.color);
 		shader_test->SetUniform1i("u_entity", m_property.entity);
 		shader_test->SetUniform1f("specularStrength", m_property.specularStrength);
 		shader_test->SetUniform1i("shininess", m_property.shininess);
-		//GLuint indices[3];
-		//const GLchar* names[] = { "lightCount", "lights[0]", "lights[1]" };
-		//glGetUniformIndices(shader_test->GetId(), 3, names, indices);
-		//EE_TRACE(indices[0]);
-		//EE_TRACE(indices[1]);
-		//EE_TRACE(indices[2]);
-		//int blocksize = 0;
-		//int offset[3];
-		//glGetActiveUniformBlockiv(shader_test->GetId(), 1, GL_UNIFORM_BLOCK_DATA_SIZE, &blocksize);
-		//glGetActiveUniformsiv(shader_test->GetId(), 3, indices, GL_UNIFORM_OFFSET, offset);
-		//EE_TRACE(blocksize);
-		//EE_TRACE(offset[0]);
-		//EE_TRACE(offset[1]);
-		//EE_TRACE(offset[2]);
 
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
 		vao->Unbind();
 		vbo->Unbind();
-
-		//shader_test->Unbind();
-		//m_textures[i].Unbind();
+		//for (int i = 0; i < m_textures.size(); i++) {
+		//	m_textures[i]->Unbind();
+		//}
+		if (texture_ptr)
+			texture_ptr->Unbind();
 	}
 
 	void Mesh::DrawLight()
@@ -106,4 +85,13 @@ namespace EE {
 		m_property.specularStrength = property.specularStrength;
 		m_property.shininess = property.shininess;
 	}
+
+	void Mesh::AddTexture(std::shared_ptr<Texture> texture)
+	{
+		texture_ptr = texture;
+		//m_textures.push_back(texture);
+	}
 }
+
+
+
